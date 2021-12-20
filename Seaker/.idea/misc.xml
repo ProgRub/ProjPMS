@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/diegobricenoo/Desktop/ProjPMS/Seaker/app/src/main/res/drawable/edittextbackground.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/diegobricenoo/Desktop/ProjPMS/Seaker/app/src/main/res/layout/activity_admin_home.xml" value="0.2006340579710145" />
+        <entry key="..\:/Users/diegobricenoo/Desktop/ProjPMS/Seaker/app/src/main/res/layout/report_sighting.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/ruben/Desktop/Seaker/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_admin_home.xml" value="0.24094202898550723" />
         <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_choose_role.xml" value="0.20520833333333333" />
@@ -14,7 +17,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

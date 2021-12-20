@@ -22,6 +22,9 @@
             android:name=".ChooseRoleActivity"
             android:exported="false" />
         <activity
+            android:name=".ReportSightingActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

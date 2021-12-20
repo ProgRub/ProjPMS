@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReportSightingActivity"
+    android:background="@drawable/background">
+
+    <!-- Zona branca -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/scroll_area"
+        android:contentDescription="sectionDescription"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <!-- Back button -->
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/back_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.061"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck"></ImageButton>
+
+    <!-- Section Title -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sighting Report"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
+
+    <!-- Scroll Area Vertical -->
+    <ScrollView
+        android:layout_width="380dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.755"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="25dp">
+
+        <!-- Conteudo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Photos -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Photos:"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp">
+
+            </TextView>
+
+            <!-- Botões das fotos -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="116dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!-- Botão take a photo -->
+                <ImageButton
+                    android:layout_width="89dp"
+                    android:layout_height="110dp"
+                    android:background="@drawable/take_a_photo_btn"
+                    tools:ignore="SpeakableTextPresentCheck"></ImageButton>
+                <!-- Botão upload a photo -->
+                <ImageButton
+                    android:layout_width="89dp"
+                    android:layout_height="110dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/upload_a_photo_btn"
+                    tools:ignore="SpeakableTextPresentCheck"></ImageButton>
+
+            </LinearLayout>
+
+            <!-- Date and Time titles -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date: *"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:text="Time: *"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"></TextView>
+
+            </LinearLayout>
+
+            <!-- Date and Time input fields -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/pickDate"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/input_field"
+                    android:ems="10"
+                    android:inputType="date"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <EditText
+                    android:id="@+id/pickTime"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/input_field"
+                    android:ems="10"
+                    android:inputType="time"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <!-- Coordinates title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Coordinates: *"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Place a pin on the map."
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="normal"
+                android:layout_marginLeft="20dp">
+            </TextView>
+
+            <!-- Map (não sei como funciona isto) -->
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#00000000"
+                android:clickable="true"
+                app:uiCompass="true"
+                app:uiZoomControls="true"
+                app:zOrderOnTop="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Choose sighting species: *"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp">
+            </TextView>
+            <!-- Search bar (não sei como funciona isto) -->
+            <SearchView
+                android:layout_width="300dp"
+                android:layout_height="40dp">
+            </SearchView>
+
+            <!-- Choosing species buttons -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Whales -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/bAquarius"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Aquarius"
+                            android:background="@drawable/specie_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/bPisces"
+                            android:layout_toRightOf="@+id/bAquarius"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Pisces"
+                            android:background="@drawable/specie_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/bAries"
+                            android:layout_toRightOf="@+id/bPisces"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Aries"
+                            android:background="@drawable/specie_btn"/>
+
+
+
+                        <ImageButton
+                            android:id="@+id/bTaurs"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Taurs"
+                            android:layout_below="@+id/bAquarius"
+                            android:layout_alignLeft="@+id/bAquarius"
+                            android:layout_alignStart="@+id/bAquarius" />
+
+                        <ImageButton
+                            android:id="@+id/bGemini"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Gemini"
+                            android:layout_alignTop="@+id/bTaurs"
+                            android:layout_alignRight="@+id/bPisces"
+                            android:layout_alignEnd="@+id/bPisces" />
+                        <ImageButton
+                            android:id="@+id/bCancer"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Cancer"
+                            android:layout_below="@+id/bAries"
+                            android:layout_alignRight="@+id/bAries"
+                            android:layout_alignEnd="@+id/bAries" />
+
+                        <ImageButton
+                            android:id="@+id/bLeo"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Leo"
+                            android:layout_below="@+id/bTaurs"
+                            android:layout_alignLeft="@+id/bTaurs"
+                            android:layout_alignStart="@+id/bTaurs"/>
+
+                        <ImageButton
+                            android:id="@+id/bVirgo"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Virgo"
+                            android:layout_alignTop="@+id/bLeo"
+                            android:layout_alignLeft="@+id/bGemini"
+                            android:layout_alignStart="@+id/bGemini" />
+
+                        <ImageButton
+                            android:id="@+id/bLibra"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Libra"
+                            android:layout_below="@+id/bCancer"
+                            android:layout_alignRight="@+id/bCancer"
+                            android:layout_alignEnd="@+id/bCancer"/>
+
+                        <ImageButton
+                            android:id="@+id/bScorpio"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Scorpio"
+                            android:layout_below="@+id/bLeo"
+                            android:layout_alignLeft="@+id/bLeo"
+                            android:layout_alignStart="@+id/bLeo" />
+
+                        <ImageButton
+                            android:id="@+id/bSagittarius"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Sagittarius"
+                            android:layout_below="@+id/bVirgo"
+                            android:layout_toLeftOf="@+id/bAries"
+                            android:layout_toStartOf="@+id/bAries" />
+
+                        <ImageButton
+                            android:id="@+id/bCapricorn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Capricorn"
+                            android:layout_below="@+id/bLibra"
+                            android:layout_alignRight="@+id/bLibra"
+                            android:layout_alignEnd="@+id/bLibra"/>
+
+                    </RelativeLayout>
+
+                    <!-- Dolphins -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/bAquarius1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Aquarius"
+                            android:background="@drawable/specie_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/bPisces1"
+                            android:layout_toRightOf="@+id/bAquarius1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Pisces"
+                            android:background="@drawable/specie_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/bAries1"
+                            android:layout_toRightOf="@+id/bPisces1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Aries"
+                            android:background="@drawable/specie_btn"/>
+
+
+
+                        <ImageButton
+                            android:id="@+id/bTaurs1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Taurs"
+                            android:layout_below="@+id/bAquarius1"
+                            android:layout_alignLeft="@+id/bAquarius1"
+                            android:layout_alignStart="@+id/bAquarius1" />
+
+                        <ImageButton
+                            android:id="@+id/bGemini1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Gemini"
+                            android:layout_alignTop="@+id/bTaurs1"
+                            android:layout_alignRight="@+id/bPisces1"
+                            android:layout_alignEnd="@+id/bPisces1" />
+
+                        <ImageButton
+                            android:id="@+id/bCancer1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Cancer"
+                            android:layout_below="@+id/bAries1"
+                            android:layout_alignRight="@+id/bAries1"
+                            android:layout_alignEnd="@+id/bAries1" />
+
+                        <ImageButton
+                            android:id="@+id/bLeo1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Leo"
+                            android:layout_below="@+id/bTaurs1"
+                            android:layout_alignLeft="@+id/bTaurs1"
+                            android:layout_alignStart="@+id/bTaurs1"/>
+
+                        <ImageButton
+                            android:id="@+id/bVirgo1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Virgo"
+                            android:layout_alignTop="@+id/bLeo1"
+                            android:layout_alignLeft="@+id/bGemini1"
+                            android:layout_alignStart="@+id/bGemini1" />
+
+                        <ImageButton
+                            android:id="@+id/bLibra1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Libra"
+                            android:layout_below="@+id/bCancer1"
+                            android:layout_alignRight="@+id/bCancer1"
+                            android:layout_alignEnd="@+id/bCancer1"/>
+
+                        <ImageButton
+                            android:id="@+id/bScorpio1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Scorpio"
+                            android:layout_below="@+id/bLeo1"
+                            android:layout_alignLeft="@+id/bLeo1"
+                            android:layout_alignStart="@+id/bLeo1" />
+
+                        <ImageButton
+                            android:id="@+id/bSagittarius1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Sagittarius"
+                            android:layout_below="@+id/bVirgo1"
+                            android:layout_toLeftOf="@+id/bAries1"
+                            android:layout_toStartOf="@+id/bAries1" />
+
+                        <ImageButton
+                            android:id="@+id/bCapricorn1"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/specie_btn"
+                            android:text="Capricorn"
+                            android:layout_below="@+id/bLibra1"
+                            android:layout_alignRight="@+id/bLibra1"
+                            android:layout_alignEnd="@+id/bLibra1"/>
+
+                    </RelativeLayout>
+
+                    <!-- Porpoises -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/bAquarius2"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Aquarius"
+                            android:background="@drawable/specie_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/bPisces2"
+                            android:layout_toRightOf="@+id/bAquarius2"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Pisces"
+                            android:background="@drawable/specie_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/bAries2"
+                            android:layout_toRightOf="@+id/bPisces2"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Aries"
+                            android:background="@drawable/specie_btn"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Sightings Information title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Sighting Information:"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp">
+            </TextView>
+
+            <!-- Comment title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Comment:"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp">
+            </TextView>
+
+            <!-- Comment input field -->
+            <EditText
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:minLines="2"
+                android:gravity="top|start"
+                android:maxLines="10"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                android:padding="5dp"
+                android:background="@drawable/edittextbackground"
+                />
+
+            <!-- Report sighting button -->
+            <ImageButton
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="90dp"
+                android:background="@drawable/selected_specie_btn"
+                tools:ignore="SpeakableTextPresentCheck"></ImageButton>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
