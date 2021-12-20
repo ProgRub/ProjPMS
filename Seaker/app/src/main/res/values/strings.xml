@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Seaker</string>
+    <string name="developedBy">Developed by BehindTheDesk Studios.</string>
+    <string name="chooseRolePrompt">Choose your professional role</string>
+    <string name="teamMember">Team Member</string>
+    <string name="companyManager">Company Manager</string>
+    <string name="administrator">Administrator</string>
 </resources>

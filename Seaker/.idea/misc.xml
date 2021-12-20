@@ -4,7 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ruben/Desktop/Seaker/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_admin_home.xml" value="0.24094202898550723" />
+        <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_choose_role.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_company_manager_home.xml" value="0.24094202898550723" />
+        <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_login.xml" value="0.24818840579710144" />
         <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_splash.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/ruben/Documents/GitHub/ProjPMS/Seaker/app/src/main/res/layout/activity_team_member_home.xml" value="0.24094202898550723" />
       </map>
     </option>
   </component>
