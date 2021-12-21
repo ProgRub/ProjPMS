@@ -9,47 +9,44 @@
 
     <ImageButton
         android:id="@+id/buttonCreateReport"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="208dp"
         android:background="@drawable/create_report_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.379"></ImageButton>
+        app:layout_constraintTop_toTopOf="parent"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonAllMembersCM"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/all_teammember_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.538"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateReport"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonReportedSightingsCM"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/reported_sightings_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.698"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonAllMembersCM"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonLogoutCM"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/logout_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.86"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonReportedSightingsCM"></ImageButton>
 
     <!--<TextView
         android:id="@+id/textView9"

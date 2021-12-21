@@ -9,36 +9,35 @@
 
     <ImageButton
         android:id="@+id/buttonTeamMember"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         android:background="@drawable/team_member_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"></ImageButton>
+        app:layout_constraintVertical_bias="0.475"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonCompanyManager"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/company_manager_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.644"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonTeamMember"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonAdministrator"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/administrator_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.792"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonCompanyManager"></ImageButton>
 
     <!--<TextView
         android:id="@+id/textView3"
