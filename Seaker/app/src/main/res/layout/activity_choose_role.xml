@@ -4,10 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/choose_role_background"
     tools:context=".ChooseRoleActivity">
 
-    <TextView
+    <ImageButton
+        android:id="@+id/buttonTeamMember"
+        android:layout_width="275dp"
+        android:layout_height="70dp"
+        android:background="@drawable/team_member_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/buttonCompanyManager"
+        android:layout_width="275dp"
+        android:layout_height="70dp"
+        android:background="@drawable/company_manager_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.644"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/buttonAdministrator"
+        android:layout_width="275dp"
+        android:layout_height="70dp"
+        android:background="@drawable/administrator_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.792"></ImageButton>
+
+    <!--<TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +105,6 @@
         android:text="@string/teamMember"
         app:cornerRadius="@dimen/activity_horizontal_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
