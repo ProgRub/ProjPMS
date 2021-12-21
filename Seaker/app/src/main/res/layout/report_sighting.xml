@@ -194,6 +194,33 @@
                 app:uiZoomControls="true"
                 app:zOrderOnTop="true" />
 
+            <!-- Latitude and Logitude Values -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude: 32.56432"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:text="Longitude: 32.56432"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold"></TextView>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -227,121 +254,214 @@
                         android:layout_height="match_parent">
 
                         <ImageButton
-                            android:id="@+id/bAquarius"
+                            android:id="@+id/blue_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Aquarius"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="Blue Whale"
+                            android:background="@drawable/blue_whale_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bPisces"
-                            android:layout_toRightOf="@+id/bAquarius"
+                            android:id="@+id/fin_whale_btn"
+                            android:layout_toRightOf="@+id/blue_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Pisces"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="Fin Whale"
+                            android:background="@drawable/fin_whale_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bAries"
-                            android:layout_toRightOf="@+id/bPisces"
+                            android:id="@+id/north_atlantic_right_whale_btn"
+                            android:layout_toRightOf="@+id/fin_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginRight="5dp"
-                            android:text="Aries"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="North Atlantic Right Whale"
+                            android:background="@drawable/north_atlantic_right_whale_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/sei_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/sei_whale_btn"
+                            android:text="Sei Whale"
+                            android:layout_below="@+id/blue_whale_btn"
+                            android:layout_alignLeft="@+id/blue_whale_btn"
+                            android:layout_alignStart="@+id/blue_whale_btn" />
+
+                        <ImageButton
+                            android:id="@+id/minke_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/minke_whale_btn"
+                            android:text="Minke Whale"
+                            android:layout_alignTop="@+id/sei_whale_btn"
+                            android:layout_alignRight="@+id/fin_whale_btn"
+                            android:layout_alignEnd="@+id/fin_whale_btn" />
+
+                        <ImageButton
+                            android:id="@+id/brides_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/brides_whale_btn"
+                            android:text="Bryde's Whale"
+                            android:layout_below="@+id/north_atlantic_right_whale_btn"
+                            android:layout_alignRight="@+id/north_atlantic_right_whale_btn"
+                            android:layout_alignEnd="@+id/north_atlantic_right_whale_btn" />
+
+                        <ImageButton
+                            android:id="@+id/humpback_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/humpback_whale_btn"
+                            android:text="Humpback Whale"
+                            android:layout_below="@+id/sei_whale_btn"
+                            android:layout_alignLeft="@+id/sei_whale_btn"
+                            android:layout_alignStart="@+id/sei_whale_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/sperm_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/sperm_whale_btn"
+                            android:text="Sperm Whale"
+                            android:layout_alignTop="@+id/humpback_whale_btn"
+                            android:layout_alignLeft="@+id/minke_whale_btn"
+                            android:layout_alignStart="@+id/minke_whale_btn" />
+
+                        <ImageButton
+                            android:id="@+id/northern_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/northern_whale_btn"
+                            android:text="Northern Bottlenose Whale"
+                            android:layout_below="@+id/brides_whale_btn"
+                            android:layout_alignRight="@+id/brides_whale_btn"
+                            android:layout_alignEnd="@+id/brides_whale_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/cuviers_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/cuviers_whale_btn"
+                            android:text="Cuvier's Beaked Whale"
+                            android:layout_below="@+id/humpback_whale_btn"
+                            android:layout_alignLeft="@+id/humpback_whale_btn"
+                            android:layout_alignStart="@+id/humpback_whale_btn" />
+
+                        <ImageButton
+                            android:id="@+id/blainville_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/blainville_whale_btn"
+                            android:text="Blainville's Beaked Whale"
+                            android:layout_below="@+id/sperm_whale_btn"
+                            android:layout_toLeftOf="@+id/north_atlantic_right_whale_btn"
+                            android:layout_toStartOf="@+id/north_atlantic_right_whale_btn" />
+
+                        <ImageButton
+                            android:id="@+id/gervais_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:background="@drawable/gervais_whale_btn"
+                            android:text="Gervais' Beaked Whale"
+                            android:layout_below="@+id/northern_whale_btn"
+                            android:layout_alignRight="@+id/northern_whale_btn"
+                            android:layout_alignEnd="@+id/northern_whale_btn"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/trues_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="True's Beaked Whale"
+                            android:background="@drawable/trues_whale_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/orca_whale_btn"
+                            android:layout_toRightOf="@+id/trues_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Orca Whale"
+                            android:background="@drawable/orca_whale_btn"/>
+
+                        <ImageButton
+                            android:id="@+id/short_finned_pilot_whale_btn"
+                            android:layout_toRightOf="@+id/orca_whale_btn"
+                            android:layout_height="120dp"
+                            android:layout_width="120dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Short Finned Pilot Whale"
+                            android:background="@drawable/short_finned_pilot_whale_btn"/>
 
 
 
                         <ImageButton
-                            android:id="@+id/bTaurs"
+                            android:id="@+id/long_finned_pilot_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Taurs"
-                            android:layout_below="@+id/bAquarius"
-                            android:layout_alignLeft="@+id/bAquarius"
-                            android:layout_alignStart="@+id/bAquarius" />
+                            android:background="@drawable/long_finned_pilot_whale_btn"
+                            android:text="Long Finned Pilot Whale"
+                            android:layout_below="@+id/trues_whale_btn"
+                            android:layout_alignLeft="@+id/trues_whale_btn"
+                            android:layout_alignStart="@+id/trues_whale_btn" />
 
                         <ImageButton
-                            android:id="@+id/bGemini"
+                            android:id="@+id/false_killer_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Gemini"
-                            android:layout_alignTop="@+id/bTaurs"
-                            android:layout_alignRight="@+id/bPisces"
-                            android:layout_alignEnd="@+id/bPisces" />
-                        <ImageButton
-                            android:id="@+id/bCancer"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Cancer"
-                            android:layout_below="@+id/bAries"
-                            android:layout_alignRight="@+id/bAries"
-                            android:layout_alignEnd="@+id/bAries" />
+                            android:background="@drawable/false_killer_whale_btn"
+                            android:text="False Killer Whale"
+                            android:layout_alignTop="@+id/long_finned_pilot_whale_btn"
+                            android:layout_alignRight="@+id/orca_whale_btn"
+                            android:layout_alignEnd="@+id/orca_whale_btn" />
 
                         <ImageButton
-                            android:id="@+id/bLeo"
+                            android:id="@+id/melon_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Leo"
-                            android:layout_below="@+id/bTaurs"
-                            android:layout_alignLeft="@+id/bTaurs"
-                            android:layout_alignStart="@+id/bTaurs"/>
+                            android:background="@drawable/melon_whale_btn"
+                            android:text="Melon Whale"
+                            android:layout_below="@+id/short_finned_pilot_whale_btn"
+                            android:layout_alignRight="@+id/short_finned_pilot_whale_btn"
+                            android:layout_alignEnd="@+id/short_finned_pilot_whale_btn" />
 
                         <ImageButton
-                            android:id="@+id/bVirgo"
+                            android:id="@+id/pigmy_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Virgo"
-                            android:layout_alignTop="@+id/bLeo"
-                            android:layout_alignLeft="@+id/bGemini"
-                            android:layout_alignStart="@+id/bGemini" />
+                            android:background="@drawable/pigmy_whale_btn"
+                            android:text="Pigmy Whale"
+                            android:layout_below="@+id/long_finned_pilot_whale_btn"
+                            android:layout_alignLeft="@+id/long_finned_pilot_whale_btn"
+                            android:layout_alignStart="@+id/long_finned_pilot_whale_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bLibra"
+                            android:id="@+id/sowerbys_beaker_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Libra"
-                            android:layout_below="@+id/bCancer"
-                            android:layout_alignRight="@+id/bCancer"
-                            android:layout_alignEnd="@+id/bCancer"/>
+                            android:background="@drawable/sowerbys_beaker_whale_btn"
+                            android:text="Sowerby's Beaker Whale"
+                            android:layout_alignTop="@+id/pigmy_whale_btn"
+                            android:layout_alignLeft="@+id/false_killer_whale_btn"
+                            android:layout_alignStart="@+id/false_killer_whale_btn" />
 
                         <ImageButton
-                            android:id="@+id/bScorpio"
+                            android:id="@+id/not_specified_whale_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Scorpio"
-                            android:layout_below="@+id/bLeo"
-                            android:layout_alignLeft="@+id/bLeo"
-                            android:layout_alignStart="@+id/bLeo" />
-
-                        <ImageButton
-                            android:id="@+id/bSagittarius"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Sagittarius"
-                            android:layout_below="@+id/bVirgo"
-                            android:layout_toLeftOf="@+id/bAries"
-                            android:layout_toStartOf="@+id/bAries" />
-
-                        <ImageButton
-                            android:id="@+id/bCapricorn"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Capricorn"
-                            android:layout_below="@+id/bLibra"
-                            android:layout_alignRight="@+id/bLibra"
-                            android:layout_alignEnd="@+id/bLibra"/>
+                            android:background="@drawable/not_specified_specie_btn"
+                            android:text="Not Specified Whale"
+                            android:layout_below="@+id/melon_whale_btn"
+                            android:layout_alignRight="@+id/melon_whale_btn"
+                            android:layout_alignEnd="@+id/melon_whale_btn"/>
 
                     </RelativeLayout>
 
@@ -351,124 +471,83 @@
                         android:layout_height="match_parent">
 
                         <ImageButton
-                            android:id="@+id/bAquarius1"
+                            android:id="@+id/rissos_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Aquarius"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="Risso's Dolphin"
+                            android:background="@drawable/rissos_dolphin_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bPisces1"
-                            android:layout_toRightOf="@+id/bAquarius1"
+                            android:id="@+id/bottlenose_dolphin_btn"
+                            android:layout_toRightOf="@+id/rissos_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Pisces"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="Bottlenose Dolphin"
+                            android:background="@drawable/bottlenose_dolphin_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bAries1"
-                            android:layout_toRightOf="@+id/bPisces1"
+                            android:id="@+id/rough_toothed_dolphin_btn"
+                            android:layout_toRightOf="@+id/bottlenose_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginRight="5dp"
-                            android:text="Aries"
-                            android:background="@drawable/specie_btn"/>
-
-
+                            android:text="Rough Toothed Dolphin"
+                            android:background="@drawable/rough_toothed_dolphin_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bTaurs1"
+                            android:id="@+id/atlantic_spotted_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Taurs"
-                            android:layout_below="@+id/bAquarius1"
-                            android:layout_alignLeft="@+id/bAquarius1"
-                            android:layout_alignStart="@+id/bAquarius1" />
+                            android:background="@drawable/atlantic_spotted_dolphin_btn"
+                            android:text="Atlantic Spotted Dolphin"
+                            android:layout_below="@+id/rissos_dolphin_btn"
+                            android:layout_alignLeft="@+id/rissos_dolphin_btn"
+                            android:layout_alignStart="@+id/rissos_dolphin_btn" />
 
                         <ImageButton
-                            android:id="@+id/bGemini1"
+                            android:id="@+id/striped_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Gemini"
-                            android:layout_alignTop="@+id/bTaurs1"
-                            android:layout_alignRight="@+id/bPisces1"
-                            android:layout_alignEnd="@+id/bPisces1" />
+                            android:background="@drawable/striped_dolphin_btn"
+                            android:text="Striped Dolphin"
+                            android:layout_alignTop="@+id/atlantic_spotted_dolphin_btn"
+                            android:layout_alignRight="@+id/bottlenose_dolphin_btn"
+                            android:layout_alignEnd="@+id/bottlenose_dolphin_btn" />
 
                         <ImageButton
-                            android:id="@+id/bCancer1"
+                            android:id="@+id/common_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Cancer"
-                            android:layout_below="@+id/bAries1"
-                            android:layout_alignRight="@+id/bAries1"
-                            android:layout_alignEnd="@+id/bAries1" />
+                            android:background="@drawable/common_dolphin_btn"
+                            android:text="Common Dolphin"
+                            android:layout_below="@+id/rough_toothed_dolphin_btn"
+                            android:layout_alignRight="@+id/rough_toothed_dolphin_btn"
+                            android:layout_alignEnd="@+id/rough_toothed_dolphin_btn" />
 
                         <ImageButton
-                            android:id="@+id/bLeo1"
+                            android:id="@+id/frasers_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Leo"
-                            android:layout_below="@+id/bTaurs1"
-                            android:layout_alignLeft="@+id/bTaurs1"
-                            android:layout_alignStart="@+id/bTaurs1"/>
+                            android:background="@drawable/frasers_dolphin_btn"
+                            android:text="Fraser's Dolphin"
+                            android:layout_below="@+id/atlantic_spotted_dolphin_btn"
+                            android:layout_alignLeft="@+id/atlantic_spotted_dolphin_btn"
+                            android:layout_alignStart="@+id/atlantic_spotted_dolphin_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bVirgo1"
+                            android:id="@+id/not_specified_dolphin_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Virgo"
-                            android:layout_alignTop="@+id/bLeo1"
-                            android:layout_alignLeft="@+id/bGemini1"
-                            android:layout_alignStart="@+id/bGemini1" />
-
-                        <ImageButton
-                            android:id="@+id/bLibra1"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Libra"
-                            android:layout_below="@+id/bCancer1"
-                            android:layout_alignRight="@+id/bCancer1"
-                            android:layout_alignEnd="@+id/bCancer1"/>
-
-                        <ImageButton
-                            android:id="@+id/bScorpio1"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Scorpio"
-                            android:layout_below="@+id/bLeo1"
-                            android:layout_alignLeft="@+id/bLeo1"
-                            android:layout_alignStart="@+id/bLeo1" />
-
-                        <ImageButton
-                            android:id="@+id/bSagittarius1"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Sagittarius"
-                            android:layout_below="@+id/bVirgo1"
-                            android:layout_toLeftOf="@+id/bAries1"
-                            android:layout_toStartOf="@+id/bAries1" />
-
-                        <ImageButton
-                            android:id="@+id/bCapricorn1"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:background="@drawable/specie_btn"
-                            android:text="Capricorn"
-                            android:layout_below="@+id/bLibra1"
-                            android:layout_alignRight="@+id/bLibra1"
-                            android:layout_alignEnd="@+id/bLibra1"/>
+                            android:background="@drawable/not_specified_specie_btn"
+                            android:text="Not Specified Dolphin"
+                            android:layout_alignTop="@+id/frasers_dolphin_btn"
+                            android:layout_alignLeft="@+id/striped_dolphin_btn"
+                            android:layout_alignStart="@+id/striped_dolphin_btn" />
 
                     </RelativeLayout>
+
 
                     <!-- Porpoises -->
                     <RelativeLayout
@@ -476,34 +555,26 @@
                         android:layout_height="match_parent">
 
                         <ImageButton
-                            android:id="@+id/bAquarius2"
+                            android:id="@+id/harbour_porpoise_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Aquarius"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="Harbour Porpoise"
+                            android:background="@drawable/harbour_porpoise_btn"/>
 
                         <ImageButton
-                            android:id="@+id/bPisces2"
-                            android:layout_toRightOf="@+id/bAquarius2"
+                            android:id="@+id/not_specified_porpoise_btn"
+                            android:layout_toRightOf="@+id/harbour_porpoise_btn"
                             android:layout_height="120dp"
                             android:layout_width="120dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Pisces"
-                            android:background="@drawable/specie_btn"/>
-
-                        <ImageButton
-                            android:id="@+id/bAries2"
-                            android:layout_toRightOf="@+id/bPisces2"
-                            android:layout_height="120dp"
-                            android:layout_width="120dp"
-                            android:layout_marginRight="5dp"
-                            android:text="Aries"
-                            android:background="@drawable/specie_btn"/>
+                            android:text="Not Specified Porpoise"
+                            android:background="@drawable/not_specified_specie_btn"/>
 
                     </RelativeLayout>
 
                 </LinearLayout>
+
             </HorizontalScrollView>
 
             <!-- Sightings Information title -->
