@@ -31,6 +31,10 @@
             android:name=".activities.ReportSightingActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".activities.ChooseRoleActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
