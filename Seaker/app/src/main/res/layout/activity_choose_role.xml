@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonCompanyManager"
         android:layout_width="275dp"
         android:layout_height="48dp"
         android:layout_marginStart="68dp"
@@ -48,10 +48,10 @@
         android:text="@string/companyManager"
         app:cornerRadius="@dimen/activity_horizontal_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonTeamMember" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonAdministrator"
         android:layout_width="275dp"
         android:layout_height="48dp"
         android:layout_marginStart="68dp"
@@ -60,10 +60,10 @@
         android:text="@string/administrator"
         app:cornerRadius="@dimen/activity_horizontal_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCompanyManager" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonTeamMember"
         android:layout_width="275dp"
         android:layout_height="48dp"
         android:layout_marginStart="68dp"
