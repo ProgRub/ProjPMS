@@ -10,28 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Seaker">
         <activity
-            android:name=".AdminHomeActivity"
+            android:name=".activities.AdminHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".CompanyManagerHomeActivity"
+            android:name=".activities.CompanyManagerHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".TeamMemberHomeActivity"
+            android:name=".activities.TeamMemberHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ChooseRoleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ReportSightingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ReportSightingActivity"
+            android:exported="false">
         </activity>
     </application>
 

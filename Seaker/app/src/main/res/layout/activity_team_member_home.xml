@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/team_member_main_screen"
-    tools:context=".TeamMemberHomeActivity">
+    tools:context=".activities.TeamMemberHomeActivity">
 
     <ImageButton
         android:id="@+id/buttonNewSightingReport"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.425"></ImageButton>
 
     <ImageButton
-        android:id="@+id/buttonReportedSightings"
+        android:id="@+id/buttonReportedSightingsTeamMember"
         android:layout_width="275dp"
         android:layout_height="70dp"
         android:background="@drawable/reported_sightings_btn"
@@ -63,10 +63,10 @@
         app:cornerRadius="@dimen/activity_horizontal_margin"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/buttonReportedSightings" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonReportedSightingsTeamMember" />
 
     <Button
-        android:id="@+id/buttonReportedSightings"
+        android:id="@+id/buttonReportedSightingsTeamMember"
         android:layout_width="275dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
