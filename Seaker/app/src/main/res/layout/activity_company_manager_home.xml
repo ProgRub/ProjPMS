@@ -8,10 +8,32 @@
     tools:context=".activities.CompanyManagerHomeActivity">
 
     <ImageButton
+        android:id="@+id/buttonAllMembersCM"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/all_teammember_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateReport"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/buttonLogoutCM"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/logout_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonReportedSightingsCM"></ImageButton>
+
+    <ImageButton
         android:id="@+id/buttonCreateReport"
         android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="208dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="244dp"
         android:background="@drawable/create_report_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -19,34 +41,15 @@
         app:layout_constraintTop_toTopOf="parent"></ImageButton>
 
     <ImageButton
-        android:id="@+id/buttonAllMembersCM"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/all_teammember_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreateReport"></ImageButton>
-
-    <ImageButton
         android:id="@+id/buttonReportedSightingsCM"
         android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/reported_sightings_btn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonAllMembersCM"></ImageButton>
-
-    <ImageButton
-        android:id="@+id/buttonLogoutCM"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/logout_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonReportedSightingsCM"></ImageButton>
 
     <!--<TextView
         android:id="@+id/textView9"

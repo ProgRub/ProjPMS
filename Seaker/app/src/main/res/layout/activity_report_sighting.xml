@@ -244,6 +244,7 @@
                             android:layout_height="120dp"
                             android:layout_marginLeft="5dp"
                             android:background="@drawable/blue_whale_btn"
+                            android:onClick="selectSpecie"
                             android:text="Blue Whale" />
 
                         <ImageButton
@@ -571,6 +572,16 @@
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:textStyle="bold"></TextView>
+
+            <LinearLayout
+                android:id="@+id/sightingsInformations"
+                android:layout_width="380dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            </LinearLayout>
+
+
+
 
             <!-- Comment title -->
             <TextView

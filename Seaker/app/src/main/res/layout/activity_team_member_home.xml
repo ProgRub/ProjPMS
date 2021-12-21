@@ -10,29 +10,30 @@
     <ImageButton
         android:id="@+id/buttonNewSightingReport"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:background="@drawable/new_sighting_report_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387"></ImageButton>
+        app:layout_constraintVertical_bias="0.416"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonReportedSightingsTeamMember"
         android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/reported_sightings_btn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonNewSightingReport"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonLogoutTeamMember"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/logout_btn"
         app:layout_constraintEnd_toEndOf="parent"
