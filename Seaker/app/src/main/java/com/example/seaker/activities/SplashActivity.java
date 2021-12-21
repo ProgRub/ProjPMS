@@ -1,12 +1,12 @@
-package com.example.seaker;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.seaker.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-public class SplashActivity extends AppCompatActivity {
+import com.example.seaker.R;
+
+public class SplashActivity extends BaseActivity {
     private Handler handler = new Handler();
 
     private static int TIME_OUT = 2*1000; //Time to launch the another activity
