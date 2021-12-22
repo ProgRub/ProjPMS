@@ -1,4 +1,4 @@
-package com.example.seaker.activities;
+package com.example.seaker.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,15 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.seaker.R;
 
-public class ReportSightingActivity extends BaseActivity {
+public class ReportSightingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_sighting);
-        SetButtonOnClickNextActivity(R.id.buttonBack,TeamMemberHomeActivity.class);
+//        SetButtonOnClickNextActivity(R.id.buttonBack,TeamMemberHomeActivity.class);
     }
 
     public void selectSpecie(View view) {

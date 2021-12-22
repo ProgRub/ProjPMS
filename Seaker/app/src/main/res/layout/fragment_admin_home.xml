@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/admin_main_screen"
+    tools:context=".fragments.AdminHomeFragment">
+
+    <ImageButton
+        android:id="@+id/buttonAddTeamMember"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:background="@drawable/add_teammember_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.34"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/buttonAllMembersAdmin"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/all_teammember_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddTeamMember"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/buttonReportedSightingsAdmin"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/reported_sightings_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAllMembersAdmin"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/buttonLogoutAdmin"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/logout_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonReportedSightingsAdmin"></ImageButton>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
