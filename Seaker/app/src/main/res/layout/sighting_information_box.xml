@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/sightingInformation"
-        android:layout_width="400dp"
-        android:layout_height="720dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/edit_text_background"
+        tools:ignore="MissingConstraints">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="370dp"
+            android:layout_height="593dp">
 
             <!-- Title - Specie Name + "Sighting" -->
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:maxLines="1"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="246dp"
-                android:layout_marginBottom="686dp"
                 android:text="SPECIE Sighting"
                 android:textColor="@color/black"
                 android:textSize="18dp"
@@ -44,15 +37,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
+
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="35dp"
-                android:layout_marginEnd="227dp"
-                android:layout_marginBottom="666dp"
                 android:text="Number of individuals: *"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp">
@@ -62,10 +50,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
+
                 android:layout_marginStart="69dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="55dp"
@@ -77,8 +62,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="1"
                     android:gravity="center"
+                    android:text="1"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -86,8 +71,8 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="2"
                     android:textSize="14dp" />
 
@@ -96,8 +81,8 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="3" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -105,8 +90,8 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="4"
                     android:textSize="14dp" />
 
@@ -115,8 +100,8 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="5"
                     android:textSize="14dp" />
 
@@ -125,10 +110,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
+
                 android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="96dp"
@@ -140,8 +122,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="6-10"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -150,8 +132,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="10-20"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -160,8 +142,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="25-50"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -170,8 +152,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="50-100"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -180,8 +162,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="+100"
                     android:gravity="center"
+                    android:text="+100"
                     android:textSize="14dp" />
 
             </LinearLayout>
@@ -190,12 +172,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="145dp"
-                android:layout_marginEnd="246dp"
                 android:text="Number of offspring:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp">
@@ -217,8 +196,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="0"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -227,8 +206,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="1"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -237,8 +216,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="2"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -247,8 +226,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="3"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -257,8 +236,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="4"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -267,8 +246,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="5"
                     android:gravity="center"
+                    android:text="5"
                     android:textSize="14dp" />
 
             </LinearLayout>
@@ -288,8 +267,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="6-10"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -298,8 +277,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="10-20"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -308,8 +287,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="25-50"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -318,8 +297,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="50-100"
-                    android:gravity="center"
                     android:textSize="14dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -328,8 +307,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="+100"
                     android:gravity="center"
+                    android:text="+100"
                     android:textSize="14dp" />
 
             </LinearLayout>
@@ -338,12 +317,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="250dp"
-                android:layout_marginEnd="277dp"
                 android:text="Behaviour Type:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp"></TextView>
@@ -364,8 +340,8 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="Traveling"
                     android:gravity="center"
+                    android:text="Traveling"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -375,8 +351,8 @@
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="Eating"
                     android:gravity="center"
+                    android:text="Eating"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -386,8 +362,8 @@
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="Resting"
                     android:gravity="center"
+                    android:text="Resting"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -397,9 +373,9 @@
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="Social Interaction"
                     android:textAllCaps="false"
-                    android:gravity="center"
                     android:textSize="12dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -407,8 +383,8 @@
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="Other"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
@@ -420,12 +396,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="335dp"
-                android:layout_marginEnd="259dp"
                 android:text="Reaction to vessel:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp"></TextView>
@@ -445,8 +418,8 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="None"
                     android:gravity="center"
+                    android:text="None"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -455,8 +428,8 @@
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="Approach"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
@@ -466,8 +439,8 @@
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="Avoidance"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
@@ -477,8 +450,8 @@
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="Other"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
@@ -489,26 +462,21 @@
             <TextView
                 android:layout_width="177dp"
                 android:layout_height="31dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="425dp"
-                android:layout_marginEnd="200dp"
                 android:text="Beaufort Sea state:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp"></TextView>
 
             <SeekBar
                 android:id="@+id/seekBar1"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="10dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="455dp"
-                android:layout_marginEnd="0dp"
                 android:max="12"
+                android:layout_centerHorizontal="true"
                 android:min="0"
                 android:progressDrawable="@drawable/seek_bar_progress" />
 
@@ -516,26 +484,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="31dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="465dp"
-                android:text="0                                                  6                                              12"
+                android:text="0                                     6                                  12"
                 android:textColor="@color/black"
+                android:layout_centerHorizontal="true"
                 android:textSize="14dp"></TextView>
 
             <!-- Trust Level: -->
             <TextView
                 android:layout_width="177dp"
                 android:layout_height="31dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="495dp"
-                android:layout_marginEnd="200dp"
                 android:layout_marginBottom="194dp"
                 android:text="Trust level:"
                 android:textColor="@color/dark_blue"
@@ -556,8 +518,8 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="Low"
                     android:gravity="center"
+                    android:text="Low"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -566,8 +528,8 @@
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/sighting_info_btn"
+                    android:gravity="center"
                     android:text="Middle"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
@@ -578,8 +540,8 @@
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/sighting_info_btn"
-                    android:text="High"
                     android:gravity="center"
+                    android:text="High"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 

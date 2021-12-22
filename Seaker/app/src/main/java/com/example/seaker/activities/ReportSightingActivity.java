@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,12 +25,10 @@ public class ReportSightingActivity extends BaseActivity {
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.sighting_information_box, null);
 
-        if(view.getId() == R.id.blue_whale_btn) {
-            TextView textView = (TextView) v.findViewById(R.id.title);
-            textView.setText("Blue Whale Sighting");
-        }
+        TextView textView = (TextView) v.findViewById(R.id.title);
+        textView.setText(String.valueOf(view.getTag()) + " Sighting");
 
-        LinearLayout insertPoint = (LinearLayout) findViewById(R.id.sightingsInformations);
+        HorizontalScrollView insertPoint = (HorizontalScrollView) findViewById(R.id.sightingsInformations);
         insertPoint.addView(v);
 
     }
