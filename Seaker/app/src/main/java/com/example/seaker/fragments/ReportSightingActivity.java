@@ -2,6 +2,7 @@ package com.example.seaker.fragments;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -41,7 +43,7 @@ public class ReportSightingActivity extends AppCompatActivity {
 
             view.setTag("Selected "+String.valueOf(view.getTag()));
 
-            HorizontalScrollView insertPoint = (HorizontalScrollView) findViewById(R.id.sightingsInformations);
+            LinearLayout insertPoint = (LinearLayout) findViewById(R.id.sightingsInformations);
             insertPoint.addView(v);
         }
     }
@@ -50,7 +52,7 @@ public class ReportSightingActivity extends AppCompatActivity {
 
         view.setTag(String.valueOf(view.getTag()).replace("Selected ", ""));
 
-        HorizontalScrollView insertPoint = (HorizontalScrollView) findViewById(R.id.sightingsInformations);
+        LinearLayout insertPoint = (LinearLayout) findViewById(R.id.sightingsInformations);
         insertPoint.removeViewAt(0); //apaga o primeiro, pq ainda n consegui fazer com q adicione mais do q 1
 
         ImageButton btn1 = (ImageButton) findViewById(view.getId());
