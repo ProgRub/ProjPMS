@@ -4,18 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.seaker.R;
 import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +61,40 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout insertPoint = (LinearLayout) findViewById(R.id.sightingsInformations);
             insertPoint.addView(v);
         }
+    }
+
+
+    public void datePicking(View view) {
+        EditText editText = (EditText) findViewById(R.id.pickDate);
+        final Calendar calendar = Calendar.getInstance();
+        int yy = calendar.get(Calendar.YEAR);
+        int mm = calendar.get(Calendar.MONTH);
+        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1)
+                        + "/" + String.valueOf(year);
+                editText.setText(date);
+            }
+        }, yy, mm, dd);
+        datePicker.show();
+    }
+
+    public void timePicking(View view) {
+        EditText editText = (EditText) findViewById(R.id.pickTime);
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                editText.setText( selectedHour + ":" + selectedMinute);
+            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
     }
 
     private void setViewID(View view, View v) {

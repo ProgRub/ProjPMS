@@ -150,8 +150,15 @@
                     android:layout_height="60dp"
                     android:background="@drawable/input_field"
                     android:ems="10"
+                    android:textSize="14dp"
                     android:inputType="date"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:onClick="datePicking"/>
 
                 <EditText
                     android:id="@+id/pickTime"
@@ -161,7 +168,14 @@
                     android:background="@drawable/input_field"
                     android:ems="10"
                     android:inputType="time"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:textSize="14dp"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:onClick="timePicking"/>
 
             </LinearLayout>
 
@@ -617,6 +631,7 @@
                 android:textSize="18dp"
                 android:textStyle="bold"></TextView>
 
+            <!-- Sighting Information Boxes -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -631,9 +646,6 @@
                 </LinearLayout>
 
             </HorizontalScrollView>
-
-
-
 
             <!-- Comment title -->
             <TextView
