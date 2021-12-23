@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="blue_whale_sighting" />
+    <item type="id" name="fin_whale_sighting" />
+    <item type="id" name="north_atlantic_right_whale_sighting" />
+    <item type="id" name="sowerbys_beaker_whale_sighting" />
+    <item type="id" name="blainville_whale_sighting" />
+    <item type="id" name="gervais_whale_sighting" />
+    <item type="id" name="sei_whale_sighting" />
+    <item type="id" name="brides_whale_sighting" />
+    <item type="id" name="minke_whale_sighting" />
+    <item type="id" name="trues_whale_sighting" />
+    <item type="id" name="orca_whale_sighting" />
+    <item type="id" name="short_finned_pilot_whale_sighting" />
+    <item type="id" name="humpback_whale_sighting" />
+    <item type="id" name="sperm_whale_sighting" />
+    <item type="id" name="northern_whale_sighting" />
+    <item type="id" name="long_finned_pilot_whale_sighting" />
+    <item type="id" name="false_killer_whale_sighting" />
+    <item type="id" name="melon_whale_sighting" />
+    <item type="id" name="cuviers_whale_sighting" />
+    <item type="id" name="pigmy_whale_sighting" />
+    <item type="id" name="not_specified_whale_sighting" />
+    <item type="id" name="bottlenose_dolphin_sighting" />
+    <item type="id" name="rissos_dolphin_sighting" />
+    <item type="id" name="rough_toothed_dolphin_sighting" />
+    <item type="id" name="atlantic_spotted_dolphin_sighting" />
+    <item type="id" name="striped_dolphin_sighting" />
+    <item type="id" name="common_dolphin_sighting" />
+    <item type="id" name="frasers_dolphin_sighting" />
+    <item type="id" name="not_specified_dolphin_sighting" />
+    <item type="id" name="harbour_porpoise_sighting" />
+    <item type="id" name="not_specified_porpoise_sighting" />
+
+</resources>

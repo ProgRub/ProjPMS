@@ -90,14 +90,17 @@
 
                 <!-- Botão take a photo -->
                 <ImageButton
-                    android:layout_width="89dp"
-                    android:layout_height="110dp"
+                    android:id="@+id/take_photo_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
                     android:background="@drawable/take_a_photo_btn"
                     tools:ignore="SpeakableTextPresentCheck"></ImageButton>
+
                 <!-- Botão upload a photo -->
                 <ImageButton
-                    android:layout_width="89dp"
-                    android:layout_height="110dp"
+                    android:id="@+id/upload_photo_btn"
+                    android:layout_width="95dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="50dp"
                     android:background="@drawable/upload_a_photo_btn"
                     tools:ignore="SpeakableTextPresentCheck"></ImageButton>
