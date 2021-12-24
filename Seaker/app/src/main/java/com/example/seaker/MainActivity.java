@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         supportFragmentManager = getSupportFragmentManager();
 
         sightingsIDs = new ArrayList<Integer>();
-
+        //switchFragment(new SplashFragment());
         switchFragment(new BlankFragment());
         name = (EditText)findViewById(R.id.editText2);
         button = (Button)findViewById(R.id.button);
