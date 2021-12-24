@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Button;
+import android.os.StrictMode;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -26,6 +29,25 @@ import android.widget.ToggleButton;
 import com.example.seaker.R;
 import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
+import com.example.seaker.fragments.BlankFragment;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+
+import com.example.seaker.R;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -38,15 +60,69 @@ public class MainActivity extends AppCompatActivity {
     List<Integer> sightingsIDs;
 
     private static FragmentManager supportFragmentManager;
+    EditText name;
+    Button button;
+    String TempName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         supportFragmentManager = getSupportFragmentManager();
-        switchFragment(new SplashFragment());
 
         sightingsIDs = new ArrayList<Integer>();
 
+        switchFragment(new BlankFragment());
+        name = (EditText)findViewById(R.id.editText2);
+        button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GetData();
+                inserirtipoanimal(TempName);
+            }
+        });
+    }
+
+    public void GetData(){
+
+        TempName = name.getText().toString();
+
+    }
+
+    public void inserirtipoanimal(String name) {
+        Log.d("myTag", "This is my message");
+        String login_url = "http://192.168.1.6/seaker/inserirtipoanimal.php";
+        try {
+            URL url = new URL(login_url);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("myTag", "*********************************");
     }
 
     public static void switchFragment(BaseFragment fragment){
