@@ -22,10 +22,10 @@
                 android:id="@+id/title"
                 android:layout_width="300dp"
                 android:layout_height="30dp"
-                android:maxLines="1"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:maxLines="1"
                 android:text="SPECIE Sighting"
                 android:textColor="@color/black"
                 android:textSize="18dp"
@@ -38,7 +38,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="35dp"
@@ -49,132 +48,172 @@
             </TextView>
 
             <LinearLayout
+                android:id="@+id/first_row_nr_individuals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginStart="69dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="55dp"
                 android:layout_marginEnd="53dp"
                 android:layout_marginBottom="625dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_1"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="1"
+                    android:textOff="1"
+                    android:textOn="1"
                     android:textSize="14dp"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_2"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="2"
+                    android:textOff="2"
+                    android:textOn="2"
                     android:textSize="14dp"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_3"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="3"/>
+                    android:textOff="3"
+                    android:textOn="3"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_4"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="4"
+                    android:textOff="4"
+                    android:textOn="4"
                     android:textSize="14dp"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_5"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="5"
+                    android:textOff="5"
+                    android:textOn="5"
                     android:textSize="14dp"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/second_row_nr_individuals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="96dp"
                 android:layout_marginEnd="23dp"
                 android:layout_marginBottom="584dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_6_10"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="6-10"
+                    android:textOff="6-10"
+                    android:textOn="6-10"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_10_20"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="10-20"
+                    android:textOff="10-20"
+                    android:textOn="10-20"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_25_50"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="25-50"
+                    android:textOff="25-50"
+                    android:textOn="25-50"
                     android:textSize="14dp"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_50_100"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="50-100"
+                    android:textOff="50-100"
+                    android:textOn="50-100"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:id="@+id/nr_individuals_100"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="+100"
+                    android:textOff="+100"
+                    android:textOn="+100"
                     android:textSize="14dp" />
 
             </LinearLayout>
@@ -193,6 +232,7 @@
             </TextView>
 
             <LinearLayout
+                android:id="@+id/first_row_nr_offspring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -202,68 +242,99 @@
                 android:layout_marginTop="165dp"
                 android:layout_marginEnd="28dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_0"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="0"
+                    android:textOff="0"
+                    android:textOn="0"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_1"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="1"
+                    android:textOff="1"
+                    android:textOn="1"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_2"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="2"
+                    android:textOff="2"
+                    android:textOn="2"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_3"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="3"
+                    android:textOff="3"
+                    android:textOn="3"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_4"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="4"
+                    android:textOff="4"
+                    android:textOn="4"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_5"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="5"
+                    android:textOff="5"
+                    android:textOn="5"
                     android:textSize="14dp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/second_row_nr_offspring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -273,53 +344,78 @@
                 android:layout_marginTop="206dp"
                 android:layout_marginEnd="23dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_6_10"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="6-10"
+                    android:textOff="6-10"
+                    android:textOn="6-10"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_10_20"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="10-20"
+                    android:textOff="10-20"
+                    android:textOn="10-20"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_25_50"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="25-50"
+                    android:textOff="25-50"
+                    android:textOn="25-50"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_50_100"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="50-100"
+                    android:textOff="50-100"
+                    android:textOn="50-100"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
+                    android:id="@+id/nr_offspring_100"
                     android:layout_width="63dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/sighting_info_btn_selector"
+                    android:textColor="@drawable/sighting_text_selector"
+                    android:elevation="4dp"
                     android:gravity="center"
-                    android:text="+100"
+                    android:textOff="+100"
+                    android:textOn="+100"
                     android:textSize="14dp" />
 
             </LinearLayout>
@@ -346,57 +442,67 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="5dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="99dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Traveling"
+                    android:textOff="Traveling"
+                    android:textOn="Traveling"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Eating"
+                    android:textOff="Eating"
+                    android:textOn="Eating"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="95dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Resting"
+                    android:textOff="Resting"
+                    android:textOn="Resting"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="130dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Social Interaction"
+                    android:textOff="Social Interaction"
+                    android:textOn="Social Interaction"
                     android:textAllCaps="false"
                     android:textSize="12dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Other"
+                    android:textOff="Other"
+                    android:textOn="Other"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -424,46 +530,54 @@
                 android:layout_marginTop="365dp"
                 android:layout_marginRight="5dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="None"
+                    android:textOff="None"
+                    android:textOn="None"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Approach"
+                    android:textOff="Approach"
+                    android:textOn="Approach"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Avoidance"
+                    android:textOff="Avoidance"
+                    android:textOn="Avoidance"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Other"
+                    android:textOff="Other"
+                    android:textOn="Other"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
@@ -525,35 +639,41 @@
                 android:layout_marginTop="525dp"
                 android:layout_marginRight="5dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Low"
+                    android:textOff="Low"
+                    android:textOn="Low"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="Middle"
+                    android:textOff="Middle"
+                    android:textOn="Middle"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sighting_info_btn"
+                    android:background="@drawable/single_btn_sighting_info_selector"
+                    android:textColor="@drawable/sighting_text_selector"
                     android:gravity="center"
-                    android:text="High"
+                    android:textOff="High"
+                    android:textOn="High"
                     android:textAllCaps="false"
                     android:textSize="14dp" />
 

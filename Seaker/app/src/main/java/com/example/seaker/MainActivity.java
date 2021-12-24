@@ -9,22 +9,33 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import com.example.seaker.R;
 import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    //APAGAR ISTO -> JA N É NECESSARIO
+    List<Integer> sightingsIDs;
 
     private static FragmentManager supportFragmentManager;
     @Override
@@ -33,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         supportFragmentManager = getSupportFragmentManager();
         switchFragment(new SplashFragment());
+
+        sightingsIDs = new ArrayList<Integer>();
+
     }
 
     public static void switchFragment(BaseFragment fragment){
@@ -52,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
             View v = vi.inflate(R.layout.sighting_information_box, null);
 
             setViewID(view, v);
+
+            sightingsIDs.add(v.getId());
+
+            buttonListenersSightingInfo(v);
 
             TextView textView = (TextView) v.findViewById(R.id.title);
             textView.setText(String.valueOf(view.getTag()) + " Sighting");
@@ -195,178 +213,256 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //public void selectOption(View view){
-      //  ImageButton btn = (ImageButton) findViewById(view.getId());
-      //  Drawable drawable = getResources().getDrawable(R.drawable.selected_sighting_btn);
-      //  btn.setBackgroundDrawable(drawable);
-    //}
+    //CONTEM INFORMAÇÃO SOBRE OS SIGHTINGS:
+    ArrayList<SightingInformation> sightingInformations = new ArrayList<SightingInformation>();
+
+
+    ArrayList<ToggleButton> auxToggle;
+
+    private void buttonListenersSightingInfo(View v){
+        SightingInformation sighting = new SightingInformation(v.getId());
+        auxToggle = new ArrayList<ToggleButton>();
+
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_1));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_2));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_3));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_4));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_5));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_6_10));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_10_20));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_25_50));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_50_100));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_100));
+
+        for(ToggleButton tog : auxToggle){
+            sighting.add_NrIndividuals(tog);
+        }
+
+        auxToggle = new ArrayList<ToggleButton>();
+
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_0));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_1));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_2));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_3));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_4));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_5));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_6_10));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_10_20));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_25_50));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_50_100));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_100));
+
+        for(ToggleButton tog : auxToggle){
+            sighting.add_NrOffspring(tog);
+        }
+
+        sightingInformations.add(sighting);
+
+    }
+
+
 
     public void unselectSpecie(View view) {
 
         view.setTag(String.valueOf(view.getTag()).replace("Selected ", ""));
 
         LinearLayout insertPoint = (LinearLayout) findViewById(R.id.sightingsInformations);
-        //insertPoint.removeViewAt(0); //apaga o primeiro, pq ainda n consegui fazer com q adicione mais do q 1
 
         ImageButton btn1 = (ImageButton) findViewById(view.getId());
 
         Drawable drawable;
+
+
+        for(SightingInformation sighting : sightingInformations){
+            if(sighting.getSightingBoxID() == view.getId()) sightingInformations.remove(sighting);
+        }
 
         switch (view.getId()) {
             case R.id.blue_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.blue_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.blue_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.blue_whale_sighting));
                 break;
             case R.id.fin_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.fin_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.fin_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.fin_whale_sighting));
                 break;
             case R.id.north_atlantic_right_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.north_atlantic_right_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.north_atlantic_right_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.north_atlantic_right_whale_sighting));
                 break;
             case R.id.sowerbys_beaker_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.sowerbys_beaker_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.sowerbys_beaker_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.sowerbys_beaker_whale_sighting));
                 break;
             case R.id.blainville_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.blainville_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.blainville_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.blainville_whale_sighting));
                 break;
             case R.id.gervais_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.gervais_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.gervais_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.gervais_whale_sighting));
                 break;
             case R.id.sei_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.sei_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.sei_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.sei_whale_sighting));
                 break;
             case R.id.brides_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.brides_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.brides_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.brides_whale_sighting));
                 break;
             case R.id.minke_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.minke_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.minke_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.minke_whale_sighting));
                 break;
             case R.id.trues_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.trues_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.trues_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.trues_whale_sighting));
                 break;
             case R.id.orca_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.orca_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.orca_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.orca_whale_sighting));
                 break;
             case R.id.short_finned_pilot_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.short_finned_pilot_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.short_finned_pilot_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.short_finned_pilot_whale_sighting));
                 break;
             case R.id.humpback_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.humpback_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.humpback_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.humpback_whale_sighting));
                 break;
             case R.id.sperm_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.sperm_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.sperm_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.sperm_whale_sighting));
                 break;
             case R.id.northern_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.northern_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.northern_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.northern_whale_sighting));
                 break;
             case R.id.long_finned_pilot_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.long_finned_pilot_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.long_finned_pilot_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.long_finned_pilot_whale_sighting));
                 break;
             case R.id.false_killer_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.false_killer_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.false_killer_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.false_killer_whale_sighting));
                 break;
             case R.id.melon_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.melon_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.melon_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.melon_whale_sighting));
                 break;
             case R.id.cuviers_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.cuviers_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.cuviers_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.cuviers_whale_sighting));
                 break;
             case R.id.pigmy_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.pigmy_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.pigmy_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.pigmy_whale_sighting));
                 break;
             case R.id.not_specified_whale_btn:
                 drawable = getResources().getDrawable(R.drawable.not_specified_whale_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.not_specified_whale_sighting));
+                sightingsIDs.remove(new Integer(R.id.not_specified_whale_sighting));
                 break;
             case R.id.bottlenose_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.bottlenose_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.bottlenose_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.bottlenose_dolphin_sighting));
                 break;
             case R.id.rissos_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.rissos_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.rissos_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.rissos_dolphin_sighting));
                 break;
             case R.id.rough_toothed_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.rough_toothed_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.rough_toothed_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.rough_toothed_dolphin_sighting));
                 break;
             case R.id.atlantic_spotted_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.atlantic_spotted_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.atlantic_spotted_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.atlantic_spotted_dolphin_sighting));
                 break;
             case R.id.striped_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.striped_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.striped_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.striped_dolphin_sighting));
                 break;
             case R.id.common_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.common_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.common_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.common_dolphin_sighting));
                 break;
             case R.id.frasers_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.frasers_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.frasers_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.frasers_dolphin_sighting));
                 break;
             case R.id.not_specified_dolphin_btn:
                 drawable = getResources().getDrawable(R.drawable.not_specified_dolphin_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.not_specified_dolphin_sighting));
+                sightingsIDs.remove(new Integer(R.id.not_specified_dolphin_sighting));
                 break;
             case R.id.harbour_porpoise_btn:
                 drawable = getResources().getDrawable(R.drawable.harbour_porpoise_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.harbour_porpoise_sighting));
+                sightingsIDs.remove(new Integer(R.id.harbour_porpoise_sighting));
                 break;
             case R.id.not_specified_porpoise_btn:_btn:
             drawable = getResources().getDrawable(R.drawable.not_specified_porpoise_btn);
                 btn1.setBackgroundDrawable(drawable);
                 insertPoint.removeView(findViewById(R.id.not_specified_porpoise_sighting));
+                sightingsIDs.remove(new Integer(R.id.not_specified_porpoise_sighting));
                 break;
         }
     }
@@ -376,7 +472,6 @@ public class MainActivity extends AppCompatActivity {
         ImageButton btn1 = (ImageButton) findViewById(view.getId());
 
         Drawable drawable;
-
         switch (view.getId()){
             case R.id.blue_whale_btn:
                 drawable = getResources().getDrawable( R.drawable.selected_blue_whale_btn );
@@ -504,5 +599,4 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 }
