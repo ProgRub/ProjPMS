@@ -29,7 +29,6 @@ import android.widget.ToggleButton;
 import com.example.seaker.R;
 import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
-import com.example.seaker.fragments.BlankFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static FragmentManager supportFragmentManager;
-    EditText name;
-    Button button;
-    String TempName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,59 +64,10 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         supportFragmentManager = getSupportFragmentManager();
-
-        switchFragment(new SplashFragment());
-        //switchFragment(new BlankFragment());
-        name = (EditText)findViewById(R.id.editText2);
-        button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GetData();
-                inserirtipoanimal(TempName);
-            }
-        });
+        switchFragment(new SplashFragment())
     }
 
-    public void GetData(){
 
-        TempName = name.getText().toString();
-
-    }
-
-    public void inserirtipoanimal(String name) {
-        Log.d("myTag", "This is my message");
-        String login_url = "http://192.168.1.6/seaker/inserirtipoanimal.php";
-        try {
-            URL url = new URL(login_url);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8");
-            bufferedWriter.write(post_data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-            String result = "";
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d("myTag", "*********************************");
-    }
 
     public static void switchFragment(BaseFragment fragment){
         supportFragmentManager.beginTransaction()
