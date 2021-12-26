@@ -3,6 +3,9 @@ package com.example.seaker;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -29,6 +32,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    View thumbView;
 
     private static FragmentManager supportFragmentManager;
     @Override
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         supportFragmentManager = getSupportFragmentManager();
         switchFragment(new SplashFragment());
+
     }
 
     public void testingBtn(View view){
@@ -218,6 +223,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public Drawable getThumb(int progress) {
+        ((TextView) thumbView.findViewById(R.id.tvProgress)).setText(progress + "");
+
+        thumbView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        Bitmap bitmap = Bitmap.createBitmap(thumbView.getMeasuredWidth(), thumbView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        thumbView.layout(0, 0, thumbView.getMeasuredWidth(), thumbView.getMeasuredHeight());
+        thumbView.draw(canvas);
+
+        return new BitmapDrawable(getResources(), bitmap);
+    }
+
     //CONTEM INFORMAÇÃO SOBRE OS SIGHTINGS:
     ArrayList<SightingInformation> sightingInformations = new ArrayList<SightingInformation>();
     ArrayList<ToggleButton> auxToggle;
@@ -278,8 +295,25 @@ public class MainActivity extends AppCompatActivity {
 
         sighting.setReactions_to_vessel(auxToggle);
 
-        sighting.setBeaufortSeaState((SeekBar) v.findViewById(R.id.beaufort_slider));
+        ((SeekBar) v.findViewById(R.id.beaufort_slider)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.setThumb(getThumb(progress));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
 
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        thumbView = vi.inflate(R.layout.layout_seekbar_thumb, null);
+
+        ((TextView) thumbView.findViewById(R.id.tvProgress)).setText("6");
+
+        ((SeekBar) v.findViewById(R.id.beaufort_slider)).setThumb(getThumb(6));
+
+        sighting.setBeaufortSeaState(((SeekBar) v.findViewById(R.id.beaufort_slider)));
 
         auxToggle = new ArrayList<ToggleButton>();
 

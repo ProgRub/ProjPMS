@@ -115,6 +115,8 @@ public class SightingInformation {
         return "Not specified";
     }
 
+
+
     CompoundButton.OnCheckedChangeListener trust_level_listener = new CompoundButton.OnCheckedChangeListener() {
 
         @Override
