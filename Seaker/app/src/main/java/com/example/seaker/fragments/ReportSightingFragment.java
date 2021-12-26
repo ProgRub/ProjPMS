@@ -7,11 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
 public class ReportSightingFragment extends BaseFragment {
+
+    EditText sightingDate;
+    EditText sightingTime;
 
     public ReportSightingFragment() {
         // Required empty public constructor
@@ -28,6 +32,9 @@ public class ReportSightingFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report_sighting, container, false);
         SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
+
+
+
         return view;
     }
 }

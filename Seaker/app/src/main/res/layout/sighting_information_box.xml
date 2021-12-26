@@ -598,13 +598,14 @@
                 android:id="@+id/seekBar1"
                 android:layout_width="300dp"
                 android:layout_height="10dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="455dp"
                 android:max="12"
-                android:layout_centerHorizontal="true"
                 android:min="0"
-                android:thumbTint="@color/purple"
-                android:progressDrawable="@drawable/seek_bar_progress" />
+                android:progress="6"
+                android:progressDrawable="@drawable/seek_bar_progress"
+                android:thumbTint="@color/purple" />
 
 
             <TextView
@@ -640,6 +641,7 @@
                 android:layout_marginRight="5dp">
 
                 <ToggleButton
+                    android:id="@+id/low_trust_level"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -652,6 +654,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/middle_trust_level"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -665,6 +668,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/high_trust_level"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
