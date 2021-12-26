@@ -28,7 +28,6 @@ import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
