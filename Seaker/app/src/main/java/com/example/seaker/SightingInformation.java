@@ -1,7 +1,13 @@
 package com.example.seaker;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.example.seaker.fragments.ReportSightingFragment;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ public class SightingInformation {
     private ArrayList<ToggleButton> nr_offspring;
     private ArrayList<ToggleButton> behavior_type;
     private ArrayList<ToggleButton> reactions_to_vessel;
-    private int beaufortSeaState;
+    private SeekBar beaufortSeaState;
     private ArrayList<ToggleButton> trustLevel;
 
     public SightingInformation(int sightingBoxID){
@@ -25,29 +31,49 @@ public class SightingInformation {
         trustLevel = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "SightingInformation {" +
+                "sightingBoxID=" + sightingBoxID +
+                ", nr_individuals=" + getNumberOfIndividualsString() +
+                ", nr_offspring=" + getNumberOfOffspringString() +
+                ", behavior_type=" + getBehaviorTypesString() +
+                ", reactions_to_vessel=" + getReactionToVesselString() +
+                ", beaufortSeaState=" + getBeaufortSeaState() +
+                ", trustLevel=" + getTrustLevelString() +'}';
+    }
+
     public int getSightingBoxID() {
         return this.sightingBoxID;
     }
 
     public int getBeaufortSeaState() {
-        return beaufortSeaState;
+        return beaufortSeaState.getProgress();
     }
 
-    public void setBeaufortSeaState(int value) {
-        this.beaufortSeaState = value;
+    public void setBeaufortSeaState(SeekBar beaufortSeaState) {
+        this.beaufortSeaState = beaufortSeaState;
     }
 
-    public void add_NrIndividuals(ToggleButton nr_individual) {
+    public void setBehavior_type(ArrayList<ToggleButton> behavior_type) {
+        this.behavior_type = behavior_type;
+    }
+
+    public void setReactions_to_vessel(ArrayList<ToggleButton> reactions_to_vessel) {
+        this.reactions_to_vessel = reactions_to_vessel;
+    }
+
+    public void addNrindividuals(ToggleButton nr_individual) {
         nr_individual.setOnCheckedChangeListener(nr_individuals_listener);
         this.nr_individuals.add(nr_individual);
     }
 
-    public void add_NrOffspring(ToggleButton nr_offspring) {
+    public void addNroffspring(ToggleButton nr_offspring) {
         nr_offspring.setOnCheckedChangeListener(nr_offspring_listener);
         this.nr_offspring.add(nr_offspring);
     }
 
-    public void add_TrustLevel(ToggleButton trust_level) {
+    public void addTrustLevel(ToggleButton trust_level) {
         trust_level.setOnCheckedChangeListener(trust_level_listener);
         this.trustLevel.add(trust_level);
     }
@@ -88,12 +114,6 @@ public class SightingInformation {
         }
         return "Not specified";
     }
-
-
-
-
-
-
 
     CompoundButton.OnCheckedChangeListener trust_level_listener = new CompoundButton.OnCheckedChangeListener() {
 

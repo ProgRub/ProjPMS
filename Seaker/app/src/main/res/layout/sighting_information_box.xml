@@ -443,6 +443,7 @@
                 android:layout_marginRight="5dp">
 
                 <ToggleButton
+                    android:id="@+id/traveling_behavior"
                     android:layout_width="99dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -455,6 +456,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/eating_behavior"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -468,6 +470,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/resting_behavior"
                     android:layout_width="95dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -481,6 +484,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/social_int_behavior"
                     android:layout_width="130dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -494,6 +498,7 @@
                     android:textSize="12dp" />
 
                 <ToggleButton
+                    android:id="@+id/other_behavior"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -531,6 +536,7 @@
                 android:layout_marginRight="5dp">
 
                 <ToggleButton
+                    android:id="@+id/none_reaction"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -543,6 +549,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/approach_reaction"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -556,6 +563,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/avoidance_reaction"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -569,6 +577,7 @@
                     android:textSize="14dp" />
 
                 <ToggleButton
+                    android:id="@+id/other_reaction"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
@@ -595,7 +604,7 @@
                 android:textSize="14dp"></TextView>
 
             <SeekBar
-                android:id="@+id/seekBar1"
+                android:id="@+id/beaufort_slider"
                 android:layout_width="300dp"
                 android:layout_height="10dp"
                 android:layout_centerHorizontal="true"

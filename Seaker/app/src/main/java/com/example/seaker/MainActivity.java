@@ -1,57 +1,31 @@
 package com.example.seaker;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.FragmentManager;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Debug;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.Button;
-import android.os.StrictMode;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
-import com.example.seaker.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-
-import com.example.seaker.R;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,9 +38,14 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         supportFragmentManager = getSupportFragmentManager();
-        switchFragment(new SplashFragment())
+        switchFragment(new SplashFragment());
     }
 
+    public void testingBtn(View view){
+        for(SightingInformation sighting : sightingInformations){
+            Log.d("TESTING", sighting.toString() );
+        }
+    }
 
 
     public static void switchFragment(BaseFragment fragment){
@@ -102,10 +81,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void datePicking(View view) {
         EditText editText = (EditText) findViewById(R.id.pickDate);
-        final Calendar calendar = Calendar.getInstance();
-        int yy = calendar.get(Calendar.YEAR);
-        int mm = calendar.get(Calendar.MONTH);
-        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String actualValue = editText.getText().toString();
+        String previousDate[] = actualValue.split("/");
+
+        int yy = Integer.parseInt(previousDate[2]);
+        int mm = Integer.parseInt(previousDate[1])-1;
+        int dd = Integer.parseInt(previousDate[0]);
+
         DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -114,14 +97,18 @@ public class MainActivity extends AppCompatActivity {
                 editText.setText(date);
             }
         }, yy, mm, dd);
+
         datePicker.show();
     }
 
     public void timePicking(View view) {
         EditText editText = (EditText) findViewById(R.id.pickTime);
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
+        String actualValue = editText.getText().toString();
+        String previousTime[] = actualValue.split(":");
+
+        int hour = Integer.parseInt(previousTime[0]);
+        int minute = Integer.parseInt(previousTime[1]);
+
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -251,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
         auxToggle.add((ToggleButton) v.findViewById(R.id.nr_individuals_100));
 
         for(ToggleButton tog : auxToggle){
-            sighting.add_NrIndividuals(tog);
+            sighting.addNrindividuals(tog);
         }
 
         auxToggle = new ArrayList<ToggleButton>();
@@ -269,8 +256,30 @@ public class MainActivity extends AppCompatActivity {
         auxToggle.add((ToggleButton) v.findViewById(R.id.nr_offspring_100));
 
         for(ToggleButton tog : auxToggle){
-            sighting.add_NrOffspring(tog);
+            sighting.addNroffspring(tog);
         }
+
+        auxToggle = new ArrayList<ToggleButton>();
+
+        auxToggle.add((ToggleButton) v.findViewById(R.id.traveling_behavior));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.eating_behavior));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.resting_behavior));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.social_int_behavior));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.other_behavior));
+
+        sighting.setBehavior_type(auxToggle);
+
+        auxToggle = new ArrayList<ToggleButton>();
+
+        auxToggle.add((ToggleButton) v.findViewById(R.id.none_reaction));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.approach_reaction));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.avoidance_reaction));
+        auxToggle.add((ToggleButton) v.findViewById(R.id.other_reaction));
+
+        sighting.setReactions_to_vessel(auxToggle);
+
+        sighting.setBeaufortSeaState((SeekBar) v.findViewById(R.id.beaufort_slider));
+
 
         auxToggle = new ArrayList<ToggleButton>();
 
@@ -279,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         auxToggle.add((ToggleButton) v.findViewById(R.id.high_trust_level));
 
         for(ToggleButton tog : auxToggle){
-            sighting.add_TrustLevel(tog);
+            sighting.addTrustLevel(tog);
         }
 
         sightingInformations.add(sighting);
@@ -489,9 +498,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteFromArray(int sightingId){
+        int i=0;
         for(SightingInformation sighting : sightingInformations){
-            if(sighting.getSightingBoxID() == sightingId)
-                sightingInformations.remove(sighting);
+            if(sighting.getSightingBoxID() == sightingId){
+                sightingInformations.remove(i);
+                return;
+            }
+            i++;
         }
     }
 
