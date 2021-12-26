@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import com.example.seaker.MainActivity;
@@ -66,6 +67,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         sightingLatitude = (TextView) view.findViewById(R.id.latitude);
         sightingLongitude = (TextView) view.findViewById(R.id.longitude);
 
+
         final Calendar calendar = Calendar.getInstance();
         int yy = calendar.get(Calendar.YEAR);
         int mm = calendar.get(Calendar.MONTH);
@@ -84,6 +86,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         return view;
     }
+
+
+
 
     @Override
     public void onMapReady(GoogleMap map) {

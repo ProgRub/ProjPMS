@@ -3,19 +3,27 @@ package com.example.seaker;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -80,6 +88,47 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout insertPoint = (LinearLayout) findViewById(R.id.sightingsInformations);
             insertPoint.addView(v);
         }
+    }
+
+    public void scrollToSpecie(View view){
+        HorizontalScrollView species = (HorizontalScrollView) findViewById(R.id.all_species);
+
+        RelativeLayout whales = (RelativeLayout) findViewById(R.id.whales_species);
+        RelativeLayout dolphins = (RelativeLayout) findViewById(R.id.dolphins_species);
+        RelativeLayout porpoise = (RelativeLayout) findViewById(R.id.porpoises_species);
+
+        switch(view.getId()){
+            case R.id.scroll_to_whales_btn:
+                focusOnView(species, whales);
+                ((Button)view).setTypeface(null, Typeface.BOLD);
+                ((Button)findViewById(R.id.scroll_to_dolphins_btn)).setTypeface(null, Typeface.NORMAL);
+                ((Button)findViewById(R.id.scroll_to_porpoises_btn)).setTypeface(null, Typeface.NORMAL);
+                break;
+            case R.id.scroll_to_dolphins_btn:
+                focusOnView(species, dolphins);
+                ((Button)view).setTypeface(null, Typeface.BOLD);
+                ((Button)findViewById(R.id.scroll_to_whales_btn)).setTypeface(null, Typeface.NORMAL);
+                ((Button)findViewById(R.id.scroll_to_porpoises_btn)).setTypeface(null, Typeface.NORMAL);
+                break;
+            case R.id.scroll_to_porpoises_btn:
+                focusOnView(species, porpoise);
+                ((Button)view).setTypeface(null, Typeface.BOLD);
+                ((Button)findViewById(R.id.scroll_to_whales_btn)).setTypeface(null, Typeface.NORMAL);
+                ((Button)findViewById(R.id.scroll_to_dolphins_btn)).setTypeface(null, Typeface.NORMAL);
+                break;
+        }
+    }
+
+    private final void focusOnView(final HorizontalScrollView scroll, final View view) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                int vLeft = view.getLeft();
+                int vRight = view.getRight();
+                int sWidth = scroll.getWidth();
+                scroll.smoothScrollTo(((vLeft + vRight - sWidth) / 2), 0);
+            }
+        });
     }
 
 
