@@ -46,6 +46,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import com.example.seaker.fragments.TeamMemberHomeFragment;
+import com.google.android.material.snackbar.Snackbar;
+
 public class MainActivity extends AppCompatActivity {
 
     View thumbView;
@@ -770,5 +784,66 @@ public class MainActivity extends AppCompatActivity {
                 btn1.setBackgroundDrawable(drawable);
                 break;
         }
+    }
+
+    public void insertSightingInformationIntoBD(View view){
+
+        EditText editText = (EditText) findViewById(R.id.pickDate);
+        String day = editText.getText().toString();
+        EditText editText1 = (EditText) findViewById(R.id.pickTime);
+        String hour = editText1.getText().toString();
+        TextView textView = (TextView) findViewById(R.id.latitude);
+        String latitude = textView.getText().toString();
+        TextView textView1 = (TextView) findViewById(R.id.longitude);
+        String longitude = textView1.getText().toString();
+        EditText editText3 = (EditText) findViewById(R.id.sighting_comment);
+        String comment = editText3.getText().toString();
+
+        String animal = "";
+        for(SightingInformation sighting : sightingInformations){
+            animal += sighting.toString();
+        }
+
+        String insertSightingUrl = "http://IP/seaker/insertsighting.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(day, "UTF-8")+"&"
+                    + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(hour, "UTF-8")+"&"
+                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
+                    + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
+                    + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
+                    + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
+                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
+                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
+                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
+
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            Snackbar.make(view, result, Snackbar.LENGTH_LONG).show();
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        switchFragment(new TeamMemberHomeFragment());
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 26, 2021 at 12:46 PM
+-- Generation Time: Dec 27, 2021 at 08:28 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -31,6 +31,7 @@ CREATE TABLE `animal` (
   `id` int(10) UNSIGNED NOT NULL,
   `n_individuals` enum('1','2','3','4','5','6-10','10-20','25-50','50-100','+100') NOT NULL,
   `n_offspring` enum('0','1','2','3','4','5','6-10','10-20','25-50','50-100','+100') DEFAULT NULL,
+  `trust_level` enum('Low','Middle','High') DEFAULT NULL,
   `sighting_report_id` int(10) UNSIGNED NOT NULL,
   `specie_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -39,14 +40,14 @@ CREATE TABLE `animal` (
 -- Dumping data for table `animal`
 --
 
-INSERT INTO `animal` (`id`, `n_individuals`, `n_offspring`, `sighting_report_id`, `specie_id`) VALUES
-(1, '6-10', '2', 1, 20),
-(2, '10-20', '4', 1, 22),
-(3, '4', '0', 2, 2),
-(4, '6-10', '1', 2, 22),
-(5, '3', '1', 3, 19),
-(6, '5', '0', 4, 9),
-(7, '25-50', '5', 5, 25);
+INSERT INTO `animal` (`id`, `n_individuals`, `n_offspring`, `trust_level`, `sighting_report_id`, `specie_id`) VALUES
+(1, '6-10', '2', 'Low', 1, 20),
+(2, '10-20', '4', 'Middle', 1, 22),
+(3, '4', '0', 'High', 2, 2),
+(4, '6-10', '1', 'High', 2, 22),
+(5, '3', '1', 'High', 3, 19),
+(6, '5', '0', 'Middle', 4, 9),
+(7, '25-50', '5', 'Low', 5, 25);
 
 -- --------------------------------------------------------
 
@@ -208,7 +209,6 @@ CREATE TABLE `sighting_report` (
   `sea_state` enum('0','1','2','3','4','5','6','7','8','9','10','11','12') DEFAULT NULL,
   `latitude` decimal(10,8) NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
-  `trust_level` enum('Low','Middle','High') NOT NULL,
   `comment` varchar(500) DEFAULT NULL,
   `person_id` int(10) UNSIGNED NOT NULL,
   `boat_id` int(10) UNSIGNED NOT NULL
@@ -218,12 +218,12 @@ CREATE TABLE `sighting_report` (
 -- Dumping data for table `sighting_report`
 --
 
-INSERT INTO `sighting_report` (`id`, `day`, `hour`, `sea_state`, `latitude`, `longitude`, `trust_level`, `comment`, `person_id`, `boat_id`) VALUES
-(1, '2021-08-01', '13:39:03', '1', '32.61873000', '-16.93879000', 'Middle', NULL, 5, 1),
-(2, '2021-08-01', '14:44:03', '1', '32.65501000', '-16.79379000', 'High', NULL, 6, 2),
-(3, '2021-08-02', '11:05:00', '2', '32.64614000', '-16.98809000', 'High', NULL, 7, 4),
-(4, '2021-08-02', '15:05:00', '1', '32.65153000', '-17.00697000', 'High', NULL, 5, 1),
-(5, '2021-08-03', '10:15:00', '0', '32.66398000', '-16.74712000', 'Low', NULL, 6, 5);
+INSERT INTO `sighting_report` (`id`, `day`, `hour`, `sea_state`, `latitude`, `longitude`, `comment`, `person_id`, `boat_id`) VALUES
+(1, '2021-08-01', '13:39:03', '1', '32.61873000', '-16.93879000', NULL, 5, 1),
+(2, '2021-08-01', '14:44:03', '1', '32.65501000', '-16.79379000', NULL, 6, 2),
+(3, '2021-08-02', '11:05:00', '2', '32.64614000', '-16.98809000', NULL, 7, 4),
+(4, '2021-08-02', '15:05:00', '1', '32.65153000', '-17.00697000', NULL, 5, 1),
+(5, '2021-08-03', '10:15:00', '0', '32.66398000', '-16.74712000', NULL, 6, 5);
 
 -- --------------------------------------------------------
 
@@ -269,34 +269,34 @@ CREATE TABLE `specie` (
 --
 
 INSERT INTO `specie` (`id`, `name`, `animal_type_id`) VALUES
-(1, 'Blue whale\r\n', 2),
-(2, 'Fin whale\r\n', 2),
-(3, 'North Atlantic \r\nRight Whale\r\n', 2),
-(5, 'Sei whale\r\n', 2),
-(6, 'Minke whale\r\n', 2),
-(7, 'Bryde\'s whale\r\n', 2),
-(8, 'Humpback whale\r\n', 2),
-(9, 'Sperm whale\r\n', 2),
-(10, 'Northern bottlenose whale\r\n', 2),
-(11, 'Cuvier\'s beaked whale\r\n', 2),
-(12, 'Sowerby\'s beaked whale\r\n', 2),
-(13, 'Blainville\'s beaked whale\r\n', 2),
-(14, 'Gervais\' beaked whale\r\n', 2),
-(15, 'True\'s beaked whale\r\n', 2),
-(16, 'Killer whale/Orca\r\n', 2),
-(17, 'Short-finned pilot whale\r\n', 2),
-(18, 'Long-finned pilot whale\r\n', 2),
-(19, 'False killer whale\r\n', 2),
-(20, 'Risso\'s dolphin\r\n', 1),
-(21, 'Bottlenose dolphin\r\n', 1),
-(22, 'Rough toothed dolphin\r\n', 1),
-(23, 'Atlantic spotted dolphin\r\n', 1),
-(25, 'Striped dolphin\r\n', 1),
-(26, 'Common dolphin\r\n', 1),
-(27, 'Fraser\'s dolphin\r\n', 1),
-(28, 'Melon-headed whale\r\n', 2),
-(29, 'Pigmy killer whale\r\n', 2),
-(30, 'Harbour porpoise\r\n', 3),
+(1, 'Blue whale', 2),
+(2, 'Fin whale', 2),
+(3, 'North Atlantic \r\nRight Whale', 2),
+(5, 'Sei whale', 2),
+(6, 'Minke whale', 2),
+(7, 'Bryde\'s whale', 2),
+(8, 'Humpback whale', 2),
+(9, 'Sperm whale', 2),
+(10, 'Northern bottlenose whale', 2),
+(11, 'Cuvier\'s beaked whale', 2),
+(12, 'Sowerby\'s beaked whale', 2),
+(13, 'Blainville\'s beaked whale', 2),
+(14, 'Gervais\' beaked whale', 2),
+(15, 'True\'s beaked whale', 2),
+(16, 'Killer whale/Orca', 2),
+(17, 'Short-finned pilot whale', 2),
+(18, 'Long-finned pilot whale', 2),
+(19, 'False killer whale', 2),
+(20, 'Risso\'s dolphin', 1),
+(21, 'Bottlenose dolphin', 1),
+(22, 'Rough toothed dolphin', 1),
+(23, 'Atlantic spotted dolphin', 1),
+(25, 'Striped dolphin', 1),
+(26, 'Common dolphin', 1),
+(27, 'Fraser\'s dolphin', 1),
+(28, 'Melon-headed whale', 2),
+(29, 'Pigmy killer whale', 2),
+(30, 'Harbour porpoise', 3),
 (31, 'Unidentified whale', 2),
 (32, 'Unidentified dolphin', 1),
 (33, 'Unidentified porpoise', 3);
@@ -419,19 +419,19 @@ ALTER TABLE `zone`
 -- AUTO_INCREMENT for table `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `animal_behavior`
 --
 ALTER TABLE `animal_behavior`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `animal_reaction_to_vessel`
 --
 ALTER TABLE `animal_reaction_to_vessel`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `animal_type`
@@ -449,7 +449,7 @@ ALTER TABLE `boat`
 -- AUTO_INCREMENT for table `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `photo`
@@ -461,7 +461,7 @@ ALTER TABLE `photo`
 -- AUTO_INCREMENT for table `sighting_report`
 --
 ALTER TABLE `sighting_report`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `specie`

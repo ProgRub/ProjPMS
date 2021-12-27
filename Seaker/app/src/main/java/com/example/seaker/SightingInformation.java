@@ -33,14 +33,13 @@ public class SightingInformation {
 
     @Override
     public String toString() {
-        return "SightingInformation {" +
-                "sightingBoxID=" + sightingBoxID +
-                ", nr_individuals=" + getNumberOfIndividualsString() +
-                ", nr_offspring=" + getNumberOfOffspringString() +
-                ", behavior_type=" + getBehaviorTypesString() +
-                ", reactions_to_vessel=" + getReactionToVesselString() +
-                ", beaufortSeaState=" + getBeaufortSeaState() +
-                ", trustLevel=" + getTrustLevelString() +'}';
+        return "Blue whale" + "*" +
+                getNumberOfIndividualsString() + "*" +
+                getNumberOfOffspringString() + "*" +
+                getTrustLevelString() + "*" +
+                getBehaviorTypesString() + "*" +
+                getReactionToVesselString() + "$"
+                ;
     }
 
     public int getSightingBoxID() {
