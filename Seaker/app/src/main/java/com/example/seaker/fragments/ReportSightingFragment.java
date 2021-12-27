@@ -1,33 +1,21 @@
 package com.example.seaker.fragments;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -40,10 +28,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     EditText sightingTime;
     TextView sightingLatitude;
     TextView sightingLongitude;
-
     private static final DecimalFormat df = new DecimalFormat("0.00000");
-
     private GoogleMap googleMap;
+
+    ImageButton takePhoto;
+    ImageButton uploadPhoto;
+
 
     public ReportSightingFragment() {
         // Required empty public constructor
@@ -66,6 +56,23 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         sightingLatitude = (TextView) view.findViewById(R.id.latitude);
         sightingLongitude = (TextView) view.findViewById(R.id.longitude);
+
+        takePhoto = (ImageButton) view.findViewById(R.id.take_photo_btn);
+        uploadPhoto = (ImageButton) view.findViewById(R.id.upload_photo_btn);
+
+        takePhoto.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 100);
+            }
+        });
+
+        uploadPhoto.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 200);
+            }
+        });
 
 
         final Calendar calendar = Calendar.getInstance();
