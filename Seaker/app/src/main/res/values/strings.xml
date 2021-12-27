@@ -5,6 +5,12 @@
     <string name="teamMember">Team Member</string>
     <string name="companyManager">Company Manager</string>
     <string name="administrator">Administrator</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reportedSightings">Reported Sightings</string>
+    <string name="recentSightings">Recent Sightings</string>
+    <string name="otherSightings">Other Sightings</string>
+    <string name="notSubmitted">Not submitted</string>
+    <string name="dateRS">Date:</string>
+    <string name="timeRS">Time:</string>
+    <string name="sightingSpeciesRS">Sighting Species:</string>
+    <string name="reportedBy">Reported by:</string>
 </resources>

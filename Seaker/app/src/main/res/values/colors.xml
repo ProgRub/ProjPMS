@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_blue">#0051AD</color>
     <color name="purple">#826BF3</color>
+    <color name="recentSightings">#00b2ff</color>
+    <color name="otherSightings">#0051ad</color>
+    <color name="notSubmitted">#c60000</color>
 </resources>
