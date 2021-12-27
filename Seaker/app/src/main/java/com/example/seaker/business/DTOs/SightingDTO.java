@@ -1,25 +1,25 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.business.DTOs;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Sighting {
+public class SightingDTO {
     private long id;
     private LocalDate day;
     private LocalTime time;
     private int seaStateBeaufort;
     private double longitude;
     private double latitude;
-    private ConfidenceLevel confidenceLevel;
+    private String confidenceLevel;
     private String comments;
 
-    private long teamMemberId;
+    private String teamMemberName;
     private Iterable<Long> photoIds;
-    private long boatId;
-    private Iterable<Long> zoneIds;
-    private Iterable<Long> animalIds;
+    private String boatName;
+    private Iterable<String> zoneNames;
+    private Iterable<String> animalSpeciesNames;
 
-    public Sighting(long id, LocalDate day, LocalTime time, int seaStateBeaufort, double longitude, double latitude, ConfidenceLevel confidenceLevel, String comments, long teamMemberId, Iterable<Long> photoIds, long boatId, Iterable<Long> zoneIds, Iterable<Long> animalIds) {
+    public SightingDTO(long id, LocalDate day, LocalTime time, int seaStateBeaufort, double longitude, double latitude, String confidenceLevel, String comments, String teamMemberName, Iterable<Long> photoIds, String boatName, Iterable<String> zoneNames, Iterable<String> animalSpeciesNames) {
         this.id = id;
         this.day = day;
         this.time = time;
@@ -28,11 +28,11 @@ public class Sighting {
         this.latitude = latitude;
         this.confidenceLevel = confidenceLevel;
         this.comments = comments;
-        this.teamMemberId = teamMemberId;
+        this.teamMemberName = teamMemberName;
         this.photoIds = photoIds;
-        this.boatId = boatId;
-        this.zoneIds = zoneIds;
-        this.animalIds = animalIds;
+        this.boatName = boatName;
+        this.zoneNames = zoneNames;
+        this.animalSpeciesNames = animalSpeciesNames;
     }
 
     public long getId() {
@@ -83,11 +83,11 @@ public class Sighting {
         this.latitude = latitude;
     }
 
-    public ConfidenceLevel getConfidenceLevel() {
+    public String getConfidenceLevel() {
         return confidenceLevel;
     }
 
-    public void setConfidenceLevel(ConfidenceLevel confidenceLevel) {
+    public void setConfidenceLevel(String confidenceLevel) {
         this.confidenceLevel = confidenceLevel;
     }
 
@@ -99,12 +99,12 @@ public class Sighting {
         this.comments = comments;
     }
 
-    public long getTeamMemberId() {
-        return teamMemberId;
+    public String getTeamMemberName() {
+        return teamMemberName;
     }
 
-    public void setTeamMemberId(long teamMemberId) {
-        this.teamMemberId = teamMemberId;
+    public void setTeamMemberName(String teamMemberName) {
+        this.teamMemberName = teamMemberName;
     }
 
     public Iterable<Long> getPhotoIds() {
@@ -115,27 +115,27 @@ public class Sighting {
         this.photoIds = photoIds;
     }
 
-    public long getBoatId() {
-        return boatId;
+    public String getBoatName() {
+        return boatName;
     }
 
-    public void setBoatId(long boatId) {
-        this.boatId = boatId;
+    public void setBoatName(String boatName) {
+        this.boatName = boatName;
     }
 
-    public Iterable<Long> getZoneIds() {
-        return zoneIds;
+    public Iterable<String> getZoneNames() {
+        return zoneNames;
     }
 
-    public void setZoneIds(Iterable<Long> zoneIds) {
-        this.zoneIds = zoneIds;
+    public void setZoneNames(Iterable<String> zoneNames) {
+        this.zoneNames = zoneNames;
     }
 
-    public Iterable<Long> getAnimalIds() {
-        return animalIds;
+    public Iterable<String> getAnimalSpeciesNames() {
+        return animalSpeciesNames;
     }
 
-    public void setAnimalIds(Iterable<Long> animalIds) {
-        this.animalIds = animalIds;
+    public void setAnimalSpeciesNames(Iterable<String> animalSpeciesNames) {
+        this.animalSpeciesNames = animalSpeciesNames;
     }
 }

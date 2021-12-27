@@ -1,15 +1,16 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.business.DTOs;
 
-public class Species {
+public class SpeciesDTO {
     private long id;
     private String name;
     private long typeOfAnimalId;
 
-    public Species(long id, String name, long typeOfAnimalId) {
+    public SpeciesDTO(long id, String name, long typeOfAnimalId) {
         this.id = id;
         this.name = name;
         this.typeOfAnimalId = typeOfAnimalId;
     }
+
 
     public long getId() {
         return id;
