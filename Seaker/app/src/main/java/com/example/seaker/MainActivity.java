@@ -811,7 +811,7 @@ public class MainActivity extends AppCompatActivity {
         for(SightingInformation sighting : sightingInformations){
             animal += sighting.toString();
         }
-
+        sightingInformations.clear();
         String insertSightingUrl = "http://IP/seaker/insertsighting.php";
         try {
             URL url = new URL(insertSightingUrl);
