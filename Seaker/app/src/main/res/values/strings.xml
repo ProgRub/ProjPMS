@@ -8,7 +8,7 @@
     <string name="reportedSightings">Reported Sightings</string>
     <string name="recentSightings">Recent Sightings</string>
     <string name="otherSightings">Other Sightings</string>
-    <string name="notSubmitted">Not submitted</string>
+    <string name="notSubmitted"> - Not submitted</string>
     <string name="dateRS">Date:</string>
     <string name="timeRS">Time:</string>
     <string name="sightingSpeciesRS">Sighting Species:</string>

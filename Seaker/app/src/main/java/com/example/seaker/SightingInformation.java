@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class SightingInformation {
 
     private int sightingBoxID;
+    private String specieName;
     private ArrayList<ToggleButton> nr_individuals;
     private ArrayList<ToggleButton> nr_offspring;
     private ArrayList<ToggleButton> behavior_type;
@@ -33,13 +34,21 @@ public class SightingInformation {
 
     @Override
     public String toString() {
-        return "Blue whale" + "*" +
+        return getSpecieName() + "*" +
                 getNumberOfIndividualsString() + "*" +
                 getNumberOfOffspringString() + "*" +
                 getTrustLevelString() + "*" +
                 getBehaviorTypesString() + "*" +
                 getReactionToVesselString() + "$"
                 ;
+    }
+
+    public void setSpecieName(String specieName) {
+        this.specieName = specieName;
+    }
+
+    public String getSpecieName() {
+        return specieName;
     }
 
     public int getSightingBoxID() {

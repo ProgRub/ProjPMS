@@ -95,17 +95,24 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.uploaded_photo_layout, null);
 
+        v.findViewById(R.id.delete_photo_btn).setOnClickListener(new ImageButton.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                uploadedPhotosLayout.removeView(v.findViewById(R.id.photo_struct));
+            }
+        });
+
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             ImageView image = (ImageView) v.findViewById(R.id.photo);
-            image.setImageBitmap(Bitmap.createScaledBitmap(captureImage, 200, 200, false));
-            uploadedPhotosLayout.addView(image);
+            image.setImageBitmap(Bitmap.createScaledBitmap(captureImage, 240, 240, false));
+            uploadedPhotosLayout.addView(v);
         }else if(resultCode == Activity.RESULT_OK && requestCode == 200){
             Uri selectedImage = data.getData();
             try {
                 ImageView image = (ImageView) v.findViewById(R.id.photo);
-                image.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage), 200, 200, false));
-                uploadedPhotosLayout.addView(image);
+                image.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage), 240, 240, false));
+                uploadedPhotosLayout.addView(v);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -142,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             setViewID(view, v);
 
             buttonListenersSightingInfo(v);
+            sightingInformations.get(sightingInformations.size() - 1).setSpecieName(String.valueOf(view.getTag()));
 
             TextView textView = (TextView) v.findViewById(R.id.title);
             textView.setText(String.valueOf(view.getTag()) + " Sighting");

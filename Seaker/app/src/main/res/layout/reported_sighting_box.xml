@@ -25,7 +25,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="13dp"
-                android:text="Trip ## - "
+                android:text="Sighting ##"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -42,6 +42,21 @@
                 android:textColor="@color/notSubmitted"
                 android:textSize="16dp"
                 android:textStyle="bold" />
+
+            <ImageButton
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="328dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginBottom="96dp"
+                android:background="@drawable/edit_sighting_btn">
+
+            </ImageButton>
 
             <TextView
                 android:id="@+id/textView3"
@@ -111,8 +126,12 @@
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView3"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="55dp"
                 android:layout_toEndOf="@+id/textView7"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -138,8 +157,12 @@
                 android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView7"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="19dp"
+                android:layout_marginBottom="18dp"
                 android:layout_toEndOf="@+id/textView9"
                 android:ellipsize="end"
                 android:maxLines="1"
