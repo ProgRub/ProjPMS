@@ -61,13 +61,12 @@ if (mysqli_query($conn, $querySighting)) {
 				$queryReactions = "insert into animal_reaction_to_vessel (name, animal_id) values ('$reactions[$k]','$last_animal_id')";
 				$insert_reaction = mysqli_query($conn, $queryReactions);
 			}
-			
-			echo "The sighting report has been successfully submitted!";
 		} 
 		else {
 		  echo "Error: " . $queryAnimal . "<br>" . mysqli_error($conn);
 		}
-	} 
+	}
+	echo "The sighting report has been successfully submitted!";
 } 
 else {
   echo "Error: " . $querySighting . "<br>" . mysqli_error($conn);
