@@ -512,7 +512,6 @@
 
             </LinearLayout>
 
-
             <!-- Reaction to Vessel -->
             <TextView
                 android:layout_width="wrap_content"

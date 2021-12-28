@@ -39,11 +39,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.business.DTOs.SightingDTO;
 import com.example.seaker.fragments.BaseFragment;
 import com.example.seaker.fragments.SplashFragment;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import java.io.BufferedReader;
@@ -62,6 +66,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private BusinessFacade businessFacade;
     View thumbView;
 
     private static FragmentManager supportFragmentManager;
@@ -84,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
         }
+
+        businessFacade = BusinessFacade.getInstance();
     }
 
 
@@ -794,6 +801,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public void createSightingDTO(){
+        EditText editText = (EditText) findViewById(R.id.pickDate);
+        String day = editText.getText().toString();
+        EditText editText1 = (EditText) findViewById(R.id.pickTime);
+        String hour = editText1.getText().toString();
+        TextView textView = (TextView) findViewById(R.id.latitude);
+        String latitude = textView.getText().toString();
+        TextView textView1 = (TextView) findViewById(R.id.longitude);
+        String longitude = textView1.getText().toString();
+        EditText editText3 = (EditText) findViewById(R.id.sighting_comment);
+        String comment = editText3.getText().toString();
+
+        ArrayList<String> speciesNames = new ArrayList<>();
+
+        for(SightingInformation sighting : sightingInformations){
+            speciesNames.add(sighting.getSpecieName());
+        }
+
+        String[] partsLatitude = latitude.split(": ");
+        String[] partsLongitude = longitude.split(": ");
+
+        double latitudeValue = Double.parseDouble(partsLatitude[1]);
+        double longitudeValue = Double.parseDouble(partsLongitude[1]);
+
+        //Data e Tempo não dá para fazer parse para localdate e localtime, dá erro (não sei pq)
+        //O confidence level é para cada espécie (não para o avistamento)
+        //Falta conseguir aceder ao nome do team member, nome do barco e nome das zonas
+        //Como se sabe a relação entre os sightingDTO o animalDTOs?
+        //O beaufort sea state, pela forma q está feito, deve ser para cada especie avistada
+        //Que ID vamos dar?
+
+        //SightingDTO sightingDTO = new SightingDTO(1, day, hour, 4, longitudeValue, latitudeValue, "LOW",  comment, "TEAM_MEMBER_NAME", "PHOTOS", "BOAT_NAME", "ZONE_NAMES", speciesNames);
+        //businessFacade.addSighting(sightingDTO);
+    }
+
     public void insertSightingInformationIntoBD(View view){
 
         EditText editText = (EditText) findViewById(R.id.pickDate);
@@ -806,8 +849,8 @@ public class MainActivity extends AppCompatActivity {
         String longitude = textView1.getText().toString();
         EditText editText3 = (EditText) findViewById(R.id.sighting_comment);
         String comment = editText3.getText().toString();
-
         String animal = "";
+
         for(SightingInformation sighting : sightingInformations){
             animal += sighting.toString();
         }
