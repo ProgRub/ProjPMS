@@ -550,7 +550,7 @@
                             android:layout_alignEnd="@+id/melon_whale_btn"
                             android:layout_alignRight="@+id/melon_whale_btn"
                             android:background="@drawable/not_specified_whale_btn"
-                            android:tag="Not Specified Whale"
+                            android:tag="Unidentified whale"
                             android:onClick="clickSpecie"/>
 
                     </RelativeLayout>
@@ -642,7 +642,7 @@
                             android:layout_alignLeft="@+id/striped_dolphin_btn"
                             android:layout_alignTop="@+id/frasers_dolphin_btn"
                             android:background="@drawable/not_specified_dolphin_btn"
-                            android:tag="Not Specified Dolphin"
+                            android:tag="Unidentified dolphin"
                             android:onClick="clickSpecie" />
 
                     </RelativeLayout>
@@ -669,7 +669,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/harbour_porpoise_btn"
                             android:background="@drawable/not_specified_porpoise_btn"
-                            android:tag="Not Specified Porpoise"
+                            android:tag="Unidentified porpoise"
                             android:onClick="clickSpecie"/>
 
                     </RelativeLayout>
