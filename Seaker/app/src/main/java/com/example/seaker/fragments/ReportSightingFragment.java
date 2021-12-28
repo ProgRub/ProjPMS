@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -100,6 +101,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
+        //CARREGAR AS COORDENADAS DEPENDENDO DA VIAGEM
         LatLng Funchal = new LatLng(32.643579, -16.914312 );
         map.addMarker(new MarkerOptions().position(Funchal).title("Funchal"));
         moveToCurrentLocation(Funchal);
