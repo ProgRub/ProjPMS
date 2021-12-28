@@ -62,6 +62,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import com.example.seaker.fragments.TeamMemberHomeFragment;
+import com.example.seaker.jsonwriter.JsonWriter;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         businessFacade = BusinessFacade.getInstance();
+        JsonWriter json = new JsonWriter();
+        json.createSightingJson();
     }
 
 

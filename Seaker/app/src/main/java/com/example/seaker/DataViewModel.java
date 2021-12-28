@@ -1,13 +1,6 @@
 package com.example.seaker;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.seaker.database.entities.User;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class DataViewModel extends ViewModel {
     private Integer reportedSightingId;

@@ -1,16 +1,8 @@
 package com.example.seaker.fragments;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +10,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -56,8 +50,8 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         //Para testar inserção:
         addSightingToView(4, true, "29/12/2021", "13:05", "Blue Whale, Sperm Whale, Fin Whale", "Diego Briceño");
-        addSightingToView(2, false, "14/2/2021", "10:08", "Sperm Whale", "Rúben Rodrigues");
-        addSightingToView(1, false, "3/10/2021", "9:11", "Bottlenose Dolphin, Sperm Whale", "Sílvia Fernandes");
+        addSightingToView(2, false, "30/12/2021", "10:08", "Sperm Whale", "Rúben Rodrigues");
+        addSightingToView(1, false, "31/12/2021", "9:11", "Bottlenose Dolphin, Sperm Whale", "Sílvia Fernandes");
         addSightingToView(3, true, "16/11/2021", "19:59", "Bottlenose Dolphin, Fin Whale", "Pedro Campos");
 
         return view;
