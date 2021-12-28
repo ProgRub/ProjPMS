@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.seaker.DataViewModel;
+import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
 import java.time.LocalDate;
@@ -25,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
+    private DataViewModel model;
     private LinearLayout recentSightings;
     private LinearLayout otherSightings;
 
@@ -45,11 +49,13 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_reported_sightings_team_member, container, false);
         SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
 
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
 
         //Para testar inserção:
-        addSightingToView(4, true, "27/12/2021", "13:05", "Blue Whale", "Diego Briceño");
+        addSightingToView(4, true, "29/12/2021", "13:05", "Blue Whale, Sperm Whale, Fin Whale", "Diego Briceño");
         addSightingToView(2, false, "14/2/2021", "10:08", "Sperm Whale", "Rúben Rodrigues");
         addSightingToView(1, false, "3/10/2021", "9:11", "Bottlenose Dolphin, Sperm Whale", "Sílvia Fernandes");
         addSightingToView(3, true, "16/11/2021", "19:59", "Bottlenose Dolphin, Fin Whale", "Pedro Campos");
@@ -73,7 +79,13 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         ImageButton editSightingBtn = (ImageButton) v.findViewById(R.id.edit_sighting_btn);
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
-        SetButtonOnClickNextFragment(R.id.edit_sighting_btn ,new TeamMemberHomeFragment(), v);
+        editSightingBtn.setOnClickListener(item -> {
+            model.setReportedSighingId(sighting_id);
+            model.setDate(sighting_date);
+            model.setTime(sighting_time);
+            model.setSpecies(species);
+            MainActivity.switchFragment(new EditSightingFragment());
+        });
 
         sightingNumber.setText("Sighting #" + sighting_id);
         date.setText(sighting_date);

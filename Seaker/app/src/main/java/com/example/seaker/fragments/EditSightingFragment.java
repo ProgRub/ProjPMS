@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
-import com.example.seaker.MainActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.seaker.DataViewModel;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
 import com.example.seaker.business.BusinessFacade;
@@ -39,24 +40,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class ReportSightingFragment extends BaseFragment implements OnMapReadyCallback {
+public class EditSightingFragment extends BaseFragment implements OnMapReadyCallback{
+
+    private DataViewModel model;
+    private TextView title;
 
     private EditText sightingDate;
     private EditText sightingTime;
@@ -74,13 +65,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> dolphinSpeciesBtns;
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
-
     private static final DecimalFormat df = new DecimalFormat("0.00000");
 
-
-    public ReportSightingFragment() {
+    public EditSightingFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,9 +80,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_report_sighting, container, false);
-        SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
+        View view = inflater.inflate(R.layout.fragment_edit_sightings_xml, container, false);
+
+        SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
 
         businessFacade = BusinessFacade.getInstance();
 
@@ -101,7 +91,147 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return view;
     }
 
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+        title.setText("Sighting #" + model.getReportedSighingId() + " - Editing");
+        sightingDate.setText(model.getDate());
+        sightingTime.setText(model.getTime());
+
+        //FALTA:
+        //PREENCHER FOTOS
+        //PREENCHER COORDENADAS
+        //PREENCHER COMENTÁRIO
+        //ACEDER AOS DADOS DE CADA ESPECIE DO AVISTAMENTO
+
+        String speciesString = model.getSpecies().replace(", ", ",");
+        String[] speciesNames = speciesString.split(",");
+        for(String specie : speciesNames) {
+            switch (specie) {
+                case "Blue Whale":
+                    clickSpecie(getView().findViewById(R.id.blue_whale_btn));
+                    break;
+                case "Fin Whale":
+                    clickSpecie(getView().findViewById(R.id.fin_whale_btn));
+                    break;
+                case "Sperm Whale":
+                    clickSpecie(getView().findViewById(R.id.sperm_whale_btn));
+                    break;
+                case "North Atlantic Right Whale":
+                    clickSpecie(getView().findViewById(R.id.north_atlantic_right_whale_btn));
+                    break;
+                case "Sowerby's Beaker Whale":
+                    clickSpecie(getView().findViewById(R.id.sowerbys_beaker_whale_btn));
+                    break;
+                case "Sei Whale":
+                    clickSpecie(getView().findViewById(R.id.sei_whale_btn));
+                    break;
+                case "Blainville's Beaked Whale":
+                    clickSpecie(getView().findViewById(R.id.blainville_whale_btn));
+                    break;
+                case "Gervais' Beaked Whale":
+                    clickSpecie(getView().findViewById(R.id.gervais_whale_btn));
+                    break;
+                case "Bryde's Whale":
+                    clickSpecie(getView().findViewById(R.id.brides_whale_btn));
+                    break;
+                case "Minke Whale":
+                    clickSpecie(getView().findViewById(R.id.minke_whale_btn));
+                    break;
+                case "True's Beaked Whale":
+                    clickSpecie(getView().findViewById(R.id.trues_whale_btn));
+                    break;
+                case "Orca Whale":
+                    clickSpecie(getView().findViewById(R.id.orca_whale_btn));
+                    break;
+                case "Short Finned Pilot Whale":
+                    clickSpecie(getView().findViewById(R.id.short_finned_pilot_whale_btn));
+                    break;
+                case "Humpback Whale":
+                    clickSpecie(getView().findViewById(R.id.humpback_whale_btn));
+                    break;
+                case "Northern Bottlenose Whale":
+                    clickSpecie(getView().findViewById(R.id.northern_whale_btn));
+                    break;
+                case "Long Finned Pilot Whale":
+                    clickSpecie(getView().findViewById(R.id.long_finned_pilot_whale_btn));
+                    break;
+                case "False Killer Whale":
+                    clickSpecie(getView().findViewById(R.id.false_killer_whale_btn));
+                    break;
+                case "Melon Whale":
+                    clickSpecie(getView().findViewById(R.id.melon_whale_btn));
+                    break;
+                case "Cuvier's Beaked Whale":
+                    clickSpecie(getView().findViewById(R.id.cuviers_whale_btn));
+                    break;
+                case "Pigmy Whale":
+                    clickSpecie(getView().findViewById(R.id.pigmy_whale_btn));
+                    break;
+                case "Not Specified Whale":
+                    clickSpecie(getView().findViewById(R.id.not_specified_whale_btn));
+                    break;
+                case "Bottlenose Dolphin":
+                    clickSpecie(getView().findViewById(R.id.bottlenose_dolphin_btn));
+                    break;
+                case "Risso's Dolphin":
+                    clickSpecie(getView().findViewById(R.id.rissos_dolphin_btn));
+                    break;
+                case "Rough Toothed Dolphin":
+                    clickSpecie(getView().findViewById(R.id.rough_toothed_dolphin_btn));
+                    break;
+                case "Atlantic Spotted Dolphin":
+                    clickSpecie(getView().findViewById(R.id.atlantic_spotted_dolphin_btn));
+                    break;
+                case "Striped Dolphin":
+                    clickSpecie(getView().findViewById(R.id.striped_dolphin_btn));
+                    break;
+                case "Common Dolphin":
+                    clickSpecie(getView().findViewById(R.id.common_dolphin_btn));
+                    break;
+                case "Fraser's Dolphin":
+                    clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn));
+                    break;
+                case "Not Specified Dolphin":
+                    clickSpecie(getView().findViewById(R.id.not_specified_dolphin_btn));
+                    break;
+                case "Harbour Porpoise":
+                    clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn));
+                    break;
+                case "Not Specified Porpoise":
+                    clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn));
+                    break;
+            }
+            fillSpecieSightingInformation(specie);
+        }
+    }
+
+    private void fillSpecieSightingInformation(String specie){
+        SightingInformation sightingInformation = sightingInformations.get(getSightingInformationId(specie));
+        //TESTAR PREENCHIMENTO DO SIGHTING INFORMATION BOX:
+        sightingInformation.fillNrIndividuals("6-10");
+        sightingInformation.fillNrOffspring("3");
+        sightingInformation.fillBehaviourType("Resting, Other");
+        sightingInformation.fillReactionToVessel("Approach, Avoidance");
+        sightingInformation.fillBeaufortSeaState(3);
+        sightingInformation.fillTrustLevel("Low");
+    }
+
+    private int getSightingInformationId(String specie){
+        int i=0;
+        for(SightingInformation sighting : sightingInformations){
+            if(sighting.getSpecieName().equals(specie)){
+                 return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     private void onStartView(View view){
+        title = (TextView) view.findViewById(R.id.fragmentTitle);
+
         sightingDate = (EditText) view.findViewById(R.id.pickDate);
         sightingTime = (EditText) view.findViewById(R.id.pickTime);
 
@@ -218,23 +348,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         reportSightingBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                insertSightingInformationIntoBD(view);
+
             }
         });
-
-
-        final Calendar calendar = Calendar.getInstance();
-        int yy = calendar.get(Calendar.YEAR);
-        int mm = calendar.get(Calendar.MONTH);
-        int dd = calendar.get(Calendar.DAY_OF_MONTH);
-        String date = String.valueOf(dd) + "/" + String.valueOf(mm+1) + "/" + String.valueOf(yy);
-
-        sightingDate.setText(date);
-
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        sightingTime.setText(String.valueOf(hour) +":"+String.valueOf(minute));
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
@@ -921,133 +1037,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             drawable = getResources().getDrawable(R.drawable.selected_not_specified_porpoise_btn);
                 btn1.setBackgroundDrawable(drawable);
                 break;
-        }
-    }
-
-
-    public void createSightingDTO(){
-        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
-        String day = editText.getText().toString();
-        EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
-        String hour = editText1.getText().toString();
-        TextView textView = (TextView) getView().findViewById(R.id.latitude);
-        String latitude = textView.getText().toString();
-        TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
-        String longitude = textView1.getText().toString();
-        EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
-        String comment = editText3.getText().toString();
-
-        ArrayList<String> speciesNames = new ArrayList<>();
-
-        for(SightingInformation sighting : sightingInformations){
-            speciesNames.add(sighting.getSpecieName());
-        }
-
-        String[] partsLatitude = latitude.split(": ");
-        String[] partsLongitude = longitude.split(": ");
-
-        double latitudeValue = Double.parseDouble(partsLatitude[1]);
-        double longitudeValue = Double.parseDouble(partsLongitude[1]);
-
-        //Data e Tempo não dá para fazer parse para localdate e localtime, dá erro (não sei pq)
-        //O confidence level é para cada espécie (não para o avistamento)
-        //Falta conseguir aceder ao nome do team member, nome do barco e nome das zonas
-        //Como se sabe a relação entre os sightingDTO o animalDTOs?
-        //O beaufort sea state, pela forma q está feito, deve ser para cada especie avistada
-        //Que ID vamos dar?
-
-        //SightingDTO sightingDTO = new SightingDTO(1, day, hour, 4, longitudeValue, latitudeValue, "LOW",  comment, "TEAM_MEMBER_NAME", "PHOTOS", "BOAT_NAME", "ZONE_NAMES", speciesNames);
-        //businessFacade.addSighting(sightingDTO);
-    }
-
-    public void testingBtn(View view){
-        for(SightingInformation sighting : sightingInformations){
-            Log.d("TESTING", sighting.toString() );
-        }
-    }
-
-    public void insertSightingInformationIntoBD(View view){
-
-        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
-        String day = editText.getText().toString();
-        EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
-        String hour = editText1.getText().toString();
-        TextView textView = (TextView) getView().findViewById(R.id.latitude);
-        String latitude = textView.getText().toString();
-        TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
-        String longitude = textView1.getText().toString();
-        EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
-        String comment = editText3.getText().toString();
-        String animal = "";
-
-        for(SightingInformation sighting : sightingInformations){
-            animal += sighting.toString();
-        }
-        sightingInformations.clear();
-        String insertSightingUrl = "http://IP/seaker/insertsighting.php";
-        try {
-            URL url = new URL(insertSightingUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(day, "UTF-8")+"&"
-                    + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(hour, "UTF-8")+"&"
-                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
-                    + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
-                    + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
-                    + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
-                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode("3", "UTF-8")+"&"
-                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
-                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
-
-            bufferedWriter.write(post_data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-            String result = "";
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            Snackbar.make(view, result, Snackbar.LENGTH_LONG).show();
-
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        MainActivity.switchFragment(new TeamMemberHomeFragment());
-    }
-
-    public void getAllSightingsInformations(View view){
-        String insertSightingUrl = "http://IP/seaker/getallsightings.php";
-        try {
-            URL url = new URL(insertSightingUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setDoInput(true);
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-            String result = "";
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-            Log.d("TODOS OS AVISTAMENTOS: ", result);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

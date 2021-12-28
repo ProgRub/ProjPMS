@@ -67,6 +67,112 @@ public class SightingInformation {
         this.behavior_type = behavior_type;
     }
 
+    public void fillBeaufortSeaState(int value){
+        this.beaufortSeaState.setProgress(value);
+    }
+
+    public void fillNrIndividuals(String nr_individuals){
+        switch (nr_individuals){
+            case "1":
+                this.nr_individuals.get(0).setChecked(true);
+                break;
+            case "2":
+                this.nr_individuals.get(1).setChecked(true);
+                break;
+            case "3":
+                this.nr_individuals.get(2).setChecked(true);
+                break;
+            case "4":
+                this.nr_individuals.get(3).setChecked(true);
+                break;
+            case "5":
+                this.nr_individuals.get(4).setChecked(true);
+                break;
+            case "6-10":
+                this.nr_individuals.get(5).setChecked(true);
+                break;
+            case "10-20":
+                this.nr_individuals.get(6).setChecked(true);
+                break;
+            case "25-50":
+                this.nr_individuals.get(7).setChecked(true);
+                break;
+            case "50-100":
+                this.nr_individuals.get(8).setChecked(true);
+                break;
+            case "+100":
+                this.nr_individuals.get(9).setChecked(true);
+                break;
+        }
+    }
+
+    public void fillNrOffspring(String nr_offspring){
+        switch (nr_offspring){
+            case "0":
+                this.nr_offspring.get(0).setChecked(true);
+                break;
+            case "1":
+                this.nr_offspring.get(1).setChecked(true);
+                break;
+            case "2":
+                this.nr_offspring.get(2).setChecked(true);
+                break;
+            case "3":
+                this.nr_offspring.get(3).setChecked(true);
+                break;
+            case "4":
+                this.nr_offspring.get(4).setChecked(true);
+                break;
+            case "5":
+                this.nr_offspring.get(5).setChecked(true);
+                break;
+            case "6-10":
+                this.nr_offspring.get(6).setChecked(true);
+                break;
+            case "10-20":
+                this.nr_offspring.get(7).setChecked(true);
+                break;
+            case "25-50":
+                this.nr_offspring.get(8).setChecked(true);
+                break;
+            case "50-100":
+                this.nr_offspring.get(9).setChecked(true);
+                break;
+            case "+100":
+                this.nr_offspring.get(10).setChecked(true);
+                break;
+        }
+    }
+
+    public void fillBehaviourType(String behavior_types) {
+        if(behavior_types.contains("Traveling")) this.behavior_type.get(0).setChecked(true);
+        if(behavior_types.contains("Eating")) this.behavior_type.get(1).setChecked(true);
+        if(behavior_types.contains("Resting")) this.behavior_type.get(2).setChecked(true);
+        if(behavior_types.contains("Social Interaction")) this.behavior_type.get(3).setChecked(true);
+        if(behavior_types.contains("Other")) this.behavior_type.get(4).setChecked(true);
+    }
+
+    public void fillReactionToVessel(String reactions) {
+        if(reactions.contains("None")) this.reactions_to_vessel.get(0).setChecked(true);
+        if(reactions.contains("Approach")) this.reactions_to_vessel.get(1).setChecked(true);
+        if(reactions.contains("Avoidance")) this.reactions_to_vessel.get(2).setChecked(true);
+        if(reactions.contains("Other")) this.reactions_to_vessel.get(3).setChecked(true);
+    }
+
+    public void fillTrustLevel(String trust_level){
+        switch (trust_level){
+            case "Low":
+                trustLevel.get(0).setChecked(true);
+                break;
+            case "Middle":
+                trustLevel.get(1).setChecked(true);
+                break;
+            case "High":
+                trustLevel.get(2).setChecked(true);
+                break;
+        }
+    }
+
     public void setReactions_to_vessel(ArrayList<ToggleButton> reactions_to_vessel) {
         this.reactions_to_vessel = reactions_to_vessel;
     }
@@ -122,7 +228,6 @@ public class SightingInformation {
         }
         return "Not specified";
     }
-
 
 
     CompoundButton.OnCheckedChangeListener trust_level_listener = new CompoundButton.OnCheckedChangeListener() {
