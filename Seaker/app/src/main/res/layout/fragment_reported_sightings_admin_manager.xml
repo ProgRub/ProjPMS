@@ -37,7 +37,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recentSightings"
+        android:text="@string/reportedSightings"
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold"
@@ -50,10 +50,12 @@
     <!-- Scroll Area Vertical -->
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
@@ -65,27 +67,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <!-- SubSection Titles -->
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reportedSightings"
-                android:textColor="@color/recentSightings"
-                android:layout_marginLeft="10dp"
-                android:textSize="20dp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/recent_sightings"
+                android:layout_width="match_parent"
+                android:padding="10dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="200dp"
-                android:text="@string/otherSightings"
-                android:textColor="@color/otherSightings"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <!-- Recent Sightings List -->
+                <TextView
+                    android:id="@+id/recent_sightings_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recentSightings"
+                    android:textColor="@color/recentSightings"
+                    android:layout_marginLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Other Sightings List -->
+            <LinearLayout
+                android:id="@+id/other_sightings"
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Other Sightings Title -->
+                <TextView
+                    android:id="@+id/other_sightings_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/otherSightings"
+                    android:textColor="@color/otherSightings"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="15dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
