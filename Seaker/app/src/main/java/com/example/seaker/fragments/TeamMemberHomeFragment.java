@@ -27,7 +27,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_member_home, container, false);
         SetButtonOnClickNextFragment(R.id.buttonNewSightingReport,new ReportSightingFragment(),view);
-        SetButtonOnClickNextFragment(R.id.buttonReportedSightingsTeamMember,new ChooseRoleFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonReportedSightingsTeamMember,new ReportedSightingsTeamMemberFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonLogoutTeamMember,new ChooseRoleFragment(),view);
         return view;
     }

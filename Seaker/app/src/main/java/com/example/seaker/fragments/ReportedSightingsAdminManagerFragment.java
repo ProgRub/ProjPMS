@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.seaker.R;
 
-public class ReportedSightingsAdminManagerFragment extends Fragment {
+public class ReportedSightingsAdminManagerFragment extends BaseFragment {
 
     public ReportedSightingsAdminManagerFragment() {
         // Required empty public constructor
