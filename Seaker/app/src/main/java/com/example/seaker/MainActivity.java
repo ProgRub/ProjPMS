@@ -827,7 +827,7 @@ public class MainActivity extends AppCompatActivity {
                     + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
                     + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
                     + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
-                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
+                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode("3", "UTF-8")+"&"
                     + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
                     + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
 
@@ -853,5 +853,29 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         switchFragment(new TeamMemberHomeFragment());
+    }
+
+    public void getAllSightingsInformations(View view){
+        String insertSightingUrl = "http://IP/seaker/getallsightings.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoInput(true);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+            Log.d("TODOS OS AVISTAMENTOS: ", result);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -271,7 +271,7 @@ CREATE TABLE `specie` (
 INSERT INTO `specie` (`id`, `name`, `animal_type_id`) VALUES
 (1, 'Blue whale', 2),
 (2, 'Fin whale', 2),
-(3, 'North Atlantic \r\nRight Whale', 2),
+(3, 'North Atlantic Right Whale', 2),
 (5, 'Sei whale', 2),
 (6, 'Minke whale', 2),
 (7, 'Bryde\'s whale', 2),
