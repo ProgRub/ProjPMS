@@ -37,7 +37,20 @@ if (mysqli_query($conn, $querySighting)) {
 		$behaviorTypes = $animalInfo[4];
 		$reactionToVessel = $animalInfo[5];
 		
-		$query_specie_id = "select id from specie where name = '$specie'";
+		$aux = explode("'", $specie);
+		$specie_ = "";
+		if (count($aux)>1) {
+			for ($b = 0; $b < count($aux)-1; $b++) {
+				$specie_ = $specie_ . $aux[$b] . "\'";
+			}
+			$specie_ = $specie_ . $aux[count($aux)-1];
+			
+		} else {
+			$specie_ = $specie;
+		}
+		
+		
+		$query_specie_id = "select id from specie where name = '$specie_'";
 		$result = mysqli_query($conn, $query_specie_id);
 		$specie_id = -1;	
 		
