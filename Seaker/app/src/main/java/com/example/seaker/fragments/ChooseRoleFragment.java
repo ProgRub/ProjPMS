@@ -26,9 +26,9 @@ public class ChooseRoleFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_choose_role, container, false);
-        SetButtonOnClickNextFragment(R.id.buttonTeamMember,new TeamMemberHomeFragment(),view);
-        SetButtonOnClickNextFragment(R.id.buttonCompanyManager,new CompanyManagerHomeFragment(),view);
-        SetButtonOnClickNextFragment(R.id.buttonAdministrator,new AdminHomeFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonTeamMember,new LoginTeamMemberFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonCompanyManager,new LoginManagerAdminFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonAdministrator,new LoginManagerAdminFragment(),view);
         return view;
     }
 }

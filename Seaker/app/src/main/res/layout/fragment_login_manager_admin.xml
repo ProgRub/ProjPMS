@@ -7,43 +7,69 @@
     android:background="@drawable/admin_login_background"
     tools:context=".fragments.LoginManagerAdminFragment">
 
+    <!-- Back button -->
+    <ImageButton
+        android:id="@+id/buttonBack"
+        android:layout_width="43dp"
+        android:layout_height="57dp"
+        android:background="@drawable/back_btn"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.218" />
+
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/email_input"
         android:layout_width="366dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="248dp"
-        android:background="@drawable/input_field_smaller"
+        android:layout_height="100dp"
+        android:background="@drawable/login_input"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:singleLine="true"
+        android:gravity="center"
         android:textSize="16sp"
+        android:maxLength="30"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.377" />
 
     <EditText
-        android:id="@+id/editPassword"
+        android:id="@+id/password_input"
         android:layout_width="366dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/input_field_smaller"
+        android:layout_height="100dp"
+        android:background="@drawable/login_input"
         android:ems="10"
         android:inputType="textPassword"
         android:singleLine="true"
+        android:gravity="center"
+        android:maxLength="20"
+        android:textColor="@color/black"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/email_input"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/login_btn"
         android:layout_width="191dp"
         android:layout_height="61dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="42dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/login_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/password_input"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

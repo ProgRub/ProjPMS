@@ -13,8 +13,9 @@
         android:layout_height="80dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/all_teammember_btn"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddTeamMember"
-        tools:layout_editor_absoluteX="56dp"></ImageButton>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddTeamMember"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonAddTeamMember"
@@ -26,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.379"></ImageButton>
+        app:layout_constraintVertical_bias="0.359"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonLogoutAdmin"

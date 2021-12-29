@@ -11,12 +11,13 @@
         android:id="@+id/buttonCreateReport"
         android:layout_width="300dp"
         android:layout_height="80dp"
-        android:layout_marginTop="244dp"
         android:background="@drawable/create_report_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageButton>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonAllMembersCM"
@@ -24,10 +25,12 @@
         android:layout_height="80dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/all_teammember_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreateReport"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateReport"
+        app:layout_constraintVertical_bias="0.0"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonReportedSightingsCM"
@@ -35,10 +38,12 @@
         android:layout_height="80dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/reported_sightings_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAllMembersCM"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/buttonAllMembersCM"
+        app:layout_constraintVertical_bias="0.0"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonLogoutCM"
