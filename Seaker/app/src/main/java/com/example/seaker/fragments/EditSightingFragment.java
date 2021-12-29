@@ -53,6 +53,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private EditText sightingTime;
     private TextView sightingLatitude;
     private TextView sightingLongitude;
+    private EditText sightingComment;
     private GoogleMap googleMap;
     private LinearLayout sightingInformationsLayout;
     private BusinessFacade businessFacade;
@@ -101,9 +102,12 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         //FALTA:
         //PREENCHER FOTOS
-        //PREENCHER COORDENADAS
-        //PREENCHER COMENTÁRIO
         //ACEDER AOS DADOS DE CADA ESPECIE DO AVISTAMENTO
+
+        //ALTERAR COORDENADAS NO MÉTODO OnMapReady (para iniciar o mapa nas coordenadas do avistamento)
+        sightingLatitude.setText("Latitude: " + "DB_VALUE"); //PREENCHER COORDENADAS
+        sightingLongitude.setText("Longitude: " + "DB_VALUE"); //PREENCHER COORDENADAS
+        sightingComment.setText("DB_VALUE"); //PREENCHER COMENTÁRIO
 
         String speciesString = model.getSpecies().replace(", ", ",");
         String[] speciesNames = speciesString.split(",");
@@ -241,6 +245,9 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         takePhoto = (ImageButton) view.findViewById(R.id.take_photo_btn);
         uploadPhoto = (ImageButton) view.findViewById(R.id.upload_photo_btn);
 
+
+        sightingComment = (EditText) view.findViewById(R.id.sighting_comment);
+
         sightingInformationsLayout = (LinearLayout) view.findViewById(R.id.sightingsInformations);
 
         whalesBtn = (Button) view.findViewById(R.id.scroll_to_whales_btn);
@@ -359,12 +366,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
-        //CARREGAR AS COORDENADAS DEPENDENDO DA VIAGEM
-        LatLng Funchal = new LatLng(32.643579, -16.914312 );
-        map.addMarker(new MarkerOptions().position(Funchal).title("Funchal"));
+
+        LatLng Funchal = new LatLng(32.643579, -16.914312 ); //COLOCAR AS COORDENADAS DA DB AQUI
+        map.addMarker(new MarkerOptions().position(Funchal).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
         moveToCurrentLocation(Funchal);
-        sightingLatitude.setText("Latitude: "+ df.format(Funchal.latitude));
-        sightingLongitude.setText("Longitude: "+ df.format(Funchal.longitude));
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
