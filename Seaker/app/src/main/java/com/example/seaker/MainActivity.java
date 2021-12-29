@@ -18,7 +18,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,6 +29,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -137,6 +140,34 @@ public class MainActivity extends AppCompatActivity {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, fragment)
                 .commit();
+    }
+
+    public void onButtonShowPopupWindowClick(View view, String popup_message) {
+
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_window, null);
+        TextView message = (TextView) popupView.findViewById(R.id.popup_message);
+        message.setText(popup_message);
+
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, 800, 500, focusable);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                popupWindow.dismiss();
+            }
+        }, 2600);
     }
 
 }

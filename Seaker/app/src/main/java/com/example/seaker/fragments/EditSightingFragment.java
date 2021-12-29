@@ -65,7 +65,9 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private ArrayList<ImageButton> whalesSpeciesBtns;
     private ArrayList<ImageButton> dolphinSpeciesBtns;
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
-    private ImageButton reportSightingBtn;
+    private ImageButton saveChangesBtn;
+    private ImageButton deleteSightingBtn;
+
     private static final DecimalFormat df = new DecimalFormat("0.00000");
 
     public EditSightingFragment() {
@@ -350,12 +352,21 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             porpoiseSpecie.setOnClickListener(onClickListener);
         }
 
-        reportSightingBtn = (ImageButton) view.findViewById(R.id.reportSightingBtn);
+        saveChangesBtn = (ImageButton) view.findViewById(R.id.save_changes_btn);
 
-        reportSightingBtn.setOnClickListener(new View.OnClickListener(){
+        saveChangesBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                //FUNÇÃO PARA FAZER UPDATE NA BASE DE DADOS
+            }
+        });
 
+        deleteSightingBtn = (ImageButton) view.findViewById(R.id.delete_sighting_btn);
+
+        deleteSightingBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //FUNÇÃO PARA APAGAR DA BASE DE DADOS
             }
         });
 

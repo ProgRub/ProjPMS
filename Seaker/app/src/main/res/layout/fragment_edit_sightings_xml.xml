@@ -731,16 +731,26 @@
                 android:padding="5dp"
                 android:scrollbars="vertical" />
 
-            <!-- Report sighting button -->
+            <!-- Save changes button -->
             <ImageButton
-                android:id="@+id/reportSightingBtn"
+                android:id="@+id/save_changes_btn"
                 android:layout_width="180dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="90dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selected_specie_btn"
-                tools:ignore="SpeakableTextPresentCheck"
-                android:onClick="insertSightingInformationIntoBD"></ImageButton>
+                android:background="@drawable/save_changes_btn"
+                tools:ignore="SpeakableTextPresentCheck"></ImageButton>
+
+
+            <!-- Delete sighting button -->
+            <ImageButton
+                android:id="@+id/delete_sighting_btn"
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="90dp"
+                android:background="@drawable/delete_sighting_btn"
+                tools:ignore="SpeakableTextPresentCheck"></ImageButton>
+
 
         </LinearLayout>
 

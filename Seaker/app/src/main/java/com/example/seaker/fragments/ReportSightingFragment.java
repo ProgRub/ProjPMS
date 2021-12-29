@@ -75,6 +75,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
 
+    private boolean clickedCoordinatesOnce;
+
     private static final DecimalFormat df = new DecimalFormat("0.00000");
 
 
@@ -102,6 +104,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     }
 
     private void onStartView(View view){
+
+        clickedCoordinatesOnce = false;
+
         sightingDate = (EditText) view.findViewById(R.id.pickDate);
         sightingTime = (EditText) view.findViewById(R.id.pickTime);
 
@@ -254,6 +259,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             @Override
             public void onMapClick(LatLng point) {
                 //allPoints.add(point);
+                clickedCoordinatesOnce = true;
                 map.clear();
                 map.addMarker(new MarkerOptions().position(point).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
                 //moveToCurrentLocation(point);
@@ -983,7 +989,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         for(SightingInformation sighting : sightingInformations){
             animal += sighting.toString();
         }
-        sightingInformations.clear();
+
         String insertSightingUrl = "http://IP/seaker/insertsighting.php";
         try {
             URL url = new URL(insertSightingUrl);
@@ -1024,7 +1030,37 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MainActivity.switchFragment(new TeamMemberHomeFragment());
+
+        if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
+            sightingInformations.clear();
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
+            //Espera 2 segundos
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    MainActivity.switchFragment(new TeamMemberHomeFragment());
+                }
+            }, 2000);
+
+        }else{ //se não preencheu todos os campos obrigatórios
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Required fields missing!");
+        }
+    }
+
+    private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
+
+        if(!clickedCoordinatesOnce) return false; //se não clicou no mapa nenhuma vez
+
+        if(sightingDate.getText().toString().equals("")) return false; //se não preencheu a data
+        if(sightingTime.getText().toString().equals("")) return false; //se não preencheu o tempo
+
+        if(sightingInformations.size() == 0) return false; //se não escolheu nenhuma espécie
+
+        for(SightingInformation sighting : sightingInformations){
+            if(sighting.getNumberOfIndividualsString().equals("ERROR")) return false; //se não preencheu o número de individuos de alguma espécie
+        }
+
+        return true;
     }
 
     public void getAllSightingsInformations(View view){

@@ -192,21 +192,21 @@ public class SightingInformation {
         this.trustLevel.add(trust_level);
     }
 
-    private String getNumberOfIndividualsString(){
+    public String getNumberOfIndividualsString(){
         for(ToggleButton toggleButton : nr_individuals){
             if (toggleButton.isChecked()) return toggleButton.getTextOff().toString();
         }
         return "ERROR"; //DEVE APRESENTAR UM ERRO - CAMPO OBRIGATORIO
     }
 
-    private String getNumberOfOffspringString(){
+    public String getNumberOfOffspringString(){
         for(ToggleButton toggleButton : nr_offspring){
             if (toggleButton.isChecked()) return toggleButton.getTextOff().toString();
         }
         return "Not specified";
     }
 
-    private String getBehaviorTypesString(){
+    public String getBehaviorTypesString(){
         String info = "";
         for(ToggleButton toggleButton : behavior_type){
             if (toggleButton.isChecked()) info += toggleButton.getTextOff().toString() + ";";
@@ -214,7 +214,7 @@ public class SightingInformation {
         return info;
     }
 
-    private String getReactionToVesselString(){
+    public String getReactionToVesselString(){
         String info = "";
         for(ToggleButton toggleButton : reactions_to_vessel){
             if (toggleButton.isChecked()) info += toggleButton.getTextOff().toString() + ";";
@@ -222,7 +222,7 @@ public class SightingInformation {
         return info;
     }
 
-    private String getTrustLevelString(){
+    public String getTrustLevelString(){
         for(ToggleButton toggleButton : trustLevel){
             if (toggleButton.isChecked()) return toggleButton.getTextOff().toString();
         }
