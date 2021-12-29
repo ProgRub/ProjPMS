@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         businessFacade = BusinessFacade.getInstance();
-        JsonWriter json = new JsonWriter();
-        json.createSightingJson();
+        //JsonWriter json = new JsonWriter();
+        //json.createSightingJson();
     }
 
 
