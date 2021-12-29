@@ -25,7 +25,7 @@ public class CompanyManagerHomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_manager_home, container, false);
-        SetButtonOnClickNextFragment(R.id.buttonCreateReport,new ChooseRoleFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonCreateReport,new CreateReportFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersCM,new ChooseRoleFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsCM,new ChooseRoleFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonLogoutCM,new ChooseRoleFragment(),view);

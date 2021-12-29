@@ -34,8 +34,8 @@ public class LoginManagerAdminFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login_manager_admin, container, false);
-        //SetButtonOnClickNextFragment(R.id.login_btn,new CompanyManagerHomeFragment(),view); //Se for manager
-        SetButtonOnClickNextFragment(R.id.login_btn, new AdminHomeFragment(),view); //Se for admin
+        SetButtonOnClickNextFragment(R.id.login_btn,new CompanyManagerHomeFragment(),view); //Se for manager
+        //SetButtonOnClickNextFragment(R.id.login_btn, new AdminHomeFragment(),view); //Se for admin
         SetButtonOnClickNextFragment(R.id.buttonBack,new ChooseRoleFragment(),view);
 
         onStartView(view);

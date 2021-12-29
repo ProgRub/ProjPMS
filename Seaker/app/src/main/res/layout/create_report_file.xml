@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".fragments.CreateReportFragment">
+
+    <!-- Zona branca -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/scroll_area"
+        android:contentDescription="sectionDescription"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <!-- Back button -->
+    <ImageButton
+        android:id="@+id/buttonBack"
+        android:layout_width="43dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        android:background="@drawable/back_btn" />
+
+    <!-- Section Title -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Report"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
+
+    <!-- Scroll Area Vertical -->
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="380dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.755">
+
+        <!-- Conteudo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Date and Time titles -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date: *"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:layout_marginRight="30dp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:text="End Date: *"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"></TextView>
+
+            </LinearLayout>
+
+            <!-- Date and Time input fields -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/pickDate"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/input_field"
+                    android:ems="10"
+                    android:textSize="14dp"
+                    android:inputType="date"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:textColor="@color/black"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    tools:ignore="SpeakableTextPresentCheck"/>
+
+                <EditText
+                    android:id="@+id/pickTime"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/input_field"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:textColor="@color/black"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:textSize="14dp"
+                    tools:ignore="SpeakableTextPresentCheck"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Photos per Sighting: *"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"></TextView>
+
+            </LinearLayout>
+
+            <!-- Photos per sighting -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Máx:"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"></TextView>
+
+                <EditText
+                    android:id="@+id/photos_per_sighting"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/input_field"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    tools:ignore="SpeakableTextPresentCheck"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/create_summary_btn"
+                android:layout_gravity="center"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/create_summary_btn"
+                ></ImageButton>
+
+            <LinearLayout
+                android:id="@+id/summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Summary:"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="20dp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:id="@+id/nr_sightings_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No summary created."
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"></TextView>
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="180dp" />
+
+                <TextView
+                    android:id="@+id/total_nr_individuals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Total number of individuals: "
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="30dp"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose a format: *"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"></TextView>
+
+                <RadioGroup
+                    android:id="@+id/file_format"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/pdf_format"
+                        android:layout_gravity="center"
+                        android:layout_width="110dp"
+                        android:layout_height="60dp"
+                        android:button="@null"
+                        android:background="@drawable/pdf_format_btn"
+                        ></RadioButton>
+
+                    <RadioButton
+                        android:id="@+id/docx_format"
+                        android:layout_gravity="center"
+                        android:layout_width="110dp"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="10dp"
+                        android:button="@null"
+                        android:background="@drawable/docx_format_btn"
+                        ></RadioButton>
+
+                </RadioGroup>
+
+                <ImageButton
+                    android:id="@+id/export_report_btn"
+                    android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/export_report_btn"
+                    ></ImageButton>
+
+                <ImageButton
+                    android:id="@+id/share_via_email_btn"
+                    android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/share_via_email_btn"
+                    ></ImageButton>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
