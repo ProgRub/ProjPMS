@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentContainerView;
 
 import com.example.seaker.MainActivity;
@@ -39,6 +41,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -66,6 +72,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private LinearLayout summary;
     private int pageHeight = 1120;
     private int pagewidth = 792;
+    private File pdfFile;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
     public CreateReportFragment() {
@@ -141,9 +148,9 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 if(pdfFormat.isChecked()){
-                    generatePDF();
+                    generatePDF(true);
                 }else if(docxFormat.isChecked()){
-
+                    generateDocx(true);
                 }else{
                     ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
                 }
@@ -153,7 +160,15 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         shareViaEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendViaEmail();
+                if(pdfFormat.isChecked()){
+                    generatePDF(false);
+                    sendViaEmail();
+                }else if(docxFormat.isChecked()){
+                    generateDocx(false);
+                    sendViaEmail();
+                }else{
+                    ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
+                }
             }
         });
 
@@ -330,7 +345,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
-    private void generatePDF() {
+    private void generatePDF(boolean export) {
         PdfDocument pdfDocument = new PdfDocument();
 
         Paint paint = new Paint();
@@ -353,13 +368,12 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         title.setTextSize(34);
         title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
-        String sentence = "From " + startDate.getText().toString() + " to " + endDate.getText().toString() + ".";
+        String sentence = "From " + startDate.getText().toString() + " to " + endDate.getText().toString() + "";
 
         canvas.drawText("Summary of Sightings", 396, 560, title);
         canvas.drawText(sentence, 396, 600, title);
 
         pdfDocument.finishPage(myPage);
-
 
         PdfDocument.PageInfo pageInfo;
         PdfDocument.Page speciePage;
@@ -390,11 +404,11 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             pdfDocument.finishPage(speciePage);
         }
 
-        File file = new File(Environment.getExternalStorageDirectory(), "SummaryOfSightings.pdf");
+        pdfFile = new File(Environment.getExternalStorageDirectory(), "SummaryOfSightings.pdf");
 
         try {
-            pdfDocument.writeTo(new FileOutputStream(file));
-            Toast.makeText(getActivity(), "PDF file generated successfully.", Toast.LENGTH_SHORT).show();
+            pdfDocument.writeTo(new FileOutputStream(pdfFile));
+            if(export) Toast.makeText(getActivity(), "PDF file generated successfully.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -411,35 +425,43 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
+    private void generateDocx(boolean export) {
+        try {
+            XWPFDocument xwpfDocument = new XWPFDocument();
+            XWPFParagraph xwpfParagraph = xwpfDocument.createParagraph();
+            XWPFRun xwpfRun = xwpfParagraph.createRun();
+
+            xwpfRun.setText("TESTING");
+            xwpfRun.setFontSize(24);
+
+            FileOutputStream fileOutputStream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.docx");
+            xwpfDocument.write(fileOutputStream);
+
+            if (fileOutputStream!=null){
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+            xwpfDocument.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
     private void sendViaEmail(){
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"bons_avistamentos@gmail.com"});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Summary of Sightings - "+startDate.getText().toString() + " to " + endDate.getText().toString());
 
-        String bodyText = "";
-        for(SpecieSummary specieSummary : speciesSummary){
-            bodyText += "Specie: " + specieSummary.getSpecie() + "\n";
-            bodyText += "- Total number of individuals: "+specieSummary.getTotalNrIndividuals() + "\n";
-            bodyText += "- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting() + "\n";
-            bodyText += "- Most common behavior type: "+specieSummary.getMostCommonBehavior() + "\n";
-            bodyText += "- Most common reaction to vessel: "+specieSummary.getMostCommonReaction() + "\n";
-            bodyText += "- Average Beaufort sea state: "+specieSummary.getAverageBeaufort() + "\n";
-            bodyText += "- Average trust level: "+specieSummary.getAverageTrustLvl() + "\n";
-            bodyText += "- Photos: "+specieSummary.getNrPhotos() + "\n";
-            bodyText += "\n\n";
-        }
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Generated by Seaker - developed by BehindTheDesk Studios.");
 
-        emailIntent.putExtra(Intent.EXTRA_TEXT, bodyText);
+        Uri pdfUri = FileProvider.getUriForFile(getContext(),"com.example.seaker.provider", pdfFile);
 
-        //PARA ADICIONAR PDF - falta mudar:
-        //File root = Environment.getExternalStorageDirectory();
-        //File file = new File(root, pathToMyAttachedFile);
-        //                if (!file.exists() || !file.canRead()) {
-        //                    return;
-        //                }
-        //                Uri uri = Uri.fromFile(file);
-        //                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, pdfUri);
 
         startActivity(Intent.createChooser(emailIntent, "Pick an Email provider"));
     }
