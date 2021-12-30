@@ -14,14 +14,8 @@ $animal = $_POST['animal'];
 $day_pt = explode('/', $day);
 $day_en = $day_pt[2] . '-' . $day_pt[1] . '-' . $day_pt[0];
 
-$latitude_ = explode(' ', $latitude);
-$lat = $latitude_[1];
-
-$longitude_ = explode(' ', $longitude);
-$lon = $longitude_[1];
-
 $querySighting = "insert into sighting_report (day, hour, sea_state, latitude, longitude, comment, person_id, boat_id) values ('$day_en','$hour',
-'$sea_state','$lat','$lon'," . ($comment == '' ? 'NULL' : "'" . $comment . "'") . ",'$person_id','$boat_id')";
+'$sea_state','$latitude','$longitude'," . ($comment == '' ? 'NULL' : "'" . $comment . "'") . ",'$person_id','$boat_id')";
 
 if (mysqli_query($conn, $querySighting)) {
 	$last_sighting_id = mysqli_insert_id($conn);

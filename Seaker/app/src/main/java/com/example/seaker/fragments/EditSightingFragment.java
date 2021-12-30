@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,18 +103,13 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingDate.setText(model.getDate());
         sightingTime.setText(model.getTime());
 
-        //FALTA:
-        //PREENCHER FOTOS
-        //ACEDER AOS DADOS DE CADA ESPECIE DO AVISTAMENTO
-
         //ALTERAR COORDENADAS NO MÉTODO OnMapReady (para iniciar o mapa nas coordenadas do avistamento)
-        sightingLatitude.setText("Latitude: " + "DB_VALUE"); //PREENCHER COORDENADAS
-        sightingLongitude.setText("Longitude: " + "DB_VALUE"); //PREENCHER COORDENADAS
-        sightingComment.setText("DB_VALUE"); //PREENCHER COMENTÁRIO
+        sightingLatitude.setText("Latitude: " + model.getLatitude());
+        sightingLongitude.setText("Longitude: " + model.getLongitude());
+        sightingComment.setText(model.getComment());
 
-        String speciesString = model.getSpecies().replace(", ", ",");
-        String[] speciesNames = speciesString.split(",");
-        for(String specie : speciesNames) {
+        int index = 0;
+        for(String specie : model.getSpecies()) {
             switch (specie) {
                 case "Blue Whale":
                     clickSpecie(getView().findViewById(R.id.blue_whale_btn));
@@ -209,19 +205,20 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                     clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn));
                     break;
             }
-            fillSpecieSightingInformation(specie);
+            fillSpecieSightingInformation(specie, index);
+            index++;
         }
     }
 
-    private void fillSpecieSightingInformation(String specie){
+    private void fillSpecieSightingInformation(String specie, int index){
         SightingInformation sightingInformation = sightingInformations.get(getSightingInformationId(specie));
-        //TESTAR PREENCHIMENTO DO SIGHTING INFORMATION BOX:
-        sightingInformation.fillNrIndividuals("6-10");
-        sightingInformation.fillNrOffspring("3");
-        sightingInformation.fillBehaviourType("Resting, Other");
-        sightingInformation.fillReactionToVessel("Approach, Avoidance");
-        sightingInformation.fillBeaufortSeaState(3);
-        sightingInformation.fillTrustLevel("Low");
+
+        sightingInformation.fillNrIndividuals(model.getN_individuals().get(index));
+        sightingInformation.fillNrOffspring(model.getN_offspring().get(index));
+        sightingInformation.fillBehaviourType(model.getBehaviors().get(index));
+        sightingInformation.fillReactionToVessel(model.getReactions().get(index));
+        sightingInformation.fillBeaufortSeaState(model.getSea_state());
+        sightingInformation.fillTrustLevel(model.getTrust_level().get(index));
     }
 
     private int getSightingInformationId(String specie){

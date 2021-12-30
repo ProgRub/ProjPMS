@@ -9,6 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -43,9 +48,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -55,6 +64,8 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class ReportSightingFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -223,7 +234,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         reportSightingBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                insertSightingInformationIntoBD(view);
+                insertSighting(view);
             }
         });
 
@@ -972,7 +983,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    public void insertSightingInformationIntoBD(View view){
+    public void insertSighting(View view){
 
         EditText editText = (EditText) getView().findViewById(R.id.pickDate);
         String day = editText.getText().toString();
@@ -980,8 +991,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         String hour = editText1.getText().toString();
         TextView textView = (TextView) getView().findViewById(R.id.latitude);
         String latitude = textView.getText().toString();
+        String[] result = latitude.split(": ");
+        String latitude_ = result[1];
         TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
         String longitude = textView1.getText().toString();
+        String[] result1 = longitude.split(": ");
+        String longitude_ = result1[1];
         EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
         String comment = editText3.getText().toString();
         String animal = "";
@@ -989,6 +1004,50 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         for(SightingInformation sighting : sightingInformations){
             animal += sighting.toString();
         }
+
+        if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
+
+            if(isInternetWorking()){
+                insertSightingInformationIntoBD(day, hour, latitude_, longitude_, comment, animal);
+            } else {
+                insertSightingInformationIntoFile(day, hour, latitude_, longitude_, comment, animal);
+            }
+            sightingInformations.clear();
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
+            //Espera 2 segundos
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    MainActivity.switchFragment(new TeamMemberHomeFragment());
+                }
+            }, 2000);
+
+        }else{ //se não preencheu todos os campos obrigatórios
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Required fields missing!");
+        }
+    }
+
+    public void insertSightingInformationIntoFile(String day, String hour, String latitude_, String longitude_, String comment, String animal){
+
+        ArrayList<String> sighting = new ArrayList<>();
+        sighting.add(day);
+        sighting.add(hour);
+        sighting.add("1");
+        sighting.add(latitude_);
+        sighting.add(longitude_);
+        sighting.add(comment);
+        sighting.add("3*Sílvia Fernandes");
+        sighting.add("1");
+        sighting.add(animal);
+
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sightings = ReadArrayListFromSD(cont, "notSubmittedSightings");
+        sightings.add(sighting);
+        SaveArrayListToSD(cont, "notSubmittedSightings", sightings);
+        //Log.d("file", ReadArrayListFromSD(cont, "notSubmittedSightings").toString());
+    }
+
+    public static void insertSightingInformationIntoBD(String day, String hour, String latitude, String longitude, String comment, String animal){
 
         String insertSightingUrl = "http://IP/seaker/insertsighting.php";
         try {
@@ -1019,7 +1078,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             while((line = bufferedReader.readLine())!=null){
                 result += line;
             }
-            Snackbar.make(view, result, Snackbar.LENGTH_LONG).show();
 
             bufferedReader.close();
             inputStream.close();
@@ -1029,21 +1087,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
-            sightingInformations.clear();
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
-            //Espera 2 segundos
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    MainActivity.switchFragment(new TeamMemberHomeFragment());
-                }
-            }, 2000);
-
-        }else{ //se não preencheu todos os campos obrigatórios
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Required fields missing!");
         }
     }
 
@@ -1063,15 +1106,15 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return true;
     }
 
-    public void getAllSightingsInformations(View view){
-        String insertSightingUrl = "http://IP/seaker/getallsightings.php";
+    public static String getAllSightingsInformations(){
+        String result = "";
+        String insertSightingUrl = "http://IP/seaker/getallsightings2.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setDoInput(true);
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-            String result = "";
             String line = "";
             while((line = bufferedReader.readLine())!=null){
                 result += line;
@@ -1085,5 +1128,49 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
+
+    public static void SaveArrayListToSD(Context mContext, String filename, ArrayList<ArrayList<String>> list){
+        try {
+
+            FileOutputStream fos = mContext.openFileOutput(filename + ".dat", mContext.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(list);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<ArrayList<String>> ReadArrayListFromSD(Context mContext,String filename){
+        try {
+            FileInputStream fis = mContext.openFileInput(filename + ".dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<ArrayList<String>> obj= (ArrayList<ArrayList<String>>) ois.readObject();
+            fis.close();
+            return obj;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public static boolean isInternetWorking() {
+        boolean success = false;
+        try {
+            URL url = new URL("https://google.com");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(1000);
+            connection.connect();
+            success = connection.getResponseCode() == 200;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return success;
+    }
+
+
+
 }

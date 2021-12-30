@@ -740,7 +740,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/selected_specie_btn"
                 tools:ignore="SpeakableTextPresentCheck"
-                android:onClick="insertSightingInformationIntoBD"></ImageButton>
+                android:onClick="insertSighting"></ImageButton>
 
         </LinearLayout>
 
