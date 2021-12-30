@@ -74,6 +74,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private TextView sightingLatitude;
     private TextView sightingLongitude;
     private GoogleMap googleMap;
+    private SeekBar beaufortSeekBar;
     private LinearLayout sightingInformationsLayout;
     private BusinessFacade businessFacade;
     private ImageButton takePhoto;
@@ -126,6 +127,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         takePhoto = (ImageButton) view.findViewById(R.id.take_photo_btn);
         uploadPhoto = (ImageButton) view.findViewById(R.id.upload_photo_btn);
+
+        beaufortSeekBar = (SeekBar) view.findViewById(R.id.beaufort_slider);
 
         sightingInformationsLayout = (LinearLayout) view.findViewById(R.id.sightingsInformations);
 
@@ -238,6 +241,23 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             }
         });
 
+        LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View thumbView = vi.inflate(R.layout.layout_seekbar_thumb, null);
+
+        ((TextView) thumbView.findViewById(R.id.tvProgress)).setText("6");
+
+        beaufortSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.setThumb(getThumb(progress, thumbView));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        beaufortSeekBar.setThumb(getThumb(6, thumbView));
 
         final Calendar calendar = Calendar.getInstance();
         int yy = calendar.get(Calendar.YEAR);
@@ -562,26 +582,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         auxToggle.add((ToggleButton) v.findViewById(R.id.other_reaction));
 
         sighting.setReactions_to_vessel(auxToggle);
-
-        LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View thumbView = vi.inflate(R.layout.layout_seekbar_thumb, null);
-
-        ((SeekBar) v.findViewById(R.id.beaufort_slider)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBar.setThumb(getThumb(progress, thumbView));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
-        ((TextView) thumbView.findViewById(R.id.tvProgress)).setText("6");
-
-        ((SeekBar) v.findViewById(R.id.beaufort_slider)).setThumb(getThumb(6, thumbView));
-
-        sighting.setBeaufortSeaState(((SeekBar) v.findViewById(R.id.beaufort_slider)));
 
         auxToggle = new ArrayList<ToggleButton>();
 
@@ -1049,7 +1049,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static void insertSightingInformationIntoBD(String day, String hour, String latitude, String longitude, String comment, String animal){
 
-        String insertSightingUrl = "http://IP/seaker/insertsighting.php";
+        String insertSightingUrl = "http://192.168.1.80/seaker/insertsighting.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -1108,7 +1108,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static String getAllSightingsInformations(){
         String result = "";
-        String insertSightingUrl = "http://IP/seaker/getallsightings2.php";
+        String insertSightingUrl = "http://192.168.1.80/seaker/getallsightings2.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
