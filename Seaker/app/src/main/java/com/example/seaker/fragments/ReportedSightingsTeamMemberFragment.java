@@ -117,7 +117,6 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         String minutes = time_parts[1];
 
         String format = "";
-        DateTimeFormatter formatter;
         if(day.length() == 1){
             format +="d/";
         }else if(day.length() ==2){

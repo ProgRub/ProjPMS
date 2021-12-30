@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         message.setText(popup_message);
 
         boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, 800, 500, focusable);
+        final PopupWindow popupWindow = new PopupWindow(popupView, 1000, 500, focusable);
 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
