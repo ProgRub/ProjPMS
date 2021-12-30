@@ -83,7 +83,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_sightings_xml, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_sightings, container, false);
 
         SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
 
