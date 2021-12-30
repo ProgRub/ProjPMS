@@ -60,6 +60,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private BusinessFacade businessFacade;
     private ImageButton takePhoto;
     private ImageButton uploadPhoto;
+    private SeekBar beaufortSeekBar;
     private Button whalesBtn;
     private Button dolphinsBtn;
     private Button porpoisesBtn;
@@ -213,6 +214,27 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             fillSpecieSightingInformation(specie, index);
             index++;
         }
+
+        LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View thumbView = vi.inflate(R.layout.layout_seekbar_thumb, null);
+
+        int beafortValue = model.getSea_state();
+        ((TextView) thumbView.findViewById(R.id.tvProgress)).setText(""+beafortValue);
+
+
+        beaufortSeekBar.setProgress(beafortValue);
+
+        beaufortSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.setThumb(getThumb(progress, thumbView));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        beaufortSeekBar.setThumb(getThumb(beafortValue, thumbView));
     }
 
     private void fillSpecieSightingInformation(String specie, int index){
@@ -222,7 +244,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingInformation.fillNrOffspring(model.getN_offspring().get(index));
         sightingInformation.fillBehaviourType(model.getBehaviors().get(index));
         sightingInformation.fillReactionToVessel(model.getReactions().get(index));
-        sightingInformation.fillBeaufortSeaState(model.getSea_state());
         sightingInformation.fillTrustLevel(model.getTrust_level().get(index));
     }
 
@@ -249,6 +270,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         takePhoto = (ImageButton) view.findViewById(R.id.take_photo_btn);
         uploadPhoto = (ImageButton) view.findViewById(R.id.upload_photo_btn);
 
+        beaufortSeekBar = (SeekBar) view.findViewById(R.id.beaufort_slider);
 
         sightingComment = (EditText) view.findViewById(R.id.sighting_comment);
 
@@ -681,26 +703,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         auxToggle.add((ToggleButton) v.findViewById(R.id.other_reaction));
 
         sighting.setReactions_to_vessel(auxToggle);
-
-        LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View thumbView = vi.inflate(R.layout.layout_seekbar_thumb, null);
-
-        ((SeekBar) v.findViewById(R.id.beaufort_slider)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBar.setThumb(getThumb(progress, thumbView));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
-        ((TextView) thumbView.findViewById(R.id.tvProgress)).setText("6");
-
-        ((SeekBar) v.findViewById(R.id.beaufort_slider)).setThumb(getThumb(6, thumbView));
-
-        sighting.setBeaufortSeaState(((SeekBar) v.findViewById(R.id.beaufort_slider)));
 
         auxToggle = new ArrayList<ToggleButton>();
 

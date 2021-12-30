@@ -20,7 +20,6 @@ public class SightingInformation {
     private ArrayList<ToggleButton> nr_offspring;
     private ArrayList<ToggleButton> behavior_type;
     private ArrayList<ToggleButton> reactions_to_vessel;
-    private SeekBar beaufortSeaState;
     private ArrayList<ToggleButton> trustLevel;
 
     public SightingInformation(int sightingBoxID){
@@ -55,20 +54,8 @@ public class SightingInformation {
         return this.sightingBoxID;
     }
 
-    public int getBeaufortSeaState() {
-        return beaufortSeaState.getProgress();
-    }
-
-    public void setBeaufortSeaState(SeekBar beaufortSeaState) {
-        this.beaufortSeaState = beaufortSeaState;
-    }
-
     public void setBehavior_type(ArrayList<ToggleButton> behavior_type) {
         this.behavior_type = behavior_type;
-    }
-
-    public void fillBeaufortSeaState(int value){
-        this.beaufortSeaState.setProgress(value);
     }
 
     public void fillNrIndividuals(String nr_individuals){

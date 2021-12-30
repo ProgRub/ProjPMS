@@ -705,6 +705,39 @@
 
             </HorizontalScrollView>
 
+            <!-- Beaufort Sea state: -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:text="Beaufort Sea State:"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"></TextView>
+
+            <SeekBar
+                android:id="@+id/beaufort_slider"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/seekbar_progress"
+                android:max="12"
+                android:min="0"
+                android:progress="6"
+                android:progressDrawable="@android:color/transparent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:text="0                                      6                                     12"
+                android:textColor="@color/black"
+                android:textSize="14dp"></TextView>
+
+
             <!-- Comment title -->
             <TextView
                 android:layout_width="wrap_content"
@@ -715,6 +748,7 @@
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:textStyle="bold"></TextView>
+
 
             <!-- Comment input field -->
             <EditText

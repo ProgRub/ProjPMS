@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="370dp"
-            android:layout_height="593dp">
+            android:layout_height="513dp">
 
             <!-- Title - Specie Name + "Sighting" -->
             <TextView
@@ -590,50 +590,13 @@
 
             </LinearLayout>
 
-            <!-- Beaufort Sea state: -->
-            <TextView
-                android:layout_width="177dp"
-                android:layout_height="31dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="425dp"
-                android:text="Beaufort Sea state:"
-                android:textColor="@color/dark_blue"
-                android:textSize="14dp"></TextView>
-
-
-            <SeekBar
-                android:id="@+id/beaufort_slider"
-                android:layout_width="300dp"
-                android:layout_height="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="0dp"
-                android:paddingTop="60dp"
-                android:paddingBottom="60dp"
-                android:layout_marginTop="455dp"
-                android:background="@drawable/seekbar_progress"
-                android:progressDrawable="@android:color/transparent"
-                android:max="12"
-                android:min="0"
-                android:progress="6" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="31dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="480dp"
-                android:text="0                                      6                                     12"
-                android:textColor="@color/black"
-                android:textSize="14dp"></TextView>
-
             <!-- Trust Level: -->
             <TextView
                 android:layout_width="177dp"
                 android:layout_height="31dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="505dp"
+                android:layout_marginTop="425dp"
                 android:layout_marginBottom="194dp"
                 android:text="Trust level:"
                 android:textColor="@color/dark_blue"
@@ -646,7 +609,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="535dp"
+                android:layout_marginTop="455dp"
                 android:layout_marginRight="5dp">
 
                 <ToggleButton
