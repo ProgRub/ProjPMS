@@ -35,6 +35,7 @@ import androidx.fragment.app.FragmentContainerView;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SpecieSummary;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -42,6 +43,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.TextAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -304,6 +308,11 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             return;
         }
 
+        if(Integer.parseInt(photosPerSighting.getText().toString()) > 30){
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Enter a number from 0 to 30!");
+            return;
+        }
+
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
 
@@ -343,7 +352,15 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin));
             map.addMarker(options);
             sightingNr++;
+            moveToCurrentLocation(point);
         }
+    }
+
+    private void moveToCurrentLocation(LatLng currentLocation)
+    {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        map.animateCamera(CameraUpdateFactory.zoomIn());
+        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
 
     private void generatePDF(boolean export) {
@@ -384,7 +401,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             speciePage = pdfDocument.startPage(pageInfo);
             Canvas specieCanvas = speciePage.getCanvas();
 
-            title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
             title.setTextSize(34);
             title.setColor(ContextCompat.getColor(getActivity(), R.color.dark_blue));
             title.setTextAlign(Paint.Align.LEFT);
@@ -412,6 +429,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             if(export) Toast.makeText(getActivity(), "PDF file generated successfully.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(getActivity(), "Couldn't export the pdf file.", Toast.LENGTH_SHORT).show();
         }
         pdfDocument.close();
     }
@@ -431,9 +449,84 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             XWPFDocument xwpfDocument = new XWPFDocument();
             XWPFParagraph xwpfParagraph = xwpfDocument.createParagraph();
             XWPFRun xwpfRun = xwpfParagraph.createRun();
+            for(int i = 0; i < 12; i++){
+                xwpfParagraph = xwpfDocument.createParagraph(); xwpfRun = xwpfParagraph.createRun();
+            }
 
-            xwpfRun.setText("TESTING");
-            xwpfRun.setFontSize(24);
+            xwpfParagraph.setAlignment(ParagraphAlignment.CENTER);
+            xwpfParagraph.setVerticalAlignment(TextAlignment.CENTER);
+            xwpfRun = xwpfParagraph.createRun();
+
+            xwpfParagraph = xwpfDocument.createParagraph();
+            xwpfRun = xwpfParagraph.createRun();
+            xwpfParagraph.setAlignment(ParagraphAlignment.CENTER);
+            xwpfRun.setColor("0051AD");
+            xwpfRun.setText("BonsAvistamentos");
+            xwpfRun.setFontSize(36);
+            xwpfRun.setBold(true);
+
+            xwpfParagraph = xwpfDocument.createParagraph();
+            xwpfParagraph.setAlignment(ParagraphAlignment.CENTER);
+            xwpfRun = xwpfParagraph.createRun();
+            xwpfRun.setText("Summary of Sightings");
+            xwpfRun.setFontSize(22);
+
+            xwpfParagraph = xwpfDocument.createParagraph();
+            xwpfParagraph.setAlignment(ParagraphAlignment.CENTER);
+            xwpfRun = xwpfParagraph.createRun();
+            xwpfRun.setText("From " + startDate.getText().toString() + " to " + endDate.getText().toString() + "");
+            xwpfRun.setFontSize(22);
+
+            xwpfRun.addBreak(BreakType.PAGE);
+
+            int size = speciesSummary.size();
+            int i = 1;
+            for(SpecieSummary specieSummary : speciesSummary){
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setColor("0051AD");
+                xwpfRun.setText(specieSummary.getSpecie());
+                xwpfRun.setFontSize(18);
+                xwpfRun.setBold(true);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Total number of individuals: "+specieSummary.getTotalNrIndividuals());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Most common behavior type: "+specieSummary.getMostCommonBehavior());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Average trust level: "+specieSummary.getAverageTrustLvl());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Photos: "+specieSummary.getNrPhotos());
+                xwpfRun.setFontSize(18);
+
+                if(size != i) xwpfRun.addBreak(BreakType.PAGE);
+                i++;
+            }
 
             FileOutputStream fileOutputStream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.docx");
             xwpfDocument.write(fileOutputStream);
@@ -448,8 +541,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
         catch (Exception e){
             e.printStackTrace();
+            Toast.makeText(getActivity(), "Couldn't export the docx file.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void sendViaEmail(String format){
