@@ -11,6 +11,7 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import androidx.fragment.app.FragmentContainerView;
 
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.SpecieSummary;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -88,6 +90,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     }
 
     private void onStartView(View view){
+
+        speciesSummary = new ArrayList<SpecieSummary>();
         startDate = (EditText) view.findViewById(R.id.startDate);
         endDate = (EditText) view.findViewById(R.id.endDate);
         photosPerSighting = (EditText) view.findViewById(R.id.photos_per_sighting);
@@ -135,7 +139,13 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         exportReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                generatePDF();
+                if(pdfFormat.isChecked()){
+                    generatePDF();
+                }else if(docxFormat.isChecked()){
+
+                }else{
+                    ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
+                }
             }
         });
 
@@ -147,12 +157,13 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         });
 
         if (checkPermission()) {
-            Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
         } else {
             requestPermission();
         }
-
     }
+
+    private ArrayList<SpecieSummary> speciesSummary;
 
     private void addSpecieSummary(String specie, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostComReact, String averBeaufort, String averTrustLvl, String nrPics){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -181,6 +192,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
         TextView nrPhotos  = (TextView) v.findViewById(R.id.nr_photos);
         nrPhotos.setText("- Photos: "+ nrPics);
+
+        speciesSummary.add( new SpecieSummary(specie, nrIndiv, averageNrIndiv, mostComBeh, mostComReact, averBeaufort, averTrustLvl, nrPics));
 
         summary.addView(v);
 
@@ -329,20 +342,54 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         Canvas canvas = myPage.getCanvas();
 
         //canvas.drawBitmap(scaledbmp, 56, 40, paint);
+
         title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        title.setTextSize(20);
-        title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
+        title.setTextSize(50);
+        title.setColor(ContextCompat.getColor(getActivity(), R.color.dark_blue));
         title.setTextAlign(Paint.Align.CENTER);
 
+        canvas.drawText("BonsAvistamentos", 396, 500, title);
+        title.setTextSize(34);
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
         String sentence = "From " + startDate.getText().toString() + " to " + endDate.getText().toString() + ".";
 
         canvas.drawText("Summary of Sightings", 396, 560, title);
-        canvas.drawText(sentence, 396, 590, title);
-
+        canvas.drawText(sentence, 396, 600, title);
 
         pdfDocument.finishPage(myPage);
 
-        File file = new File(Environment.getExternalStorageDirectory(), "Summary.pdf");
+
+        PdfDocument.PageInfo pageInfo;
+        PdfDocument.Page speciePage;
+        for(SpecieSummary specieSummary : speciesSummary){
+            pageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
+
+            speciePage = pdfDocument.startPage(pageInfo);
+            Canvas specieCanvas = speciePage.getCanvas();
+
+            title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            title.setTextSize(34);
+            title.setColor(ContextCompat.getColor(getActivity(), R.color.dark_blue));
+            title.setTextAlign(Paint.Align.LEFT);
+            specieCanvas.drawText(specieSummary.getSpecie(), 50, 150, title);
+
+            title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            title.setTextSize(30);
+            title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
+            title.setTextAlign(Paint.Align.LEFT);
+            specieCanvas.drawText("- Total number of individuals: "+specieSummary.getTotalNrIndividuals(), 50, 200, title);
+            specieCanvas.drawText("- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting(), 50, 240, title);
+            specieCanvas.drawText("- Most common behavior type: "+specieSummary.getMostCommonBehavior(), 50, 280, title);
+            specieCanvas.drawText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction(), 50, 320, title);
+            specieCanvas.drawText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort(), 50, 360, title);
+            specieCanvas.drawText("- Average trust level: "+specieSummary.getAverageTrustLvl(), 50, 400, title);
+            specieCanvas.drawText("- Photos: "+specieSummary.getNrPhotos(), 50, 440, title);
+
+            pdfDocument.finishPage(speciePage);
+        }
+
+        File file = new File(Environment.getExternalStorageDirectory(), "SummaryOfSightings.pdf");
 
         try {
             pdfDocument.writeTo(new FileOutputStream(file));
@@ -362,23 +409,5 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0) {
-
-                boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                if (writeStorage && readStorage) {
-                    Toast.makeText(getActivity(), "Permission Granted.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denined.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
 
 }

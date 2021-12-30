@@ -76,7 +76,7 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         reportedBy.setText(team_member_name);
 
         if(submitted){
-            notSubmitted.setVisibility(View.INVISIBLE);
+            notSubmitted.setVisibility(View.GONE);
         }
 
         //Verificar se já passaram 24h:

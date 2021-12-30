@@ -186,7 +186,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         reportedBy.setText(team_member_name_);
 
         if(submitted){
-            notSubmitted.setVisibility(View.INVISIBLE);
+            notSubmitted.setVisibility(View.GONE);
         }
 
         //Verificar se já passaram 24h:
@@ -200,7 +200,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
            recentSightings.addView(v);
         }else{ //já não pode editar - mais de 24h
-            editSightingBtn.setVisibility(View.INVISIBLE);
+            editSightingBtn.setVisibility(View.GONE);
             otherSightings.addView(v);
         }
     }
