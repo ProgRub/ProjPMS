@@ -3,6 +3,7 @@ package com.example.seaker.fragments;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -152,7 +153,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         shareViaEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //SHARE VIA EMAIL
+                sendViaEmail();
             }
         });
 
@@ -408,6 +409,39 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+    }
+
+    private void sendViaEmail(){
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"bons_avistamentos@gmail.com"});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Summary of Sightings - "+startDate.getText().toString() + " to " + endDate.getText().toString());
+
+        String bodyText = "";
+        for(SpecieSummary specieSummary : speciesSummary){
+            bodyText += "Specie: " + specieSummary.getSpecie() + "\n";
+            bodyText += "- Total number of individuals: "+specieSummary.getTotalNrIndividuals() + "\n";
+            bodyText += "- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting() + "\n";
+            bodyText += "- Most common behavior type: "+specieSummary.getMostCommonBehavior() + "\n";
+            bodyText += "- Most common reaction to vessel: "+specieSummary.getMostCommonReaction() + "\n";
+            bodyText += "- Average Beaufort sea state: "+specieSummary.getAverageBeaufort() + "\n";
+            bodyText += "- Average trust level: "+specieSummary.getAverageTrustLvl() + "\n";
+            bodyText += "- Photos: "+specieSummary.getNrPhotos() + "\n";
+            bodyText += "\n\n";
+        }
+
+        emailIntent.putExtra(Intent.EXTRA_TEXT, bodyText);
+
+        //PARA ADICIONAR PDF - falta mudar:
+        //File root = Environment.getExternalStorageDirectory();
+        //File file = new File(root, pathToMyAttachedFile);
+        //                if (!file.exists() || !file.canRead()) {
+        //                    return;
+        //                }
+        //                Uri uri = Uri.fromFile(file);
+        //                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        startActivity(Intent.createChooser(emailIntent, "Pick an Email provider"));
     }
 
 }
