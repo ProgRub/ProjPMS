@@ -103,9 +103,14 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingDate.setText(model.getDate());
         sightingTime.setText(model.getTime());
 
-        //ALTERAR COORDENADAS NO MÉTODO OnMapReady (para iniciar o mapa nas coordenadas do avistamento)
-        sightingLatitude.setText("Latitude: " + model.getLatitude());
-        sightingLongitude.setText("Longitude: " + model.getLongitude());
+        Double latitude = Double.parseDouble(model.getLatitude());
+        String latitudeString = df.format(latitude);
+        Double longitude = Double.parseDouble(model.getLongitude());
+        String longitudeString = df.format(longitude);
+
+        sightingLatitude.setText("Latitude: " + latitudeString);
+        sightingLongitude.setText("Longitude: " + longitudeString);
+
         sightingComment.setText(model.getComment());
 
         int index = 0;
@@ -374,8 +379,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
+        Double latitude = Double.parseDouble(model.getLatitude());
+        Double longitude = Double.parseDouble(model.getLongitude());
+        LatLng Funchal = new LatLng(latitude, longitude);
 
-        LatLng Funchal = new LatLng(32.643579, -16.914312 ); //COLOCAR AS COORDENADAS DA DB AQUI
         map.addMarker(new MarkerOptions().position(Funchal).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
         moveToCurrentLocation(Funchal);
 
