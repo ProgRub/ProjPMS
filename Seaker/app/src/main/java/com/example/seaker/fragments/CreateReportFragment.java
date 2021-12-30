@@ -1,9 +1,16 @@
 package com.example.seaker.fragments;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,45 +20,51 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentContainerView;
 
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CreateReportFragment extends BaseFragment implements OnMapReadyCallback {
 
-private EditText startDate;
-private EditText endDate;
-private EditText photosPerSighting;
-private ImageButton createSummaryBtn;
-private TextView nrSightingsFound;
-private FragmentContainerView mapBox;
-private GoogleMap map;
-private TextView totalNrIndividuals;
-private TextView chooseFormatText;
-private RadioButton pdfFormat;
-private RadioButton docxFormat;
-private ImageButton exportReportBtn;
-private ImageButton shareViaEmailBtn;
-private LinearLayout summary;
+    private EditText startDate;
+    private EditText endDate;
+    private EditText photosPerSighting;
+    private ImageButton createSummaryBtn;
+    private TextView nrSightingsFound;
+    private FragmentContainerView mapBox;
+    private GoogleMap map;
+    private TextView totalNrIndividuals;
+    private TextView chooseFormatText;
+    private RadioButton pdfFormat;
+    private RadioButton docxFormat;
+    private ImageButton exportReportBtn;
+    private ImageButton shareViaEmailBtn;
+    private LinearLayout summary;
+    private int pageHeight = 1120;
+    private int pagewidth = 792;
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
     public CreateReportFragment() {
         // Required empty public constructor
     }
@@ -122,7 +135,7 @@ private LinearLayout summary;
         exportReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //EXPORT REPORT
+                generatePDF();
             }
         });
 
@@ -132,6 +145,12 @@ private LinearLayout summary;
                 //SHARE VIA EMAIL
             }
         });
+
+        if (checkPermission()) {
+            Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+        } else {
+            requestPermission();
+        }
 
     }
 
@@ -296,5 +315,70 @@ private LinearLayout summary;
             sightingNr++;
         }
     }
+
+    private void generatePDF() {
+        PdfDocument pdfDocument = new PdfDocument();
+
+        Paint paint = new Paint();
+        Paint title = new Paint();
+
+        PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
+
+        PdfDocument.Page myPage = pdfDocument.startPage(mypageInfo);
+
+        Canvas canvas = myPage.getCanvas();
+
+        //canvas.drawBitmap(scaledbmp, 56, 40, paint);
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        title.setTextSize(20);
+        title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
+        title.setTextAlign(Paint.Align.CENTER);
+
+        String sentence = "From " + startDate.getText().toString() + " to " + endDate.getText().toString() + ".";
+
+        canvas.drawText("Summary of Sightings", 396, 560, title);
+        canvas.drawText(sentence, 396, 590, title);
+
+
+        pdfDocument.finishPage(myPage);
+
+        File file = new File(Environment.getExternalStorageDirectory(), "Summary.pdf");
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(file));
+            Toast.makeText(getActivity(), "PDF file generated successfully.", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        pdfDocument.close();
+    }
+
+    private boolean checkPermission() {
+        int permission1 = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission2 = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0) {
+
+                boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+
+                if (writeStorage && readStorage) {
+                    Toast.makeText(getActivity(), "Permission Granted.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Permission Denined.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
 
 }
