@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2021 at 08:28 PM
+-- Generation Time: Dec 30, 2021 at 05:31 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -269,37 +269,37 @@ CREATE TABLE `specie` (
 --
 
 INSERT INTO `specie` (`id`, `name`, `animal_type_id`) VALUES
-(1, 'Blue whale', 2),
-(2, 'Fin whale', 2),
+(1, 'Blue Whale', 2),
+(2, 'Fin Whale', 2),
 (3, 'North Atlantic Right Whale', 2),
-(5, 'Sei whale', 2),
-(6, 'Minke whale', 2),
-(7, 'Bryde\'s whale', 2),
-(8, 'Humpback whale', 2),
-(9, 'Sperm whale', 2),
-(10, 'Northern bottlenose whale', 2),
-(11, 'Cuvier\'s beaked whale', 2),
-(12, 'Sowerby\'s beaked whale', 2),
-(13, 'Blainville\'s beaked whale', 2),
-(14, 'Gervais\' beaked whale', 2),
-(15, 'True\'s beaked whale', 2),
-(16, 'Killer whale/Orca', 2),
-(17, 'Short-finned pilot whale', 2),
-(18, 'Long-finned pilot whale', 2),
-(19, 'False killer whale', 2),
-(20, 'Risso\'s dolphin', 1),
-(21, 'Bottlenose dolphin', 1),
-(22, 'Rough toothed dolphin', 1),
-(23, 'Atlantic spotted dolphin', 1),
-(25, 'Striped dolphin', 1),
-(26, 'Common dolphin', 1),
-(27, 'Fraser\'s dolphin', 1),
-(28, 'Melon-headed whale', 2),
-(29, 'Pigmy killer whale', 2),
-(30, 'Harbour porpoise', 3),
-(31, 'Unidentified whale', 2),
-(32, 'Unidentified dolphin', 1),
-(33, 'Unidentified porpoise', 3);
+(5, 'Sei Whale', 2),
+(6, 'Minke Whale', 2),
+(7, 'Bryde\'s Whale', 2),
+(8, 'Humpback Whale', 2),
+(9, 'Sperm Whale', 2),
+(10, 'Northern Bottlenose Whale', 2),
+(11, 'Cuvier\'s Beaked Whale', 2),
+(12, 'Sowerby\'s Beaked Whale', 2),
+(13, 'Blainville\'s Beaked Whale', 2),
+(14, 'Gervais\' Beaked Whale', 2),
+(15, 'True\'s Beaked Whale', 2),
+(16, 'Orca Whale', 2),
+(17, 'Short Finned Pilot Whale', 2),
+(18, 'Long Finned Pilot Whale', 2),
+(19, 'False Killer Whale', 2),
+(20, 'Risso\'s Dolphin', 1),
+(21, 'Bottlenose Dolphin', 1),
+(22, 'Rough Toothed Dolphin', 1),
+(23, 'Atlantic Spotted Dolphin', 1),
+(25, 'Striped Dolphin', 1),
+(26, 'Common Dolphin', 1),
+(27, 'Fraser\'s Dolphin', 1),
+(28, 'Melon Whale', 2),
+(29, 'Pigmy Killer Whale', 2),
+(30, 'Harbour Porpoise', 3),
+(31, 'Not Specified Whale', 2),
+(32, 'Not Specified Dolphin', 1),
+(33, 'Not Specified Porpoise', 3);
 
 -- --------------------------------------------------------
 
@@ -419,19 +419,19 @@ ALTER TABLE `zone`
 -- AUTO_INCREMENT for table `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `animal_behavior`
 --
 ALTER TABLE `animal_behavior`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `animal_reaction_to_vessel`
 --
 ALTER TABLE `animal_reaction_to_vessel`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `animal_type`
@@ -461,7 +461,7 @@ ALTER TABLE `photo`
 -- AUTO_INCREMENT for table `sighting_report`
 --
 ALTER TABLE `sighting_report`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `specie`

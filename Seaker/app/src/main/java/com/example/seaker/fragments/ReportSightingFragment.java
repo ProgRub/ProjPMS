@@ -87,10 +87,11 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
 
+    private static final String ip = "";
+
     private boolean clickedCoordinatesOnce;
 
     private static final DecimalFormat df = new DecimalFormat("0.00000");
-
 
     public ReportSightingFragment() {
         // Required empty public constructor
@@ -997,6 +998,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         String longitude = textView1.getText().toString();
         String[] result1 = longitude.split(": ");
         String longitude_ = result1[1];
+        SeekBar sb = (SeekBar) getView().findViewById(R.id.beaufort_slider);
+        String sea_state = Integer.toString(sb.getProgress());
         EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
         String comment = editText3.getText().toString();
         String animal = "";
@@ -1008,9 +1011,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
 
             if(isInternetWorking()){
-                insertSightingInformationIntoBD(day, hour, latitude_, longitude_, comment, animal);
+                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
             } else {
-                insertSightingInformationIntoFile(day, hour, latitude_, longitude_, comment, animal);
+                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, "3*Sílvia Fernandes", "1", animal);
             }
             sightingInformations.clear();
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
@@ -1027,17 +1030,17 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    public void insertSightingInformationIntoFile(String day, String hour, String latitude_, String longitude_, String comment, String animal){
+    public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person, String boat_id, String animal){
 
         ArrayList<String> sighting = new ArrayList<>();
         sighting.add(day);
         sighting.add(hour);
-        sighting.add("1");
+        sighting.add(sea_state);
         sighting.add(latitude_);
         sighting.add(longitude_);
         sighting.add(comment);
-        sighting.add("3*Sílvia Fernandes");
-        sighting.add("1");
+        sighting.add(person);
+        sighting.add(boat_id);
         sighting.add(animal);
 
         Context cont = (Context) getActivity().getApplicationContext();
@@ -1047,9 +1050,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         //Log.d("file", ReadArrayListFromSD(cont, "notSubmittedSightings").toString());
     }
 
-    public static void insertSightingInformationIntoBD(String day, String hour, String latitude, String longitude, String comment, String animal){
+    public static void insertSightingInformationIntoBD(String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal){
 
-        String insertSightingUrl = "http://192.168.1.80/seaker/insertsighting.php";
+        String insertSightingUrl = "http://" + ip + "/seaker/insertsighting.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -1060,19 +1063,19 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
             String post_data = URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(day, "UTF-8")+"&"
                     + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(hour, "UTF-8")+"&"
-                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
+                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode(sea_state, "UTF-8")+"&"
                     + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
                     + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
                     + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
-                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode("3", "UTF-8")+"&"
-                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode("1", "UTF-8")+"&"
+                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8")+"&"
+                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(boat_id, "UTF-8")+"&"
                     + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
 
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
             bufferedWriter.close();
             InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String result = "";
             String line = "";
             while((line = bufferedReader.readLine())!=null){
@@ -1089,6 +1092,83 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             e.printStackTrace();
         }
     }
+
+    public static void deleteAndInsertSightingInformationIntoBD(String id_sighting, String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal){
+
+        String insertSightingUrl = "http://" + ip + "/seaker/deleteandinsertsightingbyid.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("id_sighting", "UTF-8")+"="+URLEncoder.encode(id_sighting, "UTF-8")+"&"
+                    + URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(day, "UTF-8")+"&"
+                    + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(hour, "UTF-8")+"&"
+                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode(sea_state, "UTF-8")+"&"
+                    + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
+                    + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
+                    + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
+                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8")+"&"
+                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(boat_id, "UTF-8")+"&"
+                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
+
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteSightingInformation(String id_sighting){
+
+        String insertSightingUrl = "http://" + ip + "/seaker/deletesightingbyid.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("id_sighting", "UTF-8")+"="+URLEncoder.encode(id_sighting, "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
 
@@ -1108,13 +1188,13 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static String getAllSightingsInformations(){
         String result = "";
-        String insertSightingUrl = "http://192.168.1.80/seaker/getallsightings2.php";
+        String insertSightingUrl = "http://" + ip + "/seaker/getallsightings2.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setDoInput(true);
             InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String line = "";
             while((line = bufferedReader.readLine())!=null){
                 result += line;
@@ -1170,7 +1250,4 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
         return success;
     }
-
-
-
 }

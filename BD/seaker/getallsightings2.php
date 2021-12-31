@@ -1,7 +1,7 @@
 <?php
 require "conn.php";
 
-$sql = "SELECT * FROM sighting_report";
+$sql = "SELECT * FROM sighting_report order by id desc";
 
 $r = mysqli_query($conn,$sql);
 

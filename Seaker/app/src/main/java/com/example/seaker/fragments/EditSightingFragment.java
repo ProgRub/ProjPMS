@@ -31,6 +31,7 @@ import android.widget.ToggleButton;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
+import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
 import com.example.seaker.business.BusinessFacade;
@@ -381,7 +382,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         saveChangesBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //FUNÇÃO PARA FAZER UPDATE NA BASE DE DADOS
+                updateSightingInfo(view);
             }
         });
 
@@ -390,7 +391,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         deleteSightingBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //FUNÇÃO PARA APAGAR DA BASE DE DADOS
+                deleteSighting(view);
             }
         });
 
@@ -1060,5 +1061,120 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 btn1.setBackgroundDrawable(drawable);
                 break;
         }
+    }
+
+    private void updateSightingInfo(View view){
+        TextView tv = (TextView) getView().findViewById(R.id.fragmentTitle);
+        String title = tv.getText().toString();
+        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
+        String day = editText.getText().toString();
+        EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
+        String hour = editText1.getText().toString();
+        TextView textView = (TextView) getView().findViewById(R.id.latitude);
+        String latitude = textView.getText().toString();
+        String[] result = latitude.split(": ");
+        String latitude_ = result[1];
+        TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
+        String longitude = textView1.getText().toString();
+        String[] result1 = longitude.split(": ");
+        String longitude_ = result1[1];
+        SeekBar sb = (SeekBar) getView().findViewById(R.id.beaufort_slider);
+        String sea_state = Integer.toString(sb.getProgress());
+        EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
+        String comment = editText3.getText().toString();
+        String animal = "";
+
+        for(SightingInformation sighting : sightingInformations){
+            animal += sighting.toString();
+        }
+
+        String aux[] = title.split(" ");
+        String sighting_id = aux[1];
+
+        Boolean sighting_submitted = !sighting_id.contains("?");
+        if (sighting_submitted){
+            String sighting_id_number = sighting_id.substring(1);
+
+            if(ReportSightingFragment.isInternetWorking()){
+                ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
+                showHandler(view, "Report Sighting changed successfully!");
+            } else {
+                showHandler(view, "No connectivity");
+            }
+        } else {
+            String aux2[] = sighting_id.split("\\?");
+            String index_sighting = aux2[1];
+            int index = Integer.parseInt(index_sighting);
+            Context cont = (Context) getActivity().getApplicationContext();
+
+            if(ReportSightingFragment.isInternetWorking()){
+                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
+                showHandler(view, "Report Sighting submitted!");
+                deleteArrayList(index);
+            } else {
+
+                ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "notSubmittedSightings");
+                sightings.get(index).set(0, day);
+                sightings.get(index).set(1, hour);
+                sightings.get(index).set(2, sea_state);
+                sightings.get(index).set(3, latitude_);
+                sightings.get(index).set(4, longitude_);
+                sightings.get(index).set(5, comment);
+                sightings.get(index).set(6, "3*Sílvia Fernandes");
+                sightings.get(index).set(7, "1");
+                sightings.get(index).set(8, animal);
+
+                ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", sightings);
+
+                showHandler(view, "Report Sighting changed successfully!");
+            }
+        }
+    }
+
+    private void deleteSighting(View view){
+        TextView tv = (TextView) getView().findViewById(R.id.fragmentTitle);
+        String title = tv.getText().toString();
+        String aux[] = title.split(" ");
+        String sighting_id = aux[1];
+        Boolean sighting_submitted = !sighting_id.contains("?");
+        if (sighting_submitted){
+            String sighting_id_number = sighting_id.substring(1);
+
+            if(ReportSightingFragment.isInternetWorking()){
+                ReportSightingFragment.deleteSightingInformation(sighting_id_number);
+                showHandler(view, "Report Sighting deleted successfully!");
+            } else {
+                showHandler(view, "No connectivity");
+            }
+        } else {
+            String aux2[] = sighting_id.split("\\?");
+            String index_sighting = aux2[1];
+            int index = Integer.parseInt(index_sighting);
+            deleteArrayList(index);
+            showHandler(view, "Report Sighting deleted successfully!");
+        }
+    }
+
+    private void deleteArrayList(int index){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "notSubmittedSightings");
+        ArrayList<ArrayList<String>> sightings_ = new ArrayList<>();
+        for (int i=0; i < sightings.size(); i++){
+            if(index!=i){
+                ArrayList<String> auxx = sightings.get(i);
+                sightings_.add(auxx);
+            }
+        }
+        ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", sightings_);
+    }
+
+    private void showHandler(View view, String message){
+        ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, message);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                MainActivity.switchFragment(new TeamMemberHomeFragment());
+            }
+        }, 2000);
     }
 }

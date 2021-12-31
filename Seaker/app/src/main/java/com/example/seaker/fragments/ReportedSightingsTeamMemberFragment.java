@@ -60,11 +60,16 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                 for(int i=0;i<sightings.size();i++){
                     String sighting_date = sightings.get(i).get(0);
                     String sighting_time = sightings.get(i).get(1);
+                    String sea_state = sightings.get(i).get(2);
                     String latitude = sightings.get(i).get(3);
                     String longitude = sightings.get(i).get(4);
                     String comment = sightings.get(i).get(5);
+                    String person_id_name = sightings.get(i).get(6);
+                    String[] person_id_name_ = person_id_name.split("\\*");
+                    String person_id = person_id_name_[0];
+                    String boat_id = sightings.get(i).get(7);
                     String species = sightings.get(i).get(8);
-                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, latitude, longitude, comment, species);
+                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species);
                 }
                 ArrayList<ArrayList<String>> aux = new ArrayList<>();
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
@@ -91,8 +96,8 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         } else {
             if(!sightings.isEmpty()){
-                for(int i=0;i<sightings.size();i++){
-                    String sighting_id = "?";
+                for(int i=sightings.size()-1;i>=0;i--){
+                    String sighting_id = "?" + i;
                     boolean submitted = false;
                     String sighting_date = sightings.get(i).get(0);
                     String sighting_time = sightings.get(i).get(1);
