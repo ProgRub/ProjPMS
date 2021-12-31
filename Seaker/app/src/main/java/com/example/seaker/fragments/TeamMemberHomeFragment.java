@@ -1,16 +1,21 @@
 package com.example.seaker.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
 
 public class TeamMemberHomeFragment extends BaseFragment {
 
+    private ImageButton logoutBtn;
 
     public TeamMemberHomeFragment() {
         // Required empty public constructor
@@ -28,7 +33,33 @@ public class TeamMemberHomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_team_member_home, container, false);
         SetButtonOnClickNextFragment(R.id.buttonNewSightingReport,new ReportSightingFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsTeamMember,new ReportedSightingsTeamMemberFragment(),view);
-        SetButtonOnClickNextFragment(R.id.buttonLogoutTeamMember,new ChooseRoleFragment(),view);
+
+        logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutTeamMember);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
         return view;
+    }
+
+    private void logout(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to log out?");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.switchFragment(new ChooseRoleFragment());
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) {}});
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

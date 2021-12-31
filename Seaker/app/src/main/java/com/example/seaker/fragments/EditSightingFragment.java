@@ -1,8 +1,10 @@
 package com.example.seaker.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -382,7 +384,11 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         saveChangesBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                updateSightingInfo(view);
+                if(validateSightingReport()){
+                    updateSightingInfo(view);
+                }else{
+                    ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Required fields missing!");
+                }
             }
         });
 
@@ -391,12 +397,41 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         deleteSightingBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                deleteSighting(view);
+                onDeleteClick(view);
             }
         });
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
+    }
+
+    private void onDeleteClick(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle("Delete Sighting");
+        builder.setMessage("Are you sure you want to delete this sighting?");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteSighting(view);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) {}});
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
+
+        if(sightingInformations.size() == 0) return false; //se não escolheu nenhuma espécie
+
+        for(SightingInformation sighting : sightingInformations){
+            if(sighting.getNumberOfIndividualsString().equals("ERROR")) return false; //se não preencheu o número de individuos de alguma espécie
+        }
+
+        return true;
     }
 
     @Override
@@ -1097,7 +1132,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
             if(ReportSightingFragment.isInternetWorking()){
                 ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
-                showHandler(view, "Report Sighting changed successfully!");
+                showHandler(view, "Sighting successfully edited!");
             } else {
                 showHandler(view, "No connectivity");
             }
@@ -1109,7 +1144,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
             if(ReportSightingFragment.isInternetWorking()){
                 ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
-                showHandler(view, "Report Sighting submitted!");
+                showHandler(view, "Sighting submitted!");
                 deleteArrayList(index);
             } else {
 
@@ -1126,7 +1161,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", sightings);
 
-                showHandler(view, "Report Sighting changed successfully!");
+                showHandler(view, "Sighting successfully changed!");
             }
         }
     }
@@ -1142,7 +1177,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
             if(ReportSightingFragment.isInternetWorking()){
                 ReportSightingFragment.deleteSightingInformation(sighting_id_number);
-                showHandler(view, "Report Sighting deleted successfully!");
+                showHandler(view, "Sighting successfully deleted!");
             } else {
                 showHandler(view, "No connectivity");
             }
@@ -1151,7 +1186,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             String index_sighting = aux2[1];
             int index = Integer.parseInt(index_sighting);
             deleteArrayList(index);
-            showHandler(view, "Report Sighting deleted successfully!");
+            showHandler(view, "Sighting successfully deleted!");
         }
     }
 
