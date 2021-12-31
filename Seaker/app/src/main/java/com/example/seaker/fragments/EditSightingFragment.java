@@ -90,7 +90,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_sightings, container, false);
 
-        SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
+        if(model.getUserType() == "TeamMember") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
+        else if(model.getUserType() == "Administrator") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
 
         businessFacade = BusinessFacade.getInstance();
 
@@ -101,8 +104,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
         title.setText("Sighting #" + model.getReportedSighingId() + " - Editing");
         sightingDate.setText(model.getDate());
         sightingTime.setText(model.getTime());
@@ -1207,8 +1208,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, message);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
+
             public void run() {
-                MainActivity.switchFragment(new TeamMemberHomeFragment());
+                if(model.getUserType() == "TeamMember") MainActivity.switchFragment(new TeamMemberHomeFragment());
+                else if(model.getUserType() == "Administrator") MainActivity.switchFragment(new AdminHomeFragment());
             }
         }, 2000);
     }

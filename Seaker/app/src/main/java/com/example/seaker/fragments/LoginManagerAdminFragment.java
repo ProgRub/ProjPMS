@@ -3,6 +3,7 @@ package com.example.seaker.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
@@ -28,6 +30,7 @@ import java.net.URLEncoder;
 
 public class LoginManagerAdminFragment extends BaseFragment {
 
+    private DataViewModel model;
     private EditText email;
     private EditText password;
     private ImageButton loginBtn;
@@ -49,6 +52,8 @@ public class LoginManagerAdminFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_login_manager_admin, container, false);
         SetButtonOnClickNextFragment(R.id.buttonBack,new ChooseRoleFragment(),view);
 
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
         onStartView(view);
 
         return view;
@@ -57,10 +62,9 @@ public class LoginManagerAdminFragment extends BaseFragment {
     private void login(){
         if(!validateInput()) return;
 
-        if(verify_login(email.getText().toString(), password.getText().toString(), "CompanyManager")){
-            MainActivity.switchFragment(new CompanyManagerHomeFragment());
-        }else if(verify_login(email.getText().toString(), password.getText().toString(), "Administrator")){
-            MainActivity.switchFragment(new AdminHomeFragment());
+        if(verify_login(email.getText().toString(), password.getText().toString(), model.getUserType())){
+            if(model.getUserType() == "CompanyManager") MainActivity.switchFragment(new CompanyManagerHomeFragment());
+            else if(model.getUserType() == "Administrator") MainActivity.switchFragment(new AdminHomeFragment());
         }else{
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Incorrect credentials!");
         }

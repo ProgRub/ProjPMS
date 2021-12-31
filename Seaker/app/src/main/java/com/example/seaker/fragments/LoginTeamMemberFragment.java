@@ -70,7 +70,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
     private void login(){
         if(!validateInput()) return;
 
-        if(verify_login(email.getText().toString(), password.getText().toString(), "TeamMember")){
+        if(verify_login(email.getText().toString(), password.getText().toString(), model.getUserType())){
             model.setVesselID(vessel_id.getSelectedItem().toString());
             model.setTripFrom(trip_from.getSelectedItem().toString());
             model.setTripTo(trip_to.getSelectedItem().toString());

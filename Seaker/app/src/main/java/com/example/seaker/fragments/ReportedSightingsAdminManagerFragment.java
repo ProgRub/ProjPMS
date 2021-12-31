@@ -11,14 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.seaker.DataViewModel;
+import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class ReportedSightingsAdminManagerFragment extends BaseFragment {
 
+    private DataViewModel model;
     private LinearLayout recentSightings;
     private LinearLayout otherSightings;
 
@@ -42,18 +47,77 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
 
-        //Para testar inserção:
-        addSightingToView(4, true, "27/12/2021", "13:05", "Blue Whale", "Diego Briceño");
-        addSightingToView(2, false, "14/2/2021", "10:08", "Sperm Whale", "Rúben Rodrigues");
-        addSightingToView(1, false, "3/10/2021", "9:11", "Bottlenose Dolphin, Sperm Whale", "Sílvia Fernandes");
-        addSightingToView(3, true, "16/11/2021", "19:59", "Bottlenose Dolphin, Fin Whale", "Pedro Campos");
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont,"notSubmittedSightings");
+
+        if(ReportSightingFragment.isInternetWorking()){
+
+            if(!sightings.isEmpty()){
+                for(int i=0;i<sightings.size();i++){
+                    String sighting_date = sightings.get(i).get(0);
+                    String sighting_time = sightings.get(i).get(1);
+                    String sea_state = sightings.get(i).get(2);
+                    String latitude = sightings.get(i).get(3);
+                    String longitude = sightings.get(i).get(4);
+                    String comment = sightings.get(i).get(5);
+                    String person_id_name = sightings.get(i).get(6);
+                    String[] person_id_name_ = person_id_name.split("\\*");
+                    String person_id = person_id_name_[0];
+                    String boat_id = sightings.get(i).get(7);
+                    String species = sightings.get(i).get(8);
+                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species);
+                }
+                ArrayList<ArrayList<String>> aux = new ArrayList<>();
+                ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
+            }
+
+            String allSightings = ReportSightingFragment.getAllSightingsInformations();
+            String[] si = allSightings.split("&&&");
+            for(int j=0;j<si.length;j++){
+                String[] sighting = si[j].split("###");
+                String sighting_id = sighting[0];
+                boolean submitted = true;
+                String sighting_date = sighting[1];
+                String sighting_time = sighting[2];
+                String sea_state = sighting[3];
+                String latitude = sighting[4];
+                String longitude = sighting[5];
+                String comment = sighting[6];
+                String team_member_name = sighting[7];
+                String boat_id = sighting[8];
+                String species = sighting[9];
+
+                addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, boat_id, species, team_member_name);
+            }
+
+        } else {
+            if(!sightings.isEmpty()){
+                for(int i=sightings.size()-1;i>=0;i--){
+                    String sighting_id = "?" + i;
+                    boolean submitted = false;
+                    String sighting_date = sightings.get(i).get(0);
+                    String sighting_time = sightings.get(i).get(1);
+                    String sea_state = sightings.get(i).get(2);
+                    String latitude = sightings.get(i).get(3);
+                    String longitude = sightings.get(i).get(4);
+                    String comment = sightings.get(i).get(5);
+                    String team_member_name = sightings.get(i).get(6);
+                    String boat_id = sightings.get(i).get(7);
+                    String species = sightings.get(i).get(8);
+
+                    addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, boat_id, species, team_member_name);
+                }
+            }
+        }
 
         return view;
     }
 
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void addSightingToView(int sighting_id, boolean submitted, String sighting_date, String sighting_time, String species, String team_member_name ){
+    private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String boat_id, String species, String team_member_name ){
         LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.reported_sighting_box, null);
 
@@ -66,14 +130,63 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
 
         ImageButton editSightingBtn = (ImageButton) v.findViewById(R.id.edit_sighting_btn);
 
+        ArrayList<String> species_name = new ArrayList<>();
+        ArrayList<String> n_individuals = new ArrayList<>();
+        ArrayList<String> n_offspring = new ArrayList<>();
+        ArrayList<String> trust_level = new ArrayList<>();
+        ArrayList<String> behaviors = new ArrayList<>();
+        ArrayList<String> reactions = new ArrayList<>();
+        String[] result = team_member_name.split("\\*");
+        String team_member_name_ = result[1];
+        String[] result1 = species.split("\\$");
+
+        for(int j=0;j<result1.length;j++){
+            String[] result2 = result1[j].split("\\*");
+            species_name.add(result2[0]);
+            n_individuals.add(result2[1]);
+            n_offspring.add(result2[2]);
+            trust_level.add(result2[3]);
+            if(result2.length == 4){
+                behaviors.add(" ");
+                reactions.add(" ");
+            }
+            if(result2.length == 5){
+                behaviors.add(result2[4]);
+                reactions.add(" ");
+            }
+            if(result2.length == 6){
+                behaviors.add(result2[4]);
+                reactions.add(result2[5]);
+            }
+        }
+        String species_ = "";
+        for(int k=0;k<species_name.size();k++){
+            species_ += species_name.get(k) + ", ";
+        }
+
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
-        SetButtonOnClickNextFragment(R.id.edit_sighting_btn ,new AdminHomeFragment(), v);
+        editSightingBtn.setOnClickListener(item -> {
+            model.setReportedSighingId(sighting_id);
+            model.setDate(sighting_date);
+            model.setTime(sighting_time);
+            model.setSea_state(Integer.parseInt(sea_state));
+            model.setLatitude(latitude);
+            model.setLongitude((longitude));
+            model.setComment(comment);
+            model.setSpecies(species_name);
+            model.setN_individuals(n_individuals);
+            model.setN_offspring(n_offspring);
+            model.setTrust_level(trust_level);
+            model.setReactions(reactions);
+            model.setBehaviors(behaviors);
+            MainActivity.switchFragment(new EditSightingFragment());
+        });
 
         sightingNumber.setText("Sighting #" + sighting_id);
         date.setText(sighting_date);
         time.setText(sighting_time);
-        sightingSpecies.setText(species);
-        reportedBy.setText(team_member_name);
+        sightingSpecies.setText(species_);
+        reportedBy.setText(team_member_name_);
 
         if(submitted){
             notSubmitted.setVisibility(View.GONE);
