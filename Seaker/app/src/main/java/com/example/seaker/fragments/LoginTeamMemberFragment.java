@@ -1,16 +1,23 @@
 package com.example.seaker.fragments;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
+import com.example.seaker.DataViewModel;
+import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
 import java.io.BufferedReader;
@@ -28,11 +35,13 @@ import java.net.URLEncoder;
 public class LoginTeamMemberFragment extends BaseFragment {
 
 
-    EditText email;
-    EditText password;
-    Spinner vessel_id;
-    Spinner trip_from;
-    Spinner trip_to;
+    private EditText email;
+    private EditText password;
+    private Spinner vessel_id;
+    private Spinner trip_from;
+    private Spinner trip_to;
+    private ImageButton login_btn;
+    private DataViewModel model;
 
     public LoginTeamMemberFragment() {
         // Required empty public constructor
@@ -48,12 +57,62 @@ public class LoginTeamMemberFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login_team_member, container, false);
-        SetButtonOnClickNextFragment(R.id.login_btn,new TeamMemberHomeFragment(),view);
+
         SetButtonOnClickNextFragment(R.id.buttonBack,new ChooseRoleFragment(),view);
+
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
         onStartView (view);
 
         return view;
+    }
+
+    private void login(){
+        if(!validateInput()) return;
+
+        if(verify_login(email.getText().toString(), password.getText().toString(), "TeamMember")){
+            model.setVesselID(vessel_id.getSelectedItem().toString());
+            model.setTripFrom(trip_from.getSelectedItem().toString());
+            model.setTripTo(trip_to.getSelectedItem().toString());
+
+            MainActivity.switchFragment(new TeamMemberHomeFragment());
+        }else{
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Incorrect credentials!");
+        }
+    }
+
+    private boolean validateInput(){
+        String email = this.email.getText().toString();
+        String password =  this.password.getText().toString();
+        String vesselId = vessel_id.getSelectedItem().toString();
+        String tripFrom = trip_from.getSelectedItem().toString();
+        String tripTo = trip_to.getSelectedItem().toString();
+
+        if(email.isEmpty() || password.isEmpty()) {
+            ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "Please, enter your credentials!");
+            return false;
+        }else if(!isValidEmailAddress(email)){
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, enter a valid email!");
+            return false;
+        }else if(vesselId.isEmpty()){
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, choose the vessel ID!");
+            return false;
+        }else if(tripFrom.isEmpty()){
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, choose the trip's departure!");
+            return false;
+        }else if(tripTo.isEmpty()){
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, choose the trip's destination!");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
     }
 
     private void onStartView(View view){
@@ -62,6 +121,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
         vessel_id = (Spinner) view.findViewById(R.id.vessel_id_spinner);
         trip_from = (Spinner) view.findViewById(R.id.trip_from_spinner);
         trip_to = (Spinner) view.findViewById(R.id.trip_to_spinner);
+        login_btn = (ImageButton) view.findViewById(R.id.login_btn);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.vessels_array, R.layout.spinner_center_item);
         adapter.setDropDownViewResource(R.layout.spinner_center_item);
@@ -75,6 +135,12 @@ public class LoginTeamMemberFragment extends BaseFragment {
         adapter.setDropDownViewResource(R.layout.spinner_center_item);
         trip_to.setAdapter(adapter);
 
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login();
+            }
+        });
     }
 
     public static Boolean verify_login(String email, String password, String role){

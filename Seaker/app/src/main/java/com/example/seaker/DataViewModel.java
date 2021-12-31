@@ -20,6 +20,10 @@ public class DataViewModel extends ViewModel {
     private ArrayList<String> behaviors;
     private ArrayList<String> reactions;
 
+    private String vesselID;
+    private String tripFrom;
+    private String tripTo;
+
     public void setReportedSighingId(String value) {
         reportedSightingId = value;
     }
@@ -116,4 +120,27 @@ public class DataViewModel extends ViewModel {
         this.reactions = arraylist;
     }
 
+    public String getVesselID() {
+        return vesselID;
+    }
+
+    public void setVesselID(String vesselID) {
+        this.vesselID = vesselID;
+    }
+
+    public String getTripFrom() {
+        return tripFrom;
+    }
+
+    public void setTripFrom(String tripFrom) {
+        this.tripFrom = tripFrom;
+    }
+
+    public String getTripTo() {
+        return tripTo;
+    }
+
+    public void setTripTo(String tripTo) {
+        this.tripTo = tripTo;
+    }
 }
