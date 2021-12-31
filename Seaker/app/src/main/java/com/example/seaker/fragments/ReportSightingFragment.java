@@ -33,6 +33,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
@@ -86,8 +89,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> dolphinSpeciesBtns;
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
+    private DataViewModel model;
 
-    public static final String ip = "FELIZ ANO NOVO!!!";
+    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
@@ -117,7 +121,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     }
 
     private void onStartView(View view){
-
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
         clickedCoordinatesOnce = false;
 
         sightingDate = (EditText) view.findViewById(R.id.pickDate);
@@ -1009,11 +1013,10 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
 
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
-
             if(isInternetWorking()){
-                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
+                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", getVesselId(), animal);
             } else {
-                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, "3*Sílvia Fernandes", "1", animal);
+                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, "3*Sílvia Fernandes", getVesselId(), animal);
             }
             sightingInformations.clear();
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
@@ -1029,6 +1032,25 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Required fields missing!");
         }
     }
+
+    private String getVesselId(){
+        switch(model.getVesselID()){
+            case "Seaborn Catamaran":
+                return "1";
+            case "Sunset Catamaran":
+                return "2";
+            case "Miranda Semi-Rigid Vessel":
+                return "3";
+            case "Luna Semi-Rigid Vessel":
+                return "4";
+            case "Prince Ali Yacht":
+                return "5";
+            default:
+                return "0";
+        }
+    }
+
+
 
     public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person, String boat_id, String animal){
 

@@ -2,11 +2,11 @@
 <resources>
     <string-array name="vessels_array">
         <item> </item>
-        <item>Semi Rigid Boat #1</item>
-        <item>Semi Rigid Boat #2</item>
-        <item>Catamaran #1</item>
-        <item>Catamaran #2</item>
-        <item>Yacht</item>
+        <item>Miranda Semi-Rigid Vessel</item>
+        <item>Luna Semi-Rigid Vessel</item>
+        <item>Seaborn Catamaran</item>
+        <item>Sunset Catamaran</item>
+        <item>Prince Ali Yacht</item>
     </string-array>
 
     <string-array name="trip_from_array">
