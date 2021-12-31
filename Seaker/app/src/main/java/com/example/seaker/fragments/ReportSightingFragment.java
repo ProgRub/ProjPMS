@@ -87,7 +87,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
 
-    private static final String ip = "";
+    public static final String ip = "FELIZ ANO NOVO!!!";
 
     private boolean clickedCoordinatesOnce;
 
