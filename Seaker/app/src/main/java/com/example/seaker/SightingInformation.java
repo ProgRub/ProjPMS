@@ -183,7 +183,7 @@ public class SightingInformation {
         for(ToggleButton toggleButton : nr_individuals){
             if (toggleButton.isChecked()) return toggleButton.getTextOff().toString();
         }
-        return "ERROR"; //DEVE APRESENTAR UM ERRO - CAMPO OBRIGATORIO
+        return "ERROR";
     }
 
     public String getNumberOfOffspringString(){

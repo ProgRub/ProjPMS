@@ -4,28 +4,30 @@ import java.util.ArrayList;
 
 public class AnimalJson {
     private String speciesName;
-    private int numberIndividuals;
-    private int numberOffspring;
+    private String numberIndividuals;
+    private String numberOffspring;
     private ArrayList<String> behaviours;
     private ArrayList<String> reactionsToVessel;
+    private String trustLevel;
 
-    public AnimalJson(String speciesName, int numberIndividuals, int numberOffspring, ArrayList<String> behaviours, ArrayList<String> reactionsToVessel) {
+    public AnimalJson(String speciesName, String numberIndividuals, String numberOffspring, ArrayList<String> behaviours, ArrayList<String> reactionsToVessel, String trustLevel) {
         this.speciesName = speciesName;
         this.numberIndividuals = numberIndividuals;
         this.numberOffspring = numberOffspring;
         this.behaviours = behaviours;
         this.reactionsToVessel = reactionsToVessel;
+        this.trustLevel = trustLevel;
     }
 
     public String getSpeciesName() {
         return speciesName;
     }
 
-    public int getNumberIndividuals() {
+    public String getNumberIndividuals() {
         return numberIndividuals;
     }
 
-    public int getNumberOffspring() {
+    public String getNumberOffspring() {
         return numberOffspring;
     }
 
@@ -36,4 +38,9 @@ public class AnimalJson {
     public ArrayList<String> getReactionsToVessel() {
         return reactionsToVessel;
     }
+
+    public String getTrustLevel() {
+        return trustLevel;
+    }
+
 }

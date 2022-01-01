@@ -9,11 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -40,6 +35,9 @@ import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
 import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.jsonwriter.AnimalJson;
+import com.example.seaker.jsonwriter.JsonWriter;
+import com.example.seaker.jsonwriter.SightingJson;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,7 +45,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -67,8 +64,6 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class ReportSightingFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -90,6 +85,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
     private DataViewModel model;
+    private JsonWriter jsonWriter;
 
     public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
 
@@ -113,6 +109,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         View view = inflater.inflate(R.layout.fragment_report_sighting, container, false);
         SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
 
+        jsonWriter = new JsonWriter();
         businessFacade = BusinessFacade.getInstance();
 
         onStartView(view);
@@ -1014,8 +1011,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             } else {
                 insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, getPersonIdAndName(), getVesselId(), animal, getZones());
             }
+
+            createJsonFile(); //CRIAR JSON FILE -> SISTEMA 2
+
             sightingInformations.clear();
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
+
             //Espera 2 segundos
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -1027,6 +1028,57 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }else{ //se não preencheu todos os campos obrigatórios
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Required fields missing!");
         }
+    }
+
+    private void createJsonFile(){
+
+        ArrayList<AnimalJson> animalJsons = new ArrayList<AnimalJson>();
+        for(SightingInformation sightingInformation : sightingInformations){
+            String specieName = sightingInformation.getSpecieName();
+            String nr_individuals = sightingInformation.getNumberOfIndividualsString();
+            String nr_offspring = sightingInformation.getNumberOfOffspringString();
+
+            String behaviors = sightingInformation.getBehaviorTypesString();
+            String[] behaviorsTypes = behaviors.split(";");
+            ArrayList<String> behaviorsTypesList = new ArrayList<String>();
+            for(String behaviorType : behaviorsTypes){
+                behaviorsTypesList.add(behaviorType);
+            }
+
+            String reactions = sightingInformation.getReactionToVesselString();
+            String[] reactionToVessel = behaviors.split(";");
+            ArrayList<String> reactionsList = new ArrayList<String>();
+            for(String reaction : reactionToVessel){
+                reactionsList.add(reaction);
+            }
+
+            String trustLevel = sightingInformation.getTrustLevelString();
+
+            AnimalJson animal = new AnimalJson(specieName, nr_individuals, nr_offspring, behaviorsTypesList, reactionsList, trustLevel);
+
+            animalJsons.add(animal);
+        }
+
+        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
+        String day = editText.getText().toString();
+        EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
+        String hour = editText1.getText().toString();
+        TextView textView = (TextView) getView().findViewById(R.id.latitude);
+        String latitude = textView.getText().toString();
+        String[] result = latitude.split(": ");
+        String latitude_ = result[1];
+        TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
+        String longitude = textView1.getText().toString();
+        String[] result1 = longitude.split(": ");
+        String longitude_ = result1[1];
+        SeekBar sb = (SeekBar) getView().findViewById(R.id.beaufort_slider);
+        String sea_state = Integer.toString(sb.getProgress());
+        EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
+        String comment = editText3.getText().toString();
+
+        SightingJson sighting = new SightingJson(day, hour, latitude_, longitude_, animalJsons, sea_state, getVesselId(), comment, getPersonName());
+
+        jsonWriter.createSightingJson(sighting);
     }
 
     public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person, String boat_id, String animal, String zone){
@@ -1260,6 +1312,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
         return sighting_info.get(0).get(0) + "*" + sighting_info.get(0).get(1);
+    }
+
+    private String getPersonName(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(0).get(1);
     }
 
     private String getVesselId(){

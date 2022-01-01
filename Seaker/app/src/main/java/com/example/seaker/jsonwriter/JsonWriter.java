@@ -44,13 +44,12 @@ public class JsonWriter {
                 animalJsonObject.put("NumberOffspring", animal.getNumberOffspring());
                 animalJsonObject.put("Behaviours", animal.getBehaviours().toString());
                 animalJsonObject.put("ReactionsToBoat", animal.getReactionsToVessel().toString());
+                animalJsonObject.put("TrustLevel", animal.getTrustLevel().toString());
                 animalArray.put(animalJsonObject);
             }
 
             jsonObject.put("Animals", animalArray);
-
             jsonObject.put("SeaState", sighting.getSeaState());
-            jsonObject.put("ConfidenceLevel", sighting.getConfidenceLevel());
             jsonObject.put("BoatName", sighting.getBoatName());
             jsonObject.put("Comments", sighting.getComment());
             jsonObject.put("ReporterName", sighting.getReporterName());
