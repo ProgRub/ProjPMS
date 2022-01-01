@@ -284,12 +284,14 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
-        //CARREGAR AS COORDENADAS DEPENDENDO DA VIAGEM
-        LatLng Funchal = new LatLng(32.643579, -16.914312 );
-        map.addMarker(new MarkerOptions().position(Funchal).title("Funchal"));
-        moveToCurrentLocation(Funchal);
-        sightingLatitude.setText("Latitude: "+ df.format(Funchal.latitude));
-        sightingLongitude.setText("Longitude: "+ df.format(Funchal.longitude));
+
+        LatLng coordenadas = new LatLng(0, 0);
+        if(model.getTripFrom().contains("Funchal")) coordenadas = new LatLng(32.645623, -16.906999);
+        else if(model.getTripFrom().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
+
+        moveToCurrentLocation(coordenadas);
+        sightingLatitude.setText("Latitude: "+ df.format(coordenadas.latitude));
+        sightingLongitude.setText("Longitude: "+ df.format(coordenadas.longitude));
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
