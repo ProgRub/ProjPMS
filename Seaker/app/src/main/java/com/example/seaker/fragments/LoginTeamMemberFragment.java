@@ -1,6 +1,7 @@
 package com.example.seaker.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 
@@ -95,6 +96,14 @@ public class LoginTeamMemberFragment extends BaseFragment {
             ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
             sightings.add(sighting);
             ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", sightings);
+
+            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("isLogged", model.getUserType());
+            editor.putString("vesselID", vessel_id[0]);
+            editor.putString("tripFrom", tripFrom_id[0]);
+            editor.putString("tripTo", tripTo_id[0]);
+            editor.commit();
 
             MainActivity.switchFragment(new TeamMemberHomeFragment());
         }else{
@@ -212,6 +221,11 @@ public class LoginTeamMemberFragment extends BaseFragment {
             aux.add(person_info);
             Context cont = (Context) getActivity().getApplicationContext();
             ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("userId", person[0]);
+            editor.putString("userName", person[1]);
+            editor.commit();
             return true;
         } else {
             return false;

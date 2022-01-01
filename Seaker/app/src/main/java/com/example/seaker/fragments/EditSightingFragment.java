@@ -94,6 +94,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         if(model.getUserType() == "TeamMember") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
         else if(model.getUserType() == "Administrator") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
+        else if(model.getUserType() == "CompanyManager") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
 
         businessFacade = BusinessFacade.getInstance();
 
@@ -295,20 +296,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 200);
-            }
-        });
-
-        sightingDate.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                datePicking(view);
-            }
-        });
-
-        sightingTime.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                timePicking(view);
             }
         });
 
@@ -527,47 +514,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 scroll.smoothScrollTo(((vLeft + vRight - sWidth) / 2), 0);
             }
         });
-    }
-
-    public void datePicking(View view) {
-        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
-
-        String actualValue = editText.getText().toString();
-        String previousDate[] = actualValue.split("/");
-
-        int yy = Integer.parseInt(previousDate[2]);
-        int mm = Integer.parseInt(previousDate[1])-1;
-        int dd = Integer.parseInt(previousDate[0]);
-
-        DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1)
-                        + "/" + String.valueOf(year);
-                editText.setText(date);
-            }
-        }, yy, mm, dd);
-
-        datePicker.show();
-    }
-
-    public void timePicking(View view) {
-        EditText editText = (EditText) getView().findViewById(R.id.pickTime);
-        String actualValue = editText.getText().toString();
-        String previousTime[] = actualValue.split(":");
-
-        int hour = Integer.parseInt(previousTime[0]);
-        int minute = Integer.parseInt(previousTime[1]);
-
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                editText.setText( selectedHour + ":" + selectedMinute);
-            }
-        }, hour, minute, true);//Yes 24 hour time
-        mTimePicker.setTitle("Select Time");
-        mTimePicker.show();
     }
 
     private void setViewID(View view, View v) {
@@ -1206,10 +1152,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, message);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
-
             public void run() {
                 if(model.getUserType() == "TeamMember") MainActivity.switchFragment(new TeamMemberHomeFragment());
                 else if(model.getUserType() == "Administrator") MainActivity.switchFragment(new AdminHomeFragment());
+                else if(model.getUserType() == "CompanyManager") MainActivity.switchFragment(new CompanyManagerHomeFragment());
             }
         }, 2000);
     }

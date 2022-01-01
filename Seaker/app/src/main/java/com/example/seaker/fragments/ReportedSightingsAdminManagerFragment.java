@@ -1,6 +1,7 @@
 package com.example.seaker.fragments;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
 
     private DataViewModel model;
     private LinearLayout recentSightings;
+    private ImageButton backBtn;
     private LinearLayout otherSightings;
 
     public ReportedSightingsAdminManagerFragment() {
@@ -44,10 +46,27 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reported_sightings_admin_manager, container, false);
 
+        onStartView(view);
+
+        return view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void onStartView(View view){
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
 
         model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
+        backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(model.getUserType().equals("Administrator")) MainActivity.switchFragment(new AdminHomeFragment());
+                else if (model.getUserType().equals("CompanyManager")) MainActivity.switchFragment(new CompanyManagerHomeFragment());
+            }
+        });
 
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont,"notSubmittedSightings");
@@ -112,8 +131,6 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
                 }
             }
         }
-
-        return view;
     }
 
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:

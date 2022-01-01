@@ -1,6 +1,7 @@
 package com.example.seaker.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -65,6 +66,10 @@ public class LoginManagerAdminFragment extends BaseFragment {
         if(!validateInput()) return;
 
         if(verify_login(email.getText().toString(), password.getText().toString(), model.getUserType())){
+            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("isLogged", model.getUserType());
+            editor.commit();
             if(model.getUserType() == "CompanyManager") MainActivity.switchFragment(new CompanyManagerHomeFragment());
             else if(model.getUserType() == "Administrator") MainActivity.switchFragment(new AdminHomeFragment());
         }else{
@@ -147,6 +152,11 @@ public class LoginManagerAdminFragment extends BaseFragment {
             aux.add(person_info);
             Context cont = (Context) getActivity().getApplicationContext();
             ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+            //SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            //            SharedPreferences.Editor editor = pref.edit();
+            //            editor.putString("userId", person[0]);
+            //            editor.putString("userName", person[1]);
+            //            editor.commit();
             return true;
         } else {
             return false;
