@@ -70,9 +70,9 @@ public class TeamMemberHomeFragment extends BaseFragment {
             String tripFrom_id = pref.getString("tripFrom", "");
             String tripTo_id = pref.getString("tripTo", "");
             model.setUserType("TeamMember");
-            model.setVesselID("vessel_id");
-            model.setTripFrom("tripFrom_id");
-            model.setTripTo("tripTo_id");
+            model.setVesselID(vessel_id);
+            model.setTripFrom(tripFrom_id);
+            model.setTripTo(tripTo_id);
 
             ArrayList<String> sighting = new ArrayList<>();
             sighting.add(vessel_id);
