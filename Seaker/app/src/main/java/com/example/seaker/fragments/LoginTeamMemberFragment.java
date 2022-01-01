@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -154,7 +155,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
         ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
         String all_zones = getAllZones();
         String[] zones = all_zones.split("\\*");
-        for(int i = 0; i < boats.length; i++){
+        for(int i = 0; i < zones.length; i++){
             adapter1.add(zones[i]);
         }
 
@@ -168,6 +169,8 @@ public class LoginTeamMemberFragment extends BaseFragment {
             }
         });
     }
+
+
 
     public Boolean verify_login(String email, String password, String role){
         String result = "";
