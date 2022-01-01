@@ -1132,7 +1132,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             String sighting_id_number = sighting_id.substring(1);
 
             if(ReportSightingFragment.isInternetWorking()){
-                ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
+                ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, animal);
                 showHandler(view, "Sighting successfully edited!");
             } else {
                 showHandler(view, "No connectivity");
@@ -1144,7 +1144,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             Context cont = (Context) getActivity().getApplicationContext();
 
             if(ReportSightingFragment.isInternetWorking()){
-                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", "1", animal);
+                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getZones());
                 showHandler(view, "Sighting submitted!");
                 deleteArrayList(index);
             } else {
@@ -1156,8 +1156,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 sightings.get(index).set(3, latitude_);
                 sightings.get(index).set(4, longitude_);
                 sightings.get(index).set(5, comment);
-                sightings.get(index).set(6, "3*Sílvia Fernandes");
-                sightings.get(index).set(7, "1");
                 sightings.get(index).set(8, animal);
 
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", sightings);
@@ -1214,5 +1212,24 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 else if(model.getUserType() == "Administrator") MainActivity.switchFragment(new AdminHomeFragment());
             }
         }, 2000);
+    }
+
+    private String getIdPerson(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(0).get(0);
+    }
+
+    private String getVesselId(){
+
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(0);
+    }
+
+    private String getZones(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(1);
     }
 }

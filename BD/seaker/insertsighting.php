@@ -10,6 +10,7 @@ $comment = $_POST['comment'];
 $person_id = $_POST['person_id'];
 $boat_id = $_POST['boat_id'];
 $animal = $_POST['animal'];
+$zone = $_POST['zone'];
 
 $day_pt = explode('/', $day);
 $day_en = $day_pt[2] . '-' . $day_pt[1] . '-' . $day_pt[0];
@@ -19,6 +20,12 @@ $querySighting = "insert into sighting_report (day, hour, sea_state, latitude, l
 
 if (mysqli_query($conn, $querySighting)) {
 	$last_sighting_id = mysqli_insert_id($conn);
+	
+	$zones = explode('*', $zone);
+	for ($x = 0; $x < count($zones); $x++) {
+		$queryZone = "insert into sighting_report_has_zone (sighting_report_id, zone_id) values ('$last_sighting_id','$zones[$x]')";
+		$insert_zone = mysqli_query($conn, $queryZone);		
+	}
 
 	$animais = explode('$', $animal);
 	

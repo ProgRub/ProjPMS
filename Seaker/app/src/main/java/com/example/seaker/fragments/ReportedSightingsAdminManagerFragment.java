@@ -67,7 +67,8 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
                     String person_id = person_id_name_[0];
                     String boat_id = sightings.get(i).get(7);
                     String species = sightings.get(i).get(8);
-                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species);
+                    String zone = sightings.get(i).get(9);
+                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species, zone);
                 }
                 ArrayList<ArrayList<String>> aux = new ArrayList<>();
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);

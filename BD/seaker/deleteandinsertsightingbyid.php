@@ -8,9 +8,18 @@ $sea_state = $_POST['sea_state'];
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 $comment = $_POST['comment'];
-$person_id = $_POST['person_id'];
-$boat_id = $_POST['boat_id'];
 $animal = $_POST['animal'];
+
+$person_id = "3";
+$boat_id = "1";
+
+$query_ids_person_boat = "select * from sighting_report where id = " . $id_sighting;
+$query_ids_person_boat_result = mysqli_query($conn, $query_ids_person_boat);	
+
+while($roww = mysqli_fetch_array($query_ids_person_boat_result)){
+	$person_id = $roww['person_id'];
+	$boat_id = $roww['boat_id'];
+}
 
 // delete sighting report
 

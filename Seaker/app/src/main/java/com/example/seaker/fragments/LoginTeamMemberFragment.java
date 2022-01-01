@@ -1,5 +1,6 @@
 package com.example.seaker.fragments;
 
+import android.content.Context;
 import android.media.Image;
 import android.os.Bundle;
 
@@ -31,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class LoginTeamMemberFragment extends BaseFragment {
 
@@ -74,6 +76,24 @@ public class LoginTeamMemberFragment extends BaseFragment {
             model.setVesselID(vessel_id.getSelectedItem().toString());
             model.setTripFrom(trip_from.getSelectedItem().toString());
             model.setTripTo(trip_to.getSelectedItem().toString());
+
+            String vessel = vessel_id.getSelectedItem().toString();
+            String[] vessel_id = vessel.split("\\.");
+
+            String tripFrom = trip_from.getSelectedItem().toString();
+            String[] tripFrom_id = tripFrom.split("\\.");
+
+            String tripTo = trip_to.getSelectedItem().toString();
+            String[] tripTo_id = tripTo.split("\\.");
+
+            ArrayList<String> sighting = new ArrayList<>();
+            sighting.add(vessel_id[0]);
+            sighting.add(tripFrom_id[0] + "*" + tripTo_id[0]);
+
+            Context cont = (Context) getActivity().getApplicationContext();
+            ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+            sightings.add(sighting);
+            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", sightings);
 
             MainActivity.switchFragment(new TeamMemberHomeFragment());
         }else{
@@ -123,17 +143,23 @@ public class LoginTeamMemberFragment extends BaseFragment {
         trip_to = (Spinner) view.findViewById(R.id.trip_to_spinner);
         login_btn = (ImageButton) view.findViewById(R.id.login_btn);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.vessels_array, R.layout.spinner_center_item);
-        adapter.setDropDownViewResource(R.layout.spinner_center_item);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
+        String all_boats = getAllBoats();
+        String[] boats = all_boats.split("\\*");
+        for(int i = 0; i < boats.length; i++){
+            adapter.add(boats[i]);
+        }
         vessel_id.setAdapter(adapter);
 
-        adapter = ArrayAdapter.createFromResource(getContext(), R.array.trip_from_array, R.layout.spinner_center_item);
-        adapter.setDropDownViewResource(R.layout.spinner_center_item);
-        trip_from.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
+        String all_zones = getAllZones();
+        String[] zones = all_zones.split("\\*");
+        for(int i = 0; i < boats.length; i++){
+            adapter1.add(zones[i]);
+        }
 
-        adapter = ArrayAdapter.createFromResource(getContext(), R.array.trip_to_array, R.layout.spinner_center_item);
-        adapter.setDropDownViewResource(R.layout.spinner_center_item);
-        trip_to.setAdapter(adapter);
+        trip_from.setAdapter(adapter1);
+        trip_to.setAdapter(adapter1);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +169,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
         });
     }
 
-    public static Boolean verify_login(String email, String password, String role){
+    public Boolean verify_login(String email, String password, String role){
         String result = "";
         String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/verifylogin.php";
         try {
@@ -174,6 +200,66 @@ public class LoginTeamMemberFragment extends BaseFragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result.equals("true");
+        if (result.contains("*")){
+            ArrayList<ArrayList<String>> aux = new ArrayList<>();
+            ArrayList<String> person_info = new ArrayList<>();
+            String[] person = result.split("\\*");
+            person_info.add(person[0]);
+            person_info.add(person[1]);
+            aux.add(person_info);
+            Context cont = (Context) getActivity().getApplicationContext();
+            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static String getAllBoats(){
+        String result = "";
+        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/getallboats.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoInput(true);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static String getAllZones(){
+        String result = "";
+        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/getallzones.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoInput(true);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

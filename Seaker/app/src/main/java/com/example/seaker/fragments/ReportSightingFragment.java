@@ -982,12 +982,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         //businessFacade.addSighting(sightingDTO);
     }
 
-    public void testingBtn(View view){
-        for(SightingInformation sighting : sightingInformations){
-            Log.d("TESTING", sighting.toString() );
-        }
-    }
-
     public void insertSighting(View view){
 
         EditText editText = (EditText) getView().findViewById(R.id.pickDate);
@@ -1014,9 +1008,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
             if(isInternetWorking()){
-                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, "3", getVesselId(), animal);
+                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getZones());
             } else {
-                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, "3*Sílvia Fernandes", getVesselId(), animal);
+                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, getPersonIdAndName(), getVesselId(), animal, getZones());
             }
             sightingInformations.clear();
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Sighting successfully reported!");
@@ -1033,26 +1027,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    private String getVesselId(){
-        switch(model.getVesselID()){
-            case "Seaborn Catamaran":
-                return "1";
-            case "Sunset Catamaran":
-                return "2";
-            case "Miranda Semi-Rigid Vessel":
-                return "3";
-            case "Luna Semi-Rigid Vessel":
-                return "4";
-            case "Prince Ali Yacht":
-                return "5";
-            default:
-                return "0";
-        }
-    }
-
-
-
-    public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person, String boat_id, String animal){
+    public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person, String boat_id, String animal, String zone){
 
         ArrayList<String> sighting = new ArrayList<>();
         sighting.add(day);
@@ -1064,6 +1039,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         sighting.add(person);
         sighting.add(boat_id);
         sighting.add(animal);
+        sighting.add(zone);
 
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sightings = ReadArrayListFromSD(cont, "notSubmittedSightings");
@@ -1072,7 +1048,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         //Log.d("file", ReadArrayListFromSD(cont, "notSubmittedSightings").toString());
     }
 
-    public static void insertSightingInformationIntoBD(String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal){
+    public static void insertSightingInformationIntoBD(String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal, String zone){
 
         String insertSightingUrl = "http://" + ip + "/seaker/insertsighting.php";
         try {
@@ -1091,7 +1067,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                     + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
                     + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8")+"&"
                     + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(boat_id, "UTF-8")+"&"
-                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
+                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8")+"&"
+                    + URLEncoder.encode("zone", "UTF-8")+"="+URLEncoder.encode(zone, "UTF-8");
 
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
@@ -1115,7 +1092,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    public static void deleteAndInsertSightingInformationIntoBD(String id_sighting, String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal){
+    public static void deleteAndInsertSightingInformationIntoBD(String id_sighting, String day, String hour, String sea_state, String latitude, String longitude, String comment, String animal){
 
         String insertSightingUrl = "http://" + ip + "/seaker/deleteandinsertsightingbyid.php";
         try {
@@ -1133,8 +1110,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                     + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
                     + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
                     + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
-                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8")+"&"
-                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(boat_id, "UTF-8")+"&"
                     + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
 
             bufferedWriter.write(post_data);
@@ -1271,5 +1246,30 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             e.printStackTrace();
         }
         return success;
+    }
+
+    private String getIdPerson(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(0).get(0);
+    }
+
+    private String getPersonIdAndName(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(0).get(0) + "*" + sighting_info.get(0).get(1);
+    }
+
+    private String getVesselId(){
+
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(0);
+    }
+
+    private String getZones(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(1);
     }
 }

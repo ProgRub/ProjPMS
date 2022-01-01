@@ -12,10 +12,11 @@ $r = mysqli_query($conn,$sql);
 $result = "";
 
 if (mysqli_num_rows($r)){
-	$result = "true";
-} else {
-	$result = "false";
-}
+	
+	while($row = mysqli_fetch_array($r)){
+		$result = $result . $row['id'] . "*" . $row['name'];
+	}
+} 
 
 echo $result;
 
