@@ -1,6 +1,10 @@
 package com.example.seaker;
 
+import android.view.View;
+
 public class SpecieSummary {
+
+    private View summary;
     private String specie;
     private String totalNrIndividuals;
     private String averageNrIndividualsPerSighting;
@@ -11,7 +15,8 @@ public class SpecieSummary {
     private String nrPhotos;
 
 
-    public SpecieSummary(String specie, String totalNrIndividuals, String averageNrIndividualsPerSighting, String mostCommonBehavior, String mostCommonReaction, String averageBeaufort, String averageTrustLvl, String nrPhotos) {
+    public SpecieSummary(View summary, String specie, String totalNrIndividuals, String averageNrIndividualsPerSighting, String mostCommonBehavior, String mostCommonReaction, String averageBeaufort, String averageTrustLvl, String nrPhotos) {
+        this.summary = summary;
         this.specie = specie;
         this.totalNrIndividuals = totalNrIndividuals;
         this.averageNrIndividualsPerSighting = averageNrIndividualsPerSighting;
@@ -85,5 +90,9 @@ public class SpecieSummary {
 
     public void setSpecie(String specie) {
         this.specie = specie;
+    }
+
+    public View getSummary() {
+        return summary;
     }
 }

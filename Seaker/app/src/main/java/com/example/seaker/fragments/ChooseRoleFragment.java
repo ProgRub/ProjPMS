@@ -57,7 +57,7 @@ public class ChooseRoleFragment extends BaseFragment {
         companyMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.setUserType("CompanyMember");
+                model.setUserType("CompanyManager");
                 MainActivity.switchFragment(new LoginManagerAdminFragment());
             }
         });

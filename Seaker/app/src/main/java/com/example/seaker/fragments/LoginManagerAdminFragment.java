@@ -1,5 +1,6 @@
 package com.example.seaker.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class LoginManagerAdminFragment extends BaseFragment {
 
@@ -105,7 +107,7 @@ public class LoginManagerAdminFragment extends BaseFragment {
         });
     }
 
-    public static Boolean verify_login(String email, String password, String role){
+    public Boolean verify_login(String email, String password, String role){
         String result = "";
         String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/verifylogin.php";
         try {
@@ -136,7 +138,19 @@ public class LoginManagerAdminFragment extends BaseFragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result.equals("true");
+        if (result.contains("*")){
+            ArrayList<ArrayList<String>> aux = new ArrayList<>();
+            ArrayList<String> person_info = new ArrayList<>();
+            String[] person = result.split("\\*");
+            person_info.add(person[0]);
+            person_info.add(person[1]);
+            aux.add(person_info);
+            Context cont = (Context) getActivity().getApplicationContext();
+            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

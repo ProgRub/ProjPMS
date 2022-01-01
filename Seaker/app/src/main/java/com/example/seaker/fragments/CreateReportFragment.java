@@ -78,6 +78,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private int pagewidth = 792;
     private File pdfFile;
     private File docxFile;
+    private ArrayList<SpecieSummary> speciesSummary;
+    private ArrayList<LatLng> coordinatesFromSummary;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
     public CreateReportFragment() {
@@ -105,6 +107,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private void onStartView(View view){
 
         speciesSummary = new ArrayList<SpecieSummary>();
+        coordinatesFromSummary = new ArrayList<LatLng>();
+
         startDate = (EditText) view.findViewById(R.id.startDate);
         endDate = (EditText) view.findViewById(R.id.endDate);
         photosPerSighting = (EditText) view.findViewById(R.id.photos_per_sighting);
@@ -145,7 +149,10 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                createSummary(view);
+                //se já tinha criado um sumário, atualiza
+                if(exportReportBtn.getVisibility() == View.VISIBLE) createDifferentSummary(view);
+                //caso contrário, cria um novo
+                else createSummary(view);
             }
         });
 
@@ -184,7 +191,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
-    private ArrayList<SpecieSummary> speciesSummary;
 
     private void addSpecieSummary(String specie, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostComReact, String averBeaufort, String averTrustLvl, String nrPics){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -214,10 +220,9 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         TextView nrPhotos  = (TextView) v.findViewById(R.id.nr_photos);
         nrPhotos.setText("- Photos: "+ nrPics);
 
-        speciesSummary.add( new SpecieSummary(specie, nrIndiv, averageNrIndiv, mostComBeh, mostComReact, averBeaufort, averTrustLvl, nrPics));
+        speciesSummary.add( new SpecieSummary(v, specie, nrIndiv, averageNrIndiv, mostComBeh, mostComReact, averBeaufort, averTrustLvl, nrPics));
 
         summary.addView(v);
-
     }
 
     public void datePicking(View view, boolean startDate) {
@@ -316,7 +321,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
 
-        mapBox.setVisibility(View.VISIBLE);
         totalNrIndividuals.setVisibility(View.VISIBLE);
         chooseFormatText.setVisibility(View.VISIBLE);
         pdfFormat.setVisibility(View.VISIBLE);
@@ -324,29 +328,54 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         exportReportBtn.setVisibility(View.VISIBLE);
         shareViaEmailBtn.setVisibility(View.VISIBLE);
 
+        //Para testar inserção do pin nas coordenadas:
+        addCoordinatesFound(32.644313, -16.914312);
+        addCoordinatesFound(32.643579, -16.915613);
+        addCoordinatesFound(32.642859, -16.916211);
+
+        mapBox.setVisibility(View.VISIBLE); //ADICIONAR AS COORDENADAS ANTES DE TORNAR O MAPA VISIVEL !!!
+
         //Apenas para testar:
-        nrSightingsFound.setText("5 sightings found.");
-        totalNrIndividuals.setText("Total number of individuals: " + "34");
+        nrSightingsFound.setText("5" + " sightings found."); //ALTERAR COM VALOR CORRETO
+        totalNrIndividuals.setText("Total number of individuals: " + "34"); //ALTERAR COM VALOR CORRETO
+
+        //Adicionar as espécies dos avistamentos encontrados:
         addSpecieSummary("Blue Whale", "12", "2", "Social Interaction", "Approach", "2", "High", "8");
         addSpecieSummary("Fin Whale", "5", "1", "Other", "None", "4", "Low", "2");
 
+    }
+
+    //NOTAS -> MÉTODO CREATESUMMARY:
+    //addSpecieSummary -> recebe como parametros os dados para criar o sumário de cada espécie
+    //addCoordinatesFound -> recebe como parâmetro a latitude e a longitude de cada avistamento onde irá colocar um pin no mapa
+    //nrSightingsFound.setText(NUMBER_SIGHTINGS + " sightings found."); -> NUMBER_SIGHTINGS -> numero de avistamentos entre a start date e end date
+    //totalNrIndividuals.setText("Total number of individuals: " + NUMBER_INDIVIDUALS); -> NUMBER_INDIVIDUALS -> numero de individuos total das espécies avistadas entre as datas
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void createDifferentSummary(View view){
+
+        //apaga todos os sumários do ecrã:
+        for(SpecieSummary specieSummary : speciesSummary){
+            summary.removeView(specieSummary.getSummary());
+        }
+
+        speciesSummary.clear();
+        coordinatesFromSummary.clear();
+
+        createSummary(view);
+    }
+
+    private void addCoordinatesFound(Double latitude, Double longitude){
+        coordinatesFromSummary.add(new LatLng(latitude, longitude));
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
         MarkerOptions options = new MarkerOptions();
-        ArrayList<LatLng> latlngs = new ArrayList<>();
-
-        //Para testar inserção do pin nas coordenadas ao carregar o mapa:
-        latlngs.add(new LatLng(32.644313, -16.914312));
-        latlngs.add(new LatLng(32.643579, -16.915613));
-        latlngs.add(new LatLng(32.642859, -16.916211));
-        latlngs.add(new LatLng(32.649159, -16.913136));
-        latlngs.add(new LatLng(32.646859, -16.917214));
 
         int sightingNr = 1;
-        for (LatLng point : latlngs) {
+        for (LatLng point : coordinatesFromSummary) {
             options.position(point);
             options.title("Sighting " + sightingNr);
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin));
