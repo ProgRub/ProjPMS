@@ -1,0 +1,32 @@
+{
+    "Date":"1/1/2022",
+    "Time":"17:24",
+    "Latitude":"0.00139",
+    "Longitude":"0.00373",
+    "Animals":[
+        {
+            "SpeciesName":"Gervais' Beaked Whale",
+            "NumberIndividuals":"4",
+            "NumberOffspring":"2",
+            "Behaviours":"[Resting, Social Interaction]",
+            "ReactionsToBoat":"[Approach]",
+            "TrustLevel":"High"},
+        {
+            "SpeciesName":"Pigmy Whale",
+            "NumberIndividuals":"5",
+            "NumberOffspring":"1",
+            "Behaviours":"[Other]",
+            "ReactionsToBoat":"[Other]",
+            "TrustLevel":"Low"},
+        {
+            "SpeciesName":"Fraser's Dolphin",
+            "NumberIndividuals":"6-10",
+            "NumberOffspring":"0",
+            "Behaviours":"[Traveling]",
+            "ReactionsToBoat":"[None, Approach]",
+            "TrustLevel":"Low"}],
+    "SeaState":"9",
+    "BoatName":"5",
+    "Comments":"Comentario",
+    "ReporterName":"Diego da Silva Briceño"
+}
