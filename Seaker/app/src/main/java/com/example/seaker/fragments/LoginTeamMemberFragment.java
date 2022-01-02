@@ -82,15 +82,10 @@ public class LoginTeamMemberFragment extends BaseFragment {
             String vessel = vessel_id.getSelectedItem().toString();
             String[] vessel_id = vessel.split("\\.");
 
-            String tripFrom = trip_from.getSelectedItem().toString();
-            String[] tripFrom_id = tripFrom.split("\\.");
-
-            String tripTo = trip_to.getSelectedItem().toString();
-            String[] tripTo_id = tripTo.split("\\.");
-
             ArrayList<String> sighting = new ArrayList<>();
             sighting.add(vessel_id[0]);
-            sighting.add(tripFrom_id[0] + "*" + tripTo_id[0]);
+            sighting.add(trip_from.getSelectedItem().toString());
+            sighting.add(trip_to.getSelectedItem().toString());
 
             Context cont = (Context) getActivity().getApplicationContext();
             ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
@@ -101,8 +96,8 @@ public class LoginTeamMemberFragment extends BaseFragment {
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("isLogged", model.getUserType());
             editor.putString("vesselID", vessel_id[0]);
-            editor.putString("tripFrom", tripFrom_id[0]);
-            editor.putString("tripTo", tripTo_id[0]);
+            editor.putString("tripFrom", trip_from.getSelectedItem().toString());
+            editor.putString("tripTo", trip_to.getSelectedItem().toString());
             editor.commit();
 
             MainActivity.switchFragment(new TeamMemberHomeFragment());
@@ -154,7 +149,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
         login_btn = (ImageButton) view.findViewById(R.id.login_btn);
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
-        String all_boats = getAllBoats();
+        String all_boats = getInfoBD("getallboats.php");
         String[] boats = all_boats.split("\\*");
         for(int i = 0; i < boats.length; i++){
             adapter.add(boats[i]);
@@ -162,14 +157,23 @@ public class LoginTeamMemberFragment extends BaseFragment {
         vessel_id.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
-        String all_zones = getAllZones();
-        String[] zones = all_zones.split("\\*");
-        for(int i = 0; i < zones.length; i++){
-            adapter1.add(zones[i]);
+        ArrayAdapter<CharSequence> adapter2 = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
+
+        String trip_from_ = getInfoBD("getallzonestripfrom.php");
+        String trip_to_ = getInfoBD("getallzonestripto.php");
+
+        String[] zones_trip_from = trip_from_.split("\\*");
+        for(int i = 0; i < zones_trip_from.length; i++){
+            adapter1.add(zones_trip_from[i]);
+        }
+
+        String[] zones_trip_to = trip_to_.split("\\*");
+        for(int i = 0; i < zones_trip_to.length; i++){
+            adapter2.add(zones_trip_to[i]);
         }
 
         trip_from.setAdapter(adapter1);
-        trip_to.setAdapter(adapter1);
+        trip_to.setAdapter(adapter2);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,6 +225,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
             aux.add(person_info);
             Context cont = (Context) getActivity().getApplicationContext();
             ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+
             SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("userId", person[0]);
@@ -232,33 +237,9 @@ public class LoginTeamMemberFragment extends BaseFragment {
         }
     }
 
-    public static String getAllBoats(){
+    public static String getInfoBD(String php_file){
         String result = "";
-        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/getallboats.php";
-        try {
-            URL url = new URL(insertSightingUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setDoInput(true);
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static String getAllZones(){
-        String result = "";
-        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/getallzones.php";
+        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/" + php_file;
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();

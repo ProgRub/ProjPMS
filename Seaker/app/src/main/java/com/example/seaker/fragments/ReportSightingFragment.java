@@ -1009,9 +1009,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
             if(isInternetWorking()){
-                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getZones());
+                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
             } else {
-                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, getPersonIdAndName(), getVesselId(), animal, getZones());
+                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getPersonName(), getVesselId(), animal, getTripFrom(), getTripTo());
             }
 
             createJsonFile(); //CRIAR JSON FILE -> SISTEMA 2
@@ -1083,7 +1083,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         jsonWriter.createSightingJson(sighting);
     }
 
-    public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person, String boat_id, String animal, String zone){
+    public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person_id, String person_name, String boat_id, String animal, String trip_from, String trip_to){
 
         ArrayList<String> sighting = new ArrayList<>();
         sighting.add(day);
@@ -1092,10 +1092,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         sighting.add(latitude_);
         sighting.add(longitude_);
         sighting.add(comment);
-        sighting.add(person);
+        sighting.add(person_id);
+        sighting.add(person_name);
         sighting.add(boat_id);
         sighting.add(animal);
-        sighting.add(zone);
+        sighting.add(trip_from);
+        sighting.add(trip_to);
 
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sightings = ReadArrayListFromSD(cont, "notSubmittedSightings");
@@ -1104,7 +1106,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         //Log.d("file", ReadArrayListFromSD(cont, "notSubmittedSightings").toString());
     }
 
-    public static void insertSightingInformationIntoBD(String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal, String zone){
+    public static void insertSightingInformationIntoBD(String day, String hour, String sea_state, String latitude, String longitude, String comment, String person_id, String boat_id, String animal, String trip_from, String trip_to){
 
         String insertSightingUrl = "http://" + ip + "/seaker/insertsighting.php";
         try {
@@ -1124,7 +1126,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                     + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8")+"&"
                     + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(boat_id, "UTF-8")+"&"
                     + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8")+"&"
-                    + URLEncoder.encode("zone", "UTF-8")+"="+URLEncoder.encode(zone, "UTF-8");
+                    + URLEncoder.encode("trip_from", "UTF-8")+"="+URLEncoder.encode(trip_from, "UTF-8")+"&"
+                    + URLEncoder.encode("trip_to", "UTF-8")+"="+URLEncoder.encode(trip_to, "UTF-8");
 
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
@@ -1241,7 +1244,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static String getAllSightingsInformations(){
         String result = "";
-        String insertSightingUrl = "http://" + ip + "/seaker/getallsightings2.php";
+        String insertSightingUrl = "http://" + ip + "/seaker/getallsightings.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -1310,12 +1313,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return sighting_info.get(0).get(0);
     }
 
-    private String getPersonIdAndName(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(0).get(0) + "*" + sighting_info.get(0).get(1);
-    }
-
     private String getPersonName(){
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
@@ -1329,9 +1326,15 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return sighting_info.get(1).get(0);
     }
 
-    private String getZones(){
+    private String getTripFrom(){
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
         return sighting_info.get(1).get(1);
+    }
+
+    private String getTripTo(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(2);
     }
 }
