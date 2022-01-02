@@ -152,11 +152,6 @@ public class LoginManagerAdminFragment extends BaseFragment {
             aux.add(person_info);
             Context cont = (Context) getActivity().getApplicationContext();
             ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
-            //SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            //            SharedPreferences.Editor editor = pref.edit();
-            //            editor.putString("userId", person[0]);
-            //            editor.putString("userName", person[1]);
-            //            editor.commit();
             return true;
         } else {
             return false;
