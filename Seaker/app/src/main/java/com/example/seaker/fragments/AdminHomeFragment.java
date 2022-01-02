@@ -35,7 +35,7 @@ public class AdminHomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_home, container, false);
-        SetButtonOnClickNextFragment(R.id.buttonAddTeamMember,new ChooseRoleFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonAddTeamMember,new AddMemberFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersAdmin,new AllMembersFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsAdmin,new ReportedSightingsAdminManagerFragment(),view);
 

@@ -115,7 +115,7 @@
         app:layout_constraintVertical_bias="0.696" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/addMemberBtn"
         android:layout_width="237dp"
         android:layout_height="80dp"
         android:background="@drawable/add_member"
@@ -127,7 +127,7 @@
         app:layout_constraintVertical_bias="0.92" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/teamMemberCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/teamMember"
@@ -139,7 +139,7 @@
         app:layout_constraintVertical_bias="0.778" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/companyManagerCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/companyManager"
@@ -151,11 +151,12 @@
         app:layout_constraintVertical_bias="0.778" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/email_input"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:background="@drawable/login_input"
         android:ems="10"
+        android:gravity="center"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -165,7 +166,7 @@
         app:layout_constraintVertical_bias="0.42" />
 
     <EditText
-        android:id="@+id/editTextName"
+        android:id="@+id/name_input"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_marginStart="56dp"
@@ -173,6 +174,7 @@
         android:background="@drawable/login_input"
         android:ems="10"
         android:inputType="textPersonName"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -181,13 +183,14 @@
         app:layout_constraintVertical_bias="0.215" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/password_input"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/login_input"
         android:ems="10"
+        android:gravity="center"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
