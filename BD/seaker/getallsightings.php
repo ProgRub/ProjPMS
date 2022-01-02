@@ -1,18 +1,18 @@
 <?php
 require "conn.php";
 
-$sql = "SELECT * FROM sighting_report";
+$sql = "SELECT * FROM sighting_report order by id desc";
 
 $r = mysqli_query($conn,$sql);
 
-$result = array();
+$result = "";
 
 while($row = mysqli_fetch_array($r)){
 		
 	$query_animals = "SELECT * FROM animal WHERE sighting_report_id = " . $row['id'];
 	$animals = mysqli_query($conn, $query_animals);	
 	
-	$animais = array();
+	$animais = "";
 	
 	while($row1 = mysqli_fetch_array($animals)){ 
 		
@@ -25,26 +25,33 @@ while($row = mysqli_fetch_array($r)){
 		
 		$query_behaviors = "SELECT * FROM animal_behavior WHERE animal_id = " . $row1['id'];
 		$behaviors_result = mysqli_query($conn, $query_behaviors);	
-		$behaviors = array();
+		$behaviors = " ";
 		while($row3 = mysqli_fetch_array($behaviors_result)){
-			array_push($behaviors,$row3['name']);
+			$behaviors = $behaviors . $row3['name'] . "; ";
 		}
 		
 		$query_reactions = "SELECT * FROM animal_reaction_to_vessel WHERE animal_id = " . $row1['id'];
 		$reactions_result = mysqli_query($conn, $query_reactions);	
-		$reactions = array();
+		$reactions = " ";
 		while($row4 = mysqli_fetch_array($reactions_result)){
-			array_push($reactions,$row4['name']);
+			$reactions = $reactions . $row4['name'] . "; ";
+		}
+		
+		$n_off = $row1['n_offspring'];
+	
+		if($row1['n_offspring'] == NULL){
+			$n_off = "Not specified";
+		}
+		
+		$trust_l = $row1['trust_level'];
+		
+		if($row1['trust_level'] == NULL){
+			$trust_l = "Not specified";
 		}
 
-		array_push($animais,array(
-			'Specie'=>$specie_name,
-			'N individuals'=>$row1['n_individuals'],
-			'N offspring'=>$row1['n_offspring'],
-			'Trust level'=>$row1['trust_level'],
-			'Behavior'=>$behaviors,
-			'Reaction to vessel'=>$reactions
-		));
+		$animais = $animais . $specie_name . "*" . $row1['n_individuals'] . "*" .  $n_off . "*" . $trust_l . "*" . $behaviors 
+		. "*" . $reactions . "$";
+
 	}
 	
 	$query_person_name = "SELECT * FROM person WHERE id = " . $row['person_id'];
@@ -54,27 +61,24 @@ while($row = mysqli_fetch_array($r)){
 		$person_name = $row5['name'];
 	}
 	
-	$query_boat_name = "SELECT * FROM boat WHERE id = " . $row['boat_id'];
-	$boat_name_result = mysqli_query($conn, $query_boat_name);	
-	$boat_name = "";
-	while($row6 = mysqli_fetch_array($boat_name_result)){
-		$boat_name = $row6['name'];
+	$com = $row['comment'];
+	
+	if($row['comment'] == NULL){
+		$com = " ";
 	}
 	
-	array_push($result,array(
-		'Day'=>$row['day'],
-		'Hour'=>$row['hour'],
-		'Sea state'=>$row['sea_state'],
-		'Latitude'=>$row['latitude'],
-		'Longitude'=>$row['longitude'],
-		'Comment'=>$row['comment'],
-		'Person'=>$person_name,              
-		'Boat'=>$boat_name,
-		'Animals'=>$animais 
-	));
+	$day_en = explode('-', $row['day']);
+	$day_pt = $day_en[2] . '/' . $day_en[1] . '/' . $day_en[0];
+	
+	$hour_ = explode(':', $row['hour']);
+	$hour = $hour_[0] . ':' . $hour_[1];
+	
+	$result = $result . $row['id'] . "###" . $day_pt . "###" . $hour . "###" . $row['sea_state'] . "###" . $row['latitude'] . "###" . $row['longitude'] 
+	. "###" . $com . "###" . $row['person_id'] . "###" . $person_name . "###" . $row['boat_id'] . "###" . $animais . "&&&";
+	
 }
 
-echo json_encode($result);
+echo $result;
 
 mysqli_close($conn);
 ?>

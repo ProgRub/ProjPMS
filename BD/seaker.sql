@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2021 at 05:31 PM
+-- Generation Time: Jan 01, 2022 at 08:08 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -34,7 +34,7 @@ CREATE TABLE `animal` (
   `trust_level` enum('Low','Middle','High') DEFAULT NULL,
   `sighting_report_id` int(10) UNSIGNED NOT NULL,
   `specie_id` int(10) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `animal`
@@ -59,7 +59,7 @@ CREATE TABLE `animal_behavior` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `animal_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `animal_behavior`
@@ -87,7 +87,7 @@ CREATE TABLE `animal_reaction_to_vessel` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `animal_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `animal_reaction_to_vessel`
@@ -112,7 +112,7 @@ INSERT INTO `animal_reaction_to_vessel` (`id`, `name`, `animal_id`) VALUES
 CREATE TABLE `animal_type` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `animal_type`
@@ -132,7 +132,7 @@ INSERT INTO `animal_type` (`id`, `name`) VALUES
 CREATE TABLE `boat` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `boat`
@@ -143,7 +143,7 @@ INSERT INTO `boat` (`id`, `name`) VALUES
 (2, 'Sunset Catamaran'),
 (3, 'Miranda Semi-Rigid Vessel'),
 (4, 'Luna Semi-Rigid Vessel'),
-(5, 'Prince Ali Iate');
+(5, 'Prince Ali Yacht');
 
 -- --------------------------------------------------------
 
@@ -157,7 +157,7 @@ CREATE TABLE `person` (
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `role` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `person`
@@ -183,7 +183,7 @@ CREATE TABLE `photo` (
   `name` varchar(50) NOT NULL,
   `photo` longblob NOT NULL,
   `sighting_report_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `photo`
@@ -210,47 +210,22 @@ CREATE TABLE `sighting_report` (
   `latitude` decimal(10,8) NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
   `comment` varchar(500) DEFAULT NULL,
+  `trip_from` enum('Funchal','Porto Santo Island','Câmara de Lobos') NOT NULL,
+  `trip_to` enum('Cabo Girão','Cais do Sardinha','Funchal','Desertas Islands','Selvagens Islands') NOT NULL,
   `person_id` int(10) UNSIGNED NOT NULL,
   `boat_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sighting_report`
 --
 
-INSERT INTO `sighting_report` (`id`, `day`, `hour`, `sea_state`, `latitude`, `longitude`, `comment`, `person_id`, `boat_id`) VALUES
-(1, '2021-08-01', '13:39:03', '1', '32.61873000', '-16.93879000', NULL, 5, 1),
-(2, '2021-08-01', '14:44:03', '1', '32.65501000', '-16.79379000', NULL, 6, 2),
-(3, '2021-08-02', '11:05:00', '2', '32.64614000', '-16.98809000', NULL, 7, 4),
-(4, '2021-08-02', '15:05:00', '1', '32.65153000', '-17.00697000', NULL, 5, 1),
-(5, '2021-08-03', '10:15:00', '0', '32.66398000', '-16.74712000', NULL, 6, 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sighting_report_has_zone`
---
-
-CREATE TABLE `sighting_report_has_zone` (
-  `sighting_report_id` int(10) UNSIGNED NOT NULL,
-  `zone_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `sighting_report_has_zone`
---
-
-INSERT INTO `sighting_report_has_zone` (`sighting_report_id`, `zone_id`) VALUES
-(1, 2),
-(1, 4),
-(2, 4),
-(2, 6),
-(3, 3),
-(3, 4),
-(4, 2),
-(4, 4),
-(5, 4),
-(5, 6);
+INSERT INTO `sighting_report` (`id`, `day`, `hour`, `sea_state`, `latitude`, `longitude`, `comment`, `trip_from`, `trip_to`, `person_id`, `boat_id`) VALUES
+(1, '2021-08-01', '13:39:03', '1', '32.61873000', '-16.93879000', NULL, 'Funchal', 'Cais do Sardinha', 5, 1),
+(2, '2021-08-01', '14:44:03', '1', '32.65501000', '-16.79379000', NULL, 'Funchal', 'Desertas Islands', 6, 2),
+(3, '2021-08-02', '11:05:00', '2', '32.64614000', '-16.98809000', NULL, 'Funchal', 'Selvagens Islands', 7, 4),
+(4, '2021-08-02', '15:05:00', '1', '32.65153000', '-17.00697000', NULL, 'Funchal', 'Cais do Sardinha', 5, 1),
+(5, '2021-08-03', '10:15:00', '0', '32.66398000', '-16.74712000', NULL, 'Funchal', 'Cais do Sardinha', 6, 5);
 
 -- --------------------------------------------------------
 
@@ -262,7 +237,7 @@ CREATE TABLE `specie` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `animal_type_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `specie`
@@ -300,36 +275,6 @@ INSERT INTO `specie` (`id`, `name`, `animal_type_id`) VALUES
 (31, 'Not Specified Whale', 2),
 (32, 'Not Specified Dolphin', 1),
 (33, 'Not Specified Porpoise', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `zone`
---
-
-CREATE TABLE `zone` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `zone`
---
-
-INSERT INTO `zone` (`id`, `name`) VALUES
-(1, 'Desertas Islands'),
-(2, 'Cabo Girão'),
-(3, 'Câmara de Lobos'),
-(4, 'Funchal'),
-(5, 'Ribeira Brava'),
-(6, 'Santa Cruz'),
-(7, 'Machico'),
-(8, 'Porto Santo Island'),
-(9, 'Ponta do Sol'),
-(10, 'Calheta'),
-(11, 'Santana'),
-(12, 'São Vicente'),
-(13, 'Porto Moniz');
 
 --
 -- Indexes for dumped tables
@@ -391,25 +336,11 @@ ALTER TABLE `sighting_report`
   ADD KEY `fk_sighting_report_boat1_idx` (`boat_id`);
 
 --
--- Indexes for table `sighting_report_has_zone`
---
-ALTER TABLE `sighting_report_has_zone`
-  ADD PRIMARY KEY (`sighting_report_id`,`zone_id`),
-  ADD KEY `fk_sighting_report_has_zone_zone1_idx` (`zone_id`),
-  ADD KEY `fk_sighting_report_has_zone_sighting_report1_idx` (`sighting_report_id`);
-
---
 -- Indexes for table `specie`
 --
 ALTER TABLE `specie`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_specie_animal_type1_idx` (`animal_type_id`);
-
---
--- Indexes for table `zone`
---
-ALTER TABLE `zone`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -419,19 +350,19 @@ ALTER TABLE `zone`
 -- AUTO_INCREMENT for table `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT for table `animal_behavior`
 --
 ALTER TABLE `animal_behavior`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `animal_reaction_to_vessel`
 --
 ALTER TABLE `animal_reaction_to_vessel`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `animal_type`
@@ -461,19 +392,13 @@ ALTER TABLE `photo`
 -- AUTO_INCREMENT for table `sighting_report`
 --
 ALTER TABLE `sighting_report`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `specie`
 --
 ALTER TABLE `specie`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
---
--- AUTO_INCREMENT for table `zone`
---
-ALTER TABLE `zone`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -510,13 +435,6 @@ ALTER TABLE `photo`
 ALTER TABLE `sighting_report`
   ADD CONSTRAINT `fk_sighting_report_boat1` FOREIGN KEY (`boat_id`) REFERENCES `boat` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_sighting_report_person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `sighting_report_has_zone`
---
-ALTER TABLE `sighting_report_has_zone`
-  ADD CONSTRAINT `fk_sighting_report_has_zone_sighting_report1` FOREIGN KEY (`sighting_report_id`) REFERENCES `sighting_report` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_sighting_report_has_zone_zone1` FOREIGN KEY (`zone_id`) REFERENCES `zone` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `specie`

@@ -58,14 +58,6 @@ public class TeamMemberHomeFragment extends BaseFragment {
         String userName = pref.getString("userName", "");
 
         if(!userId.equals("") && !userName.equals("")){
-            ArrayList<ArrayList<String>> aux = new ArrayList<>();
-            ArrayList<String> person_info = new ArrayList<>();
-            person_info.add(userId);
-            person_info.add(userName);
-            aux.add(person_info);
-            Context cont = (Context) getActivity().getApplicationContext();
-            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
-
             String vessel_id = pref.getString("vesselID", "");
             String tripFrom_id = pref.getString("tripFrom", "");
             String tripTo_id = pref.getString("tripTo", "");
@@ -73,14 +65,6 @@ public class TeamMemberHomeFragment extends BaseFragment {
             model.setVesselID(vessel_id);
             model.setTripFrom(tripFrom_id);
             model.setTripTo(tripTo_id);
-
-            ArrayList<String> sighting = new ArrayList<>();
-            sighting.add(vessel_id);
-            sighting.add(tripFrom_id + "*" + tripTo_id);
-
-            ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-            sightings.add(sighting);
-            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", sightings);
         }
 
 

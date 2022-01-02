@@ -23,9 +23,6 @@ for ($i = 0; $i < count($ids_animals_to_delete); $i++) {
 	mysqli_query($conn, $query_delete_animal);
 }
 
-$query_delete_zones = "delete from sighting_report_has_zone where sighting_report_id = " . $id_sighting;
-mysqli_query($conn, $query_delete_zones);
-
 $query_delete_sighting = "delete from sighting_report where id = " . $id_sighting;
 mysqli_query($conn, $query_delete_sighting);
 

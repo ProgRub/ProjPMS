@@ -1090,7 +1090,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             Context cont = (Context) getActivity().getApplicationContext();
 
             if(ReportSightingFragment.isInternetWorking()){
-                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getZones());
+                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
                 showHandler(view, "Sighting submitted!");
                 deleteArrayList(index);
             } else {
@@ -1102,7 +1102,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 sightings.get(index).set(3, latitude_);
                 sightings.get(index).set(4, longitude_);
                 sightings.get(index).set(5, comment);
-                sightings.get(index).set(8, animal);
+                sightings.get(index).set(9, animal);
 
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", sightings);
 
@@ -1110,6 +1110,19 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             }
         }
     }
+
+    private String getTripFrom(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(1);
+    }
+
+    private String getTripTo(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(1).get(2);
+    }
+
 
     private void deleteSighting(View view){
         TextView tv = (TextView) getView().findViewById(R.id.fragmentTitle);
@@ -1171,11 +1184,5 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
         return sighting_info.get(1).get(0);
-    }
-
-    private String getZones(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(1);
     }
 }

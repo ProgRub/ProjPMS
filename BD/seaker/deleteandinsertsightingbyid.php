@@ -12,6 +12,8 @@ $animal = $_POST['animal'];
 
 $person_id = "3";
 $boat_id = "1";
+$trip_from = "Funchal";
+$trip_to = "Funchal";
 
 $query_ids_person_boat = "select * from sighting_report where id = " . $id_sighting;
 $query_ids_person_boat_result = mysqli_query($conn, $query_ids_person_boat);	
@@ -19,6 +21,8 @@ $query_ids_person_boat_result = mysqli_query($conn, $query_ids_person_boat);
 while($roww = mysqli_fetch_array($query_ids_person_boat_result)){
 	$person_id = $roww['person_id'];
 	$boat_id = $roww['boat_id'];
+	$trip_from = $roww['trip_from'];
+	$trip_to = $roww['trip_to'];
 }
 
 // delete sighting report
@@ -52,8 +56,9 @@ mysqli_query($conn, $query_delete_sighting);
 $day_pt = explode('/', $day);
 $day_en = $day_pt[2] . '-' . $day_pt[1] . '-' . $day_pt[0];
 
-$querySighting = "insert into sighting_report (id, day, hour, sea_state, latitude, longitude, comment, person_id, boat_id) values ('$id_sighting', '$day_en','$hour',
-'$sea_state','$latitude','$longitude'," . ($comment == '' ? 'NULL' : "'" . $comment . "'") . ",'$person_id','$boat_id')";
+$querySighting = "insert into sighting_report (id, day, hour, sea_state, latitude, longitude, comment, trip_from, trip_to, person_id, boat_id) values 
+('$id_sighting', '$day_en','$hour','$sea_state','$latitude','$longitude'," . ($comment == '' ? 'NULL' : "'" . $comment . "'") . ",
+'$trip_from', '$trip_to', '$person_id','$boat_id')";
 
 mysqli_query($conn, $querySighting);
 

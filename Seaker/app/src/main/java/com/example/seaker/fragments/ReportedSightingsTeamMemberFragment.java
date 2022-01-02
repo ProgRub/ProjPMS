@@ -64,13 +64,13 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                     String latitude = sightings.get(i).get(3);
                     String longitude = sightings.get(i).get(4);
                     String comment = sightings.get(i).get(5);
-                    String person_id_name = sightings.get(i).get(6);
-                    String[] person_id_name_ = person_id_name.split("\\*");
-                    String person_id = person_id_name_[0];
-                    String boat_id = sightings.get(i).get(7);
-                    String species = sightings.get(i).get(8);
-                    String zone = sightings.get(i).get(9);
-                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species, zone);
+                    String person_id = sightings.get(i).get(6);
+                    String person_name = sightings.get(i).get(7);
+                    String boat_id = sightings.get(i).get(8);
+                    String species = sightings.get(i).get(9);
+                    String trip_from = sightings.get(i).get(10);
+                    String trip_to = sightings.get(i).get(11);
+                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species, trip_from, trip_to);
                 }
                 ArrayList<ArrayList<String>> aux = new ArrayList<>();
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
@@ -88,11 +88,12 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                 String latitude = sighting[4];
                 String longitude = sighting[5];
                 String comment = sighting[6];
-                String team_member_name = sighting[7];
-                String boat_id = sighting[8];
-                String species = sighting[9];
+                String person_id = sighting[7];
+                String person_name = sighting[8];
+                String boat_id = sighting[9];
+                String species = sighting[10];
 
-                addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, boat_id, species, team_member_name);
+                addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, species, person_name);
             }
 
         } else {
@@ -106,11 +107,12 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                     String latitude = sightings.get(i).get(3);
                     String longitude = sightings.get(i).get(4);
                     String comment = sightings.get(i).get(5);
-                    String team_member_name = sightings.get(i).get(6);
-                    String boat_id = sightings.get(i).get(7);
-                    String species = sightings.get(i).get(8);
+                    String person_id = sightings.get(i).get(6);
+                    String person_name = sightings.get(i).get(7);
+                    String boat_id = sightings.get(i).get(8);
+                    String species = sightings.get(i).get(9);
 
-                    addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, boat_id, species, team_member_name);
+                    addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, species, person_name);
                 }
             }
         }
@@ -120,7 +122,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String boat_id, String species, String team_member_name ){
+    private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String species, String person_name){
         LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.reported_sighting_box, null);
 
@@ -139,8 +141,6 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         ArrayList<String> trust_level = new ArrayList<>();
         ArrayList<String> behaviors = new ArrayList<>();
         ArrayList<String> reactions = new ArrayList<>();
-        String[] result = team_member_name.split("\\*");
-        String team_member_name_ = result[1];
         String[] result1 = species.split("\\$");
 
         for(int j=0;j<result1.length;j++){
@@ -189,7 +189,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         date.setText(sighting_date);
         time.setText(sighting_time);
         sightingSpecies.setText(species_);
-        reportedBy.setText(team_member_name_);
+        reportedBy.setText(person_name);
 
         if(submitted){
             notSubmitted.setVisibility(View.GONE);
