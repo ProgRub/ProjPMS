@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
 import com.example.seaker.R;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class AllMembersFragment extends BaseFragment {
 
@@ -49,11 +62,17 @@ public class AllMembersFragment extends BaseFragment {
     private void onStartView(View view){
         members = (LinearLayout) view.findViewById(R.id.all_members);
 
-        addMember("Diego Briceño", "diego@gmail.com", "diego123", "Team Member");
-        addMember("Sílvia Fernandes", "silvia@gmail.com", "silvia123", "Team Member");
-        addMember("Rúben Rodrigues", "ruben@gmail.com", "ruben123", "Team Member");
-        addMember("Mara Dionísio", "mara@gmail.com", "maraaa", "Company Manager");
-        addMember("Pedro Campos", "pedro@gmail.com", "pedrooo", "Company Manager");
+        String allTeamMembers = getAllTeamMembers();
+        String[] tm = allTeamMembers.split("&&&");
+        for(int j=0;j<tm.length;j++){
+            String[] team_member = tm[j].split("###");
+            addMember(team_member[0], team_member[1], team_member[2], team_member[3]);
+        }
+        //addMember("Diego Briceño", "diego@gmail.com", "diego123", "Team Member");
+        //addMember("Sílvia Fernandes", "silvia@gmail.com", "silvia123", "Team Member");
+        //addMember("Rúben Rodrigues", "ruben@gmail.com", "ruben123", "Team Member");
+        //addMember("Mara Dionísio", "mara@gmail.com", "maraaa", "Company Manager");
+        //addMember("Pedro Campos", "pedro@gmail.com", "pedrooo", "Company Manager");
     }
 
     private void addMember(String name, String email, String password, String type){
@@ -110,5 +129,27 @@ public class AllMembersFragment extends BaseFragment {
         dialog.show();
     }
 
-
+    public static String getAllTeamMembers(){
+        String result = "";
+        String getMembers = "http://" + ReportSightingFragment.ip + "/seaker/getallteammembers.php";
+        try {
+            URL url = new URL(getMembers);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoInput(true);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

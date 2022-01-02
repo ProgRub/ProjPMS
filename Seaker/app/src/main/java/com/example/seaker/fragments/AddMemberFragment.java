@@ -16,6 +16,17 @@ import android.widget.ImageButton;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,7 +99,22 @@ public class AddMemberFragment extends BaseFragment {
     private void addMember(){
         if(!validateFields()) return;
 
-        //AQUI É NECESSÁRIO VERIFICAR SE O EMAIL NÃO EXISTE NA BASE DE DADOS
+        EditText name = (EditText) getView().findViewById(R.id.name_input);
+        EditText email = (EditText) getView().findViewById(R.id.email_input);
+        EditText password = (EditText) getView().findViewById(R.id.password_input);
+        CheckBox teamMemberCheckBox = (CheckBox) getView().findViewById(R.id.teamMemberCheckBox);
+
+        String person_name = name.getText().toString();
+        String person_email = email.getText().toString();
+        String person_password = password.getText().toString();
+        String person_role = "TeamMember";
+        if(!teamMemberCheckBox.isChecked()){
+            person_role = "CompanyManager";
+        }
+
+        insertTeamMemberIntoBD(person_name,person_email,person_password,person_role);
+
+        // VERIFICAR DEPOIS SE REALMENTE INSERIU PARA PODER MOSTRAR MEMNSAGEM DE SUCESSO!
 
         ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Team member successfully added!");
 
@@ -152,5 +178,41 @@ public class AddMemberFragment extends BaseFragment {
         return m.matches();
     }
 
+    public static void insertTeamMemberIntoBD(String name, String email, String password, String role){
 
+        String insertTeamMember = "http://" + ReportSightingFragment.ip + "/seaker/addteammember.php";
+        try {
+            URL url = new URL(insertTeamMember);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"
+                    + URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(email, "UTF-8")+"&"
+                    + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password, "UTF-8")+"&"
+                    + URLEncoder.encode("role", "UTF-8")+"="+URLEncoder.encode(role, "UTF-8");
+
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            /*String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }*/
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
