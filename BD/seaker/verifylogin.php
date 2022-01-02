@@ -5,7 +5,7 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $role = $_POST['role'];
 
-$sql = "SELECT * FROM person WHERE email = '$email' AND password = '$password' AND role = '$role'";
+$sql = "SELECT * FROM person WHERE email = '$email' AND password = '$password' AND role = '$role' AND active = '1'";
 
 $r = mysqli_query($conn,$sql);
 

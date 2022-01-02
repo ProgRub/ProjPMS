@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2022 at 08:08 PM
+-- Generation Time: Jan 02, 2022 at 03:40 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -156,21 +156,22 @@ CREATE TABLE `person` (
   `name` varchar(200) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `role` varchar(50) NOT NULL
+  `role` varchar(50) NOT NULL,
+  `active` enum('0','1') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `person`
 --
 
-INSERT INTO `person` (`id`, `name`, `email`, `password`, `role`) VALUES
-(1, 'Davi José Torres Pinho', 'davi@gmail.com', 'davi', 'Administrator'),
-(2, 'Luísa Nádia Moura de Figueiredo', 'luisafigueiredo@gmail.com', 'luisinha2000', 'CompanyManager'),
-(3, 'Érika Costa Silva', 'erikalva@gmail.com', 'FreeWifi', 'TeamMember'),
-(4, 'Lucas Eduardo Maia de Melo', 'lucasmelo@gmail.com', 'hfgdu22fih', 'TeamMember'),
-(5, 'Diego da Silva Briceño', 'diego@gmail.com', 'ddd123', 'TeamMember'),
-(6, 'José Gouveia Rodrigues', 'ze@gmail.com', 'zezeze', 'TeamMember'),
-(7, 'Sílvia da Silva Fernandes', 'silvia@gmail.com', 'fernandes987', 'TeamMember');
+INSERT INTO `person` (`id`, `name`, `email`, `password`, `role`, `active`) VALUES
+(1, 'Davi José Torres Pinho', 'davi@gmail.com', 'davi', 'Administrator', '1'),
+(2, 'Luísa Nádia Moura de Figueiredo', 'luisafigueiredo@gmail.com', 'luisinha2000', 'CompanyManager', '1'),
+(3, 'Érika Costa Silva', 'erikalva@gmail.com', 'FreeWifi', 'TeamMember', '1'),
+(4, 'Lucas Eduardo Maia de Melo', 'lucasmelo@gmail.com', 'hfgdu22fih', 'TeamMember', '1'),
+(5, 'Diego da Silva Briceño', 'diego@gmail.com', 'ddd123', 'TeamMember', '1'),
+(6, 'José Gouveia Rodrigues', 'ze@gmail.com', 'zezeze', 'TeamMember', '1'),
+(7, 'Sílvia da Silva Fernandes', 'silvia@gmail.com', 'fernandes987', 'TeamMember', '1');
 
 -- --------------------------------------------------------
 
@@ -350,19 +351,19 @@ ALTER TABLE `specie`
 -- AUTO_INCREMENT for table `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT for table `animal_behavior`
 --
 ALTER TABLE `animal_behavior`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `animal_reaction_to_vessel`
 --
 ALTER TABLE `animal_reaction_to_vessel`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `animal_type`
@@ -392,7 +393,7 @@ ALTER TABLE `photo`
 -- AUTO_INCREMENT for table `sighting_report`
 --
 ALTER TABLE `sighting_report`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `specie`
