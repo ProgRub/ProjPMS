@@ -3,10 +3,7 @@ package com.example.seaker.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +12,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.seaker.R;
+import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
+import com.example.seaker.DataViewModel;
+import com.example.seaker.R;
 
 public class AllMembersFragment extends BaseFragment {
 
+    private DataViewModel model;
     private LinearLayout members;
 
     public AllMembersFragment() {
@@ -37,7 +36,10 @@ public class AllMembersFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_members, container, false);
-        SetButtonOnClickNextFragment(R.id.buttonBack,new AdminHomeFragment(),view);
+        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
+        if(model.getUserType().equals("CompanyManager")) SetButtonOnClickNextFragment(R.id.buttonBack,new CompanyManagerHomeFragment(),view);
+        else if(model.getUserType().equals("Administrator")) SetButtonOnClickNextFragment(R.id.buttonBack,new AdminHomeFragment(),view);
 
         onStartView(view);
 
@@ -56,7 +58,26 @@ public class AllMembersFragment extends BaseFragment {
 
     private void addMember(String name, String email, String password, String type){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = vi.inflate(R.layout.team_member_box, null);
+
+        View v = vi.inflate(R.layout.team_member_box_cm, null);
+
+        //se for administrator, mudará para o layout team_member_box_admin
+        if(model.getUserType().equals("Administrator")){
+            v = vi.inflate(R.layout.team_member_box_admin, null);
+
+            TextView userPassword = (TextView) v.findViewById(R.id.user_password);
+            userPassword.setText(password);
+
+            ImageButton removeButton = (ImageButton) v.findViewById(R.id.remove_member_btn);
+
+            View finalV = v;
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onDeleteClick(finalV);
+                }
+            });
+        }
 
         TextView userName = (TextView) v.findViewById(R.id.user_name);
         userName.setText(name);
@@ -64,20 +85,8 @@ public class AllMembersFragment extends BaseFragment {
         TextView userEmail = (TextView) v.findViewById(R.id.user_email);
         userEmail.setText(email);
 
-        TextView userPassword = (TextView) v.findViewById(R.id.user_password);
-        userPassword.setText(password);
-
         TextView userType = (TextView) v.findViewById(R.id.user_type);
         userType.setText(type);
-
-        ImageButton removeButton = (ImageButton) v.findViewById(R.id.remove_member_btn);
-
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onDeleteClick(v);
-            }
-        });
 
         members.addView(v);
     }
