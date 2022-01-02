@@ -283,8 +283,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         googleMap = map;
 
         LatLng coordenadas = new LatLng(0, 0);
-        if(model.getTripFrom().contains("Funchal") || model.getTripFrom().contains("4")) coordenadas = new LatLng(32.645623, -16.906999);
-        else if(model.getTripFrom().contains("Porto Santo") || model.getTripFrom().contains("8")) coordenadas = new LatLng(33.062203, -16.316115);
+        if(model.getTripFrom().contains("Funchal")) coordenadas = new LatLng(32.645623, -16.906999);
+        else if(model.getTripFrom().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
+        else if(model.getTripFrom().contains("Câmara de Lobos")) coordenadas = new LatLng(32.647886, -16.974977);
 
         map.addMarker(new MarkerOptions().position(coordenadas).title("Departure"));
         moveToCurrentLocation(coordenadas);
