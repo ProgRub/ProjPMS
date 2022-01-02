@@ -58,19 +58,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
             if(!sightings.isEmpty()){
                 for(int i=0;i<sightings.size();i++){
-                    String sighting_date = sightings.get(i).get(0);
-                    String sighting_time = sightings.get(i).get(1);
-                    String sea_state = sightings.get(i).get(2);
-                    String latitude = sightings.get(i).get(3);
-                    String longitude = sightings.get(i).get(4);
-                    String comment = sightings.get(i).get(5);
-                    String person_id = sightings.get(i).get(6);
-                    String person_name = sightings.get(i).get(7);
-                    String boat_id = sightings.get(i).get(8);
-                    String species = sightings.get(i).get(9);
-                    String trip_from = sightings.get(i).get(10);
-                    String trip_to = sightings.get(i).get(11);
-                    ReportSightingFragment.insertSightingInformationIntoBD(sighting_date, sighting_time, sea_state, latitude, longitude, comment, person_id, boat_id, species, trip_from, trip_to);
+                    ReportSightingFragment.insertSightingInformationIntoBD(sightings.get(i).get(0), sightings.get(i).get(1), sightings.get(i).get(2), sightings.get(i).get(3), sightings.get(i).get(4), sightings.get(i).get(5), sightings.get(i).get(6), sightings.get(i).get(8), sightings.get(i).get(9), sightings.get(i).get(10), sightings.get(i).get(11));
                 }
                 ArrayList<ArrayList<String>> aux = new ArrayList<>();
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
@@ -80,39 +68,14 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
             String[] si = allSightings.split("&&&");
             for(int j=0;j<si.length;j++){
                 String[] sighting = si[j].split("###");
-                String sighting_id = sighting[0];
-                boolean submitted = true;
-                String sighting_date = sighting[1];
-                String sighting_time = sighting[2];
-                String sea_state = sighting[3];
-                String latitude = sighting[4];
-                String longitude = sighting[5];
-                String comment = sighting[6];
-                String person_id = sighting[7];
-                String person_name = sighting[8];
-                String boat_id = sighting[9];
-                String species = sighting[10];
-
-                addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, species, person_name);
+                addSightingToView(sighting[0], true, sighting[1], sighting[2], sighting[3], sighting[4], sighting[5], sighting[6], sighting[10], sighting[8]);
             }
 
         } else {
             if(!sightings.isEmpty()){
                 for(int i=sightings.size()-1;i>=0;i--){
                     String sighting_id = "?" + i;
-                    boolean submitted = false;
-                    String sighting_date = sightings.get(i).get(0);
-                    String sighting_time = sightings.get(i).get(1);
-                    String sea_state = sightings.get(i).get(2);
-                    String latitude = sightings.get(i).get(3);
-                    String longitude = sightings.get(i).get(4);
-                    String comment = sightings.get(i).get(5);
-                    String person_id = sightings.get(i).get(6);
-                    String person_name = sightings.get(i).get(7);
-                    String boat_id = sightings.get(i).get(8);
-                    String species = sightings.get(i).get(9);
-
-                    addSightingToView(sighting_id, submitted, sighting_date, sighting_time, sea_state, latitude, longitude, comment, species, person_name);
+                    addSightingToView(sighting_id, false, sightings.get(i).get(0), sightings.get(i).get(1), sightings.get(i).get(2), sightings.get(i).get(3), sightings.get(i).get(4), sightings.get(i).get(5), sightings.get(i).get(9), sightings.get(i).get(7));
                 }
             }
         }
