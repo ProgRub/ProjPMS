@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -13,13 +14,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -27,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -43,6 +49,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.poi.sl.usermodel.Line;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.TextAlignment;
@@ -57,6 +64,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class CreateReportFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -220,6 +228,13 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         TextView nrPhotos  = (TextView) v.findViewById(R.id.nr_photos);
         nrPhotos.setText("- Photos: "+ nrPics);
 
+
+        //APENAS PARA TESTAR INSERÇÃO DE FOTOS:
+        Random rand = new Random();
+        int n = rand.nextInt(10);
+
+        addPhotosOfSummary(v, n);
+
         speciesSummary.add( new SpecieSummary(v, specie, nrIndiv, averageNrIndiv, mostComBeh, mostComReact, averBeaufort, averTrustLvl, nrPics));
 
         summary.addView(v);
@@ -368,6 +383,32 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private void addCoordinatesFound(Double latitude, Double longitude){
         coordinatesFromSummary.add(new LatLng(latitude, longitude));
     }
+
+
+    private void addPhotosOfSummary(View view, int numberPhotos){
+        LinearLayout photos = (LinearLayout) view.findViewById(R.id.uploaded_photos);
+
+        //SE O NUMERO DE FOTOS NA DB DAQUELA ESPECIE FOR SUPERIOR AO ESCOLHIDO, APENAS INSERE O MAXIMO ESCOLHIDO:
+        if(numberPhotos > Integer.parseInt(photosPerSighting.getText().toString())) {
+            numberPhotos = Integer.parseInt(photosPerSighting.getText().toString());
+        }
+
+        //GUARDAR NUMA LISTA AS IMAGENS
+
+        for(int i = 0; i < numberPhotos; i++){
+            LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = vi.inflate(R.layout.photos_layout, null);
+
+            ImageView image = (ImageView) v.findViewById(R.id.photo);
+
+            //ALTERAR A IMAGEM DO IMAGEVIEW PARA A IMAGEM DA LISTA:
+            image.setImageDrawable(getResources().getDrawable(R.drawable.blue_whale_btn, getActivity().getApplicationContext().getTheme()));
+
+            photos.addView(v);
+        }
+
+    }
+
 
     @Override
     public void onMapReady(GoogleMap map) {
