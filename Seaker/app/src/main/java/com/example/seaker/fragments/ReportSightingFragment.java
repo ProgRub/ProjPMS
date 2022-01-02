@@ -1153,9 +1153,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static void deleteAndInsertSightingInformationIntoBD(String id_sighting, String day, String hour, String sea_state, String latitude, String longitude, String comment, String animal){
 
-        String insertSightingUrl = "http://" + ip + "/seaker/deleteandinsertsightingbyid.php";
+        String updateSightingUrl = "http://" + ip + "/seaker/deleteandinsertsightingbyid.php";
         try {
-            URL url = new URL(insertSightingUrl);
+            URL url = new URL(updateSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
@@ -1195,9 +1195,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static void deleteSightingInformation(String id_sighting){
 
-        String insertSightingUrl = "http://" + ip + "/seaker/deletesightingbyid.php";
+        String deleteSightingUrl = "http://" + ip + "/seaker/deletesightingbyid.php";
         try {
-            URL url = new URL(insertSightingUrl);
+            URL url = new URL(deleteSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
@@ -1242,13 +1242,21 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return true;
     }
 
-    public static String getAllSightingsInformations(){
+    public static String getAllSightingsInformations(String person_id){
         String result = "";
-        String insertSightingUrl = "http://" + ip + "/seaker/getallsightings.php";
+        String getSightings = "http://" + ip + "/seaker/getallsightings.php";
         try {
-            URL url = new URL(insertSightingUrl);
+            URL url = new URL(getSightings);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String line = "";

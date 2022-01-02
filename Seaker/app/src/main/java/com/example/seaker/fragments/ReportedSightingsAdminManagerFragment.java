@@ -68,7 +68,7 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
             }
         });
 
-        String allSightings = ReportSightingFragment.getAllSightingsInformations();
+        String allSightings = ReportSightingFragment.getAllSightingsInformations("NULL");
         String[] si = allSightings.split("&&&");
         for(int j=0;j<si.length;j++) {
             String[] sighting = si[j].split("###");

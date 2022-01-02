@@ -1,7 +1,13 @@
 <?php
 require "conn.php";
 
-$sql = "SELECT * FROM sighting_report order by id desc";
+$person_id = $_POST['person_id'];
+
+if($person_id == 'NULL'){
+	$sql = "SELECT * FROM sighting_report order by id desc";
+} else {
+	$sql = "SELECT * FROM sighting_report WHERE person_id = '$person_id' order by id desc";
+}
 
 $r = mysqli_query($conn,$sql);
 

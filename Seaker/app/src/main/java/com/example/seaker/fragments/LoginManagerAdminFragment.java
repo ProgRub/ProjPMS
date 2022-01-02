@@ -114,9 +114,9 @@ public class LoginManagerAdminFragment extends BaseFragment {
 
     public Boolean verify_login(String email, String password, String role){
         String result = "";
-        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/verifylogin.php";
+        String login = "http://" + ReportSightingFragment.ip + "/seaker/verifylogin.php";
         try {
-            URL url = new URL(insertSightingUrl);
+            URL url = new URL(login);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);

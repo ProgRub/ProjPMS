@@ -239,9 +239,9 @@ public class LoginTeamMemberFragment extends BaseFragment {
 
     public static String getInfoBD(String php_file){
         String result = "";
-        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/" + php_file;
+        String login = "http://" + ReportSightingFragment.ip + "/seaker/" + php_file;
         try {
-            URL url = new URL(insertSightingUrl);
+            URL url = new URL(login);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setDoInput(true);
             InputStream inputStream = httpURLConnection.getInputStream();

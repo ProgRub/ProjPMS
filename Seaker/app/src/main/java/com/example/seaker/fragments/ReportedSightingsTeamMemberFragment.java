@@ -64,7 +64,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
             }
 
-            String allSightings = ReportSightingFragment.getAllSightingsInformations();
+            String allSightings = ReportSightingFragment.getAllSightingsInformations(getIdPerson());
             String[] si = allSightings.split("&&&");
             for(int j=0;j<si.length;j++){
                 String[] sighting = si[j].split("###");
@@ -211,5 +211,11 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         }
 
         return format;
+    }
+
+    private String getIdPerson(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+        return sighting_info.get(0).get(0);
     }
 }
