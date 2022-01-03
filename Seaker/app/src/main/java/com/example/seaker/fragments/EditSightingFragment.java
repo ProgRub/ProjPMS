@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -60,6 +61,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private EditText sightingComment;
     private GoogleMap googleMap;
     private LinearLayout sightingInformationsLayout;
+    private ImageView noSelectedSpecies;
     private BusinessFacade businessFacade;
     private ImageButton takePhoto;
     private ImageButton uploadPhoto;
@@ -281,6 +283,8 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         sightingInformationsLayout = (LinearLayout) view.findViewById(R.id.sightingsInformations);
 
+        noSelectedSpecies = (ImageView) view.findViewById(R.id.no_selected_species);
+
         whalesBtn = (Button) view.findViewById(R.id.scroll_to_whales_btn);
         dolphinsBtn = (Button) view.findViewById(R.id.scroll_to_dolphins_btn);
         porpoisesBtn = (Button) view.findViewById(R.id.scroll_to_porpoises_btn);
@@ -455,6 +459,9 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     public void clickSpecie(View view){
         if(String.valueOf(view.getTag()).contains("Selected")){
             unselectSpecie(view);
+            if(sightingInformations.size() == 0 ){
+                noSelectedSpecies.setVisibility(View.VISIBLE);
+            }
         }else{
             selectedSpecie(view);
 
@@ -470,6 +477,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             textView.setText(String.valueOf(view.getTag()) + " Sighting");
 
             view.setTag("Selected "+String.valueOf(view.getTag()));
+
+            if(sightingInformations.size() > 0 ){
+                noSelectedSpecies.setVisibility(View.GONE);
+            }
 
             sightingInformationsLayout.addView(v);
         }

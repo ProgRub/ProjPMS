@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -74,6 +75,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private GoogleMap googleMap;
     private SeekBar beaufortSeekBar;
     private LinearLayout sightingInformationsLayout;
+    private ImageView noSelectedSpecies;
     private BusinessFacade businessFacade;
     private ImageButton takePhoto;
     private ImageButton uploadPhoto;
@@ -87,7 +89,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private DataViewModel model;
     private JsonWriter jsonWriter;
 
-    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = "192.168.1.80"; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
@@ -133,6 +135,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         beaufortSeekBar = (SeekBar) view.findViewById(R.id.beaufort_slider);
 
         sightingInformationsLayout = (LinearLayout) view.findViewById(R.id.sightingsInformations);
+
+        noSelectedSpecies = (ImageView) view.findViewById(R.id.no_selected_species);
 
         whalesBtn = (Button) view.findViewById(R.id.scroll_to_whales_btn);
         dolphinsBtn = (Button) view.findViewById(R.id.scroll_to_dolphins_btn);
@@ -316,6 +320,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     public void clickSpecie(View view){
         if(String.valueOf(view.getTag()).contains("Selected")){
             unselectSpecie(view);
+            if(sightingInformations.size() == 0 ){
+                noSelectedSpecies.setVisibility(View.VISIBLE);
+            }
         }else{
             selectedSpecie(view);
 
@@ -331,6 +338,10 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             textView.setText(String.valueOf(view.getTag()) + " Sighting");
 
             view.setTag("Selected "+String.valueOf(view.getTag()));
+
+            if(sightingInformations.size() > 0 ){
+                noSelectedSpecies.setVisibility(View.GONE);
+            }
 
             sightingInformationsLayout.addView(v);
         }
