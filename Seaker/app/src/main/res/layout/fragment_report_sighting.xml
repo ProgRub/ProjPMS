@@ -263,6 +263,39 @@
                 android:textSize="18dp"
                 android:textStyle="bold"></TextView>
 
+        <!-- Search Bar Species -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="250dp"
+                android:layout_height="60dp"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:background="@drawable/search_bar"
+                >
+            </EditText>
+
+            <ImageButton
+                android:id="@+id/find_and_select_btn"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                android:focusable="false"
+                android:clickable="false"
+                android:background="@drawable/find_select_unavailable_btn"
+                >
+            </ImageButton>
+
+        </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

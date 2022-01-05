@@ -6,16 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -27,8 +33,10 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
@@ -88,6 +96,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ImageButton reportSightingBtn;
     private DataViewModel model;
     private JsonWriter jsonWriter;
+    private EditText searchBar;
+    private ImageButton findSelectBtn;
 
     public static final String ip = "192.168.1.80"; //erro propositadamente, para n se esquecerem de alterar :P
 
@@ -142,6 +152,36 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         dolphinsBtn = (Button) view.findViewById(R.id.scroll_to_dolphins_btn);
         porpoisesBtn = (Button) view.findViewById(R.id.scroll_to_porpoises_btn);
 
+        findSelectBtn = (ImageButton) view.findViewById(R.id.find_and_select_btn);
+
+        searchBar = (EditText) view.findViewById(R.id.search_bar);
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() != 0){
+                    findSelectBtn.setClickable(true);
+                    findSelectBtn.setFocusable(true);
+                    findSelectBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.find_select_available_btn));
+                }else{
+                    findSelectBtn.setClickable(false);
+                    findSelectBtn.setFocusable(false);
+                    findSelectBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.find_select_unavailable_btn));
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        findSelectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findAndSelect();
+            }
+        });
+
         takePhoto.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -184,7 +224,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         onClickListener = new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                clickSpecie(view);
+                clickSpecie(view, false);
             }
         };
 
@@ -282,6 +322,50 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         supportMapFragment.getMapAsync(this);
     }
 
+    private void findAndSelect() {
+        String insertedText = searchBar.getText().toString().toLowerCase();
+        boolean found = true;
+        if(insertedText.contains("blue")) clickSpecie(getView().findViewById(R.id.blue_whale_btn), true);
+        else if(insertedText.contains("fin")) clickSpecie(getView().findViewById(R.id.fin_whale_btn), true);
+        else if(insertedText.contains("sperm")) clickSpecie(getView().findViewById(R.id.sperm_whale_btn), true);
+        else if((insertedText.contains("north") && !insertedText.contains("northern")) || insertedText.contains("right"))clickSpecie(getView().findViewById(R.id.north_atlantic_right_whale_btn), true);
+        else if(insertedText.contains("sowerby")) clickSpecie(getView().findViewById(R.id.sowerbys_beaker_whale_btn), true);
+        else if(insertedText.contains("sei")) clickSpecie(getView().findViewById(R.id.sei_whale_btn), true);
+        else if(insertedText.contains("minke")) clickSpecie(getView().findViewById(R.id.minke_whale_btn), true);
+        else if(insertedText.contains("blainville")) clickSpecie(getView().findViewById(R.id.blainville_whale_btn), true);
+        else if(insertedText.contains("gervai")) clickSpecie(getView().findViewById(R.id.gervais_whale_btn), true);
+        else if(insertedText.contains("bryde") || insertedText.contains("bride")) clickSpecie(getView().findViewById(R.id.brides_whale_btn), true);
+        else if(insertedText.contains("true")) clickSpecie(getView().findViewById(R.id.trues_whale_btn), true);
+        else if(insertedText.contains("orca")) clickSpecie(getView().findViewById(R.id.orca_whale_btn), true);
+        else if(insertedText.contains("short")) clickSpecie(getView().findViewById(R.id.short_finned_pilot_whale_btn), true);
+        else if(insertedText.contains("humpback")) clickSpecie(getView().findViewById(R.id.humpback_whale_btn), true);
+        else if(insertedText.contains("northern") || (insertedText.contains("bottlenose") && insertedText.contains("whale"))) clickSpecie(getView().findViewById(R.id.northern_whale_btn), true);
+        else if(insertedText.contains("long")) clickSpecie(getView().findViewById(R.id.long_finned_pilot_whale_btn), true);
+        else if(insertedText.contains("false")) clickSpecie(getView().findViewById(R.id.false_killer_whale_btn), true);
+        else if(insertedText.contains("melon") || insertedText.contains("headed")) clickSpecie(getView().findViewById(R.id.melon_whale_btn), true);
+        else if(insertedText.contains("cuvier")) clickSpecie(getView().findViewById(R.id.cuviers_whale_btn), true);
+        else if(insertedText.contains("pigmy")) clickSpecie(getView().findViewById(R.id.pigmy_whale_btn), true);
+        else if(insertedText.contains("not specified whale")) clickSpecie(getView().findViewById(R.id.not_specified_whale_btn), true);
+        else if(insertedText.contains("bottlenose") && insertedText.contains("dolphin")) clickSpecie(getView().findViewById(R.id.bottlenose_dolphin_btn), true);
+        else if(insertedText.contains("risso")) clickSpecie(getView().findViewById(R.id.rissos_dolphin_btn), true);
+        else if(insertedText.contains("rough") || insertedText.contains("toothed")) clickSpecie(getView().findViewById(R.id.rough_toothed_dolphin_btn), true);
+        else if(insertedText.contains("spotted")) clickSpecie(getView().findViewById(R.id.atlantic_spotted_dolphin_btn), true);
+        else if(insertedText.contains("striped")) clickSpecie(getView().findViewById(R.id.striped_dolphin_btn), true);
+        else if(insertedText.contains("common")) clickSpecie(getView().findViewById(R.id.common_dolphin_btn), true);
+        else if(insertedText.contains("fraser")) clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn), true);
+        else if(insertedText.contains("not specified dolphin")) clickSpecie(getView().findViewById(R.id.not_specified_dolphin_sighting), true);
+        else if(insertedText.contains("harbour") || insertedText.contains("porpoise")) clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), true);
+        else if(insertedText.contains("not specified porpoise")) clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn), true);
+        else{
+            found = false;
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
+        }
+        if(found) searchBar.setText("");
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
@@ -317,13 +401,25 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
 
-    public void clickSpecie(View view){
-        if(String.valueOf(view.getTag()).contains("Selected")){
+    public void clickSpecie(View view, boolean fromSearch){
+        if(String.valueOf(view.getTag()).contains("Selected") && !fromSearch){
             unselectSpecie(view);
             if(sightingInformations.size() == 0 ){
                 noSelectedSpecies.setVisibility(View.VISIBLE);
             }
         }else{
+            if(fromSearch){
+                Toast toast = Toast.makeText(getActivity(), view.getTag() + " Selected.",Toast.LENGTH_LONG);
+
+                View toastView = toast.getView();
+
+                toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
+
+                TextView text = toastView.findViewById(android.R.id.message);
+                text.setTextColor(Color.parseColor("#FFFFFF"));
+
+                toast.show();
+            }
             selectedSpecie(view);
 
             LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
