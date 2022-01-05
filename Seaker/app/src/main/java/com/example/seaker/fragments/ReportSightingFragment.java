@@ -11,7 +11,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -30,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -362,13 +362,33 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
         if(found) searchBar.setText("");
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        try{
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(getActivity().getCurrentFocus().getWindowToken() != null) imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+        catch(NullPointerException e ){
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
+        ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView2);
         googleMap = map;
+
+        googleMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+            @Override
+            public void onCameraMoveStarted(int i) {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
+
+        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                scrollView.requestDisallowInterceptTouchEvent(false);
+            }
+        });
+
 
         LatLng coordenadas = new LatLng(0, 0);
         if(model.getTripFrom().contains("Funchal")) coordenadas = new LatLng(32.645621, -16.909784);
