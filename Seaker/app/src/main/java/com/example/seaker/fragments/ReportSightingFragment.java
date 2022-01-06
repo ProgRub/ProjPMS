@@ -47,11 +47,13 @@ import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.jsonwriter.AnimalJson;
 import com.example.seaker.jsonwriter.JsonWriter;
 import com.example.seaker.jsonwriter.SightingJson;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -354,12 +356,37 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         else if(insertedText.contains("common")) clickSpecie(getView().findViewById(R.id.common_dolphin_btn), true);
         else if(insertedText.contains("fraser")) clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn), true);
         else if(insertedText.contains("not specified dolphin")) clickSpecie(getView().findViewById(R.id.not_specified_dolphin_sighting), true);
-        else if(insertedText.contains("harbour") || insertedText.contains("porpoise")) clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), true);
+        else if(insertedText.contains("harbour")) clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), true);
         else if(insertedText.contains("not specified porpoise")) clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn), true);
         else{
-            found = false;
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
+            //verifica se escreveu um nome comum a várias espécies:
+            String[] foundMultipleSpecies = {"atlantic", "bottlenose", "beaked", "killer", "finned", "pilot"};
+            if(found) {
+                for (String specie : foundMultipleSpecies) {
+                    if (insertedText.contains(specie)){
+                        ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "There are multiple species with that name!");
+                        found = false;
+                    }
+                }
+            }
+
+            //verifica se não escreveu uma espécie conhecida de um animal:
+            String[] foundMultipleAnimals = {"whale", "dolphin", "porpoise"};
+            if(found){
+                for(String animal : foundMultipleAnimals){
+                    if(insertedText.contains(animal)){
+                        ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, specify the "+ animal +" specie!");
+                        found = false;
+                    }
+                }
+            }
+
+            if(found) {
+                found = false;
+                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
+            }
         }
+
         if(found) searchBar.setText("");
 
         try{
@@ -407,7 +434,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                 clickedCoordinatesOnce = true;
                 map.clear();
                 map.addMarker(new MarkerOptions().position(point).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
-                //moveToCurrentLocation(point);
+                moveToCurrentLocation(point);
                 sightingLatitude.setText("Latitude: "+ df.format(point.latitude));
                 sightingLongitude.setText("Longitude: "+ df.format(point.longitude));
             }
@@ -416,29 +443,20 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     private void moveToCurrentLocation(LatLng currentLocation)
     {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
-        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,14));
     }
 
     public void clickSpecie(View view, boolean fromSearch){
-        if(String.valueOf(view.getTag()).contains("Selected") && !fromSearch){
+        if(String.valueOf(view.getTag()).contains("Selected") && !fromSearch) {
             unselectSpecie(view);
-            if(sightingInformations.size() == 0 ){
+            if (sightingInformations.size() == 0) {
                 noSelectedSpecies.setVisibility(View.VISIBLE);
             }
+        }else if(String.valueOf(view.getTag()).contains("Selected") && fromSearch){
+            createToast(view.getTag().toString().split("Selected ")[1] + " is already selected.");
         }else{
             if(fromSearch){
-                Toast toast = Toast.makeText(getActivity(), view.getTag() + " Selected.",Toast.LENGTH_LONG);
-
-                View toastView = toast.getView();
-
-                toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
-
-                TextView text = toastView.findViewById(android.R.id.message);
-                text.setTextColor(Color.parseColor("#FFFFFF"));
-
-                toast.show();
+                createToast(view.getTag() + " Selected.");
             }
             selectedSpecie(view);
 
@@ -451,9 +469,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             sightingInformations.get(sightingInformations.size() - 1).setSpecieName(String.valueOf(view.getTag()));
 
             TextView textView = (TextView) v.findViewById(R.id.title);
-            textView.setText(String.valueOf(view.getTag()) + " Sighting");
+            textView.setText(view.getTag() + " Sighting");
 
-            view.setTag("Selected "+String.valueOf(view.getTag()));
+            view.setTag("Selected "+ view.getTag());
 
             if(sightingInformations.size() > 0 ){
                 noSelectedSpecies.setVisibility(View.GONE);
@@ -461,6 +479,19 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
             sightingInformationsLayout.addView(v);
         }
+    }
+
+    private void createToast(String message){
+        Toast toast = Toast.makeText(getActivity(), message,Toast.LENGTH_LONG);
+
+        View toastView = toast.getView();
+
+        toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
+
+        TextView text = toastView.findViewById(android.R.id.message);
+        text.setTextColor(Color.parseColor("#FFFFFF"));
+
+        toast.show();
     }
 
     public void scrollToSpecie(View view){
