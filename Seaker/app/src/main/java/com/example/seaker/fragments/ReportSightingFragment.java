@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -483,14 +484,14 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     private void createToast(String message){
         Toast toast = Toast.makeText(getActivity(), message,Toast.LENGTH_LONG);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            View toastView = toast.getView();
 
-        View toastView = toast.getView();
+            toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
 
-        toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
-
-        TextView text = toastView.findViewById(android.R.id.message);
-        text.setTextColor(Color.parseColor("#FFFFFF"));
-
+            TextView text = toastView.findViewById(android.R.id.message);
+            text.setTextColor(Color.parseColor("#FFFFFF"));
+        }
         toast.show();
     }
 
