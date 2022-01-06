@@ -21,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -80,7 +82,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton saveChangesBtn;
     private ImageButton deleteSightingBtn;
-    private EditText searchBar;
+    private AutoCompleteTextView searchBar;
     private ImageButton findSelectBtn;
 
     private static final DecimalFormat df = new DecimalFormat("0.00000");
@@ -131,7 +133,19 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         findSelectBtn = (ImageButton) view.findViewById(R.id.find_and_select_btn);
 
-        searchBar = (EditText) view.findViewById(R.id.search_bar);
+        searchBar = (AutoCompleteTextView) view.findViewById(R.id.search_bar);
+
+        String[] species = new String[]{"Blue Whale", "Fin Whale", "North Atlantic Right Whale",
+                "Sei Whale", "Minke Whale", "Bryde's Whale", "Humpback Whale",
+                "Sperm Whale", "Northern Bottlenose Whale", "Cuvier's Beaked Whale",
+                "Blainville's Beaked Whale", "Gervais' Beaked Whale", "True's Beaked Whale",
+                "Orca Whale", "Short Finned Pilot Whale", "Long Finned Pilot Whale",
+                "False Killer Whale", "Melon Whale", "Pigmy Whale", "Sowerby's Beaker Whale",
+                "Not Specified Whale", "Risso's Dolphin", "Bottlenose Dolphin", "Rough Toothed Dolphin",
+                "Atlantic Spotted Dolphin", "Striped Dolphin", "Common Dolphin", "Fraser's Dolphin",
+                "Not Specified Dolphin", "Harbour Porpoise", "Not Specified Porpoise"};
+
+        searchBar.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, species));
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -466,7 +480,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         else if(insertedText.contains("striped")) clickSpecie(getView().findViewById(R.id.striped_dolphin_btn), true);
         else if(insertedText.contains("common")) clickSpecie(getView().findViewById(R.id.common_dolphin_btn), true);
         else if(insertedText.contains("fraser")) clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn), true);
-        else if(insertedText.contains("not specified dolphin")) clickSpecie(getView().findViewById(R.id.not_specified_dolphin_sighting), true);
+        else if(insertedText.contains("not specified dolphin")) clickSpecie(getView().findViewById(R.id.not_specified_dolphin_btn), true);
         else if(insertedText.contains("harbour")) clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), true);
         else if(insertedText.contains("not specified porpoise")) clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn), true);
         else{
