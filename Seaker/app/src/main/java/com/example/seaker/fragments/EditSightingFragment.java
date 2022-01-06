@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -615,14 +617,14 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
     private void createToast(String message){
         Toast toast = Toast.makeText(getActivity(), message,Toast.LENGTH_LONG);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            View toastView = toast.getView();
 
-        View toastView = toast.getView();
+            toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
 
-        toastView.getBackground().setColorFilter(Color.parseColor("#005E8C"), PorterDuff.Mode.SRC_IN);
-
-        TextView text = toastView.findViewById(android.R.id.message);
-        text.setTextColor(Color.parseColor("#FFFFFF"));
-
+            TextView text = toastView.findViewById(android.R.id.message);
+            text.setTextColor(Color.parseColor("#FFFFFF"));
+        }
         toast.show();
     }
 
@@ -825,7 +827,22 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         auxToggle.add((ToggleButton) v.findViewById(R.id.eating_behavior));
         auxToggle.add((ToggleButton) v.findViewById(R.id.resting_behavior));
         auxToggle.add((ToggleButton) v.findViewById(R.id.social_int_behavior));
-        auxToggle.add((ToggleButton) v.findViewById(R.id.other_behavior));
+        ToggleButton other_behavior_toggle = (ToggleButton) v.findViewById(R.id.other_behavior);
+
+        other_behavior_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    v.findViewById(R.id.other_behavior_layout).setVisibility(View.VISIBLE);
+                }else{
+                    v.findViewById(R.id.other_behavior_layout).setVisibility(View.GONE);
+                }
+            }
+        });
+
+        sighting.setOtherBehavior((EditText) v.findViewById(R.id.other_behavior_text));
+
+        auxToggle.add(other_behavior_toggle);
 
         sighting.setBehavior_type(auxToggle);
 
@@ -834,7 +851,22 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         auxToggle.add((ToggleButton) v.findViewById(R.id.none_reaction));
         auxToggle.add((ToggleButton) v.findViewById(R.id.approach_reaction));
         auxToggle.add((ToggleButton) v.findViewById(R.id.avoidance_reaction));
-        auxToggle.add((ToggleButton) v.findViewById(R.id.other_reaction));
+        ToggleButton other_reaction_toggle = (ToggleButton) v.findViewById(R.id.other_reaction);
+
+        other_reaction_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    v.findViewById(R.id.other_reaction_layout).setVisibility(View.VISIBLE);
+                }else{
+                    v.findViewById(R.id.other_reaction_layout).setVisibility(View.GONE);
+                }
+            }
+        });
+
+        sighting.setOtherReaction((EditText) v.findViewById(R.id.other_reaction_text));
+
+        auxToggle.add(other_reaction_toggle);
 
         sighting.setReactions_to_vessel(auxToggle);
 

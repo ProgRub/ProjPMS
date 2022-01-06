@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -735,7 +736,23 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         auxToggle.add((ToggleButton) v.findViewById(R.id.eating_behavior));
         auxToggle.add((ToggleButton) v.findViewById(R.id.resting_behavior));
         auxToggle.add((ToggleButton) v.findViewById(R.id.social_int_behavior));
-        auxToggle.add((ToggleButton) v.findViewById(R.id.other_behavior));
+
+        ToggleButton other_behavior_toggle = (ToggleButton) v.findViewById(R.id.other_behavior);
+
+        other_behavior_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    v.findViewById(R.id.other_behavior_layout).setVisibility(View.VISIBLE);
+                }else{
+                    v.findViewById(R.id.other_behavior_layout).setVisibility(View.GONE);
+                }
+            }
+        });
+
+        sighting.setOtherBehavior((EditText) v.findViewById(R.id.other_behavior_text));
+
+        auxToggle.add(other_behavior_toggle);
 
         sighting.setBehavior_type(auxToggle);
 
@@ -744,7 +761,23 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         auxToggle.add((ToggleButton) v.findViewById(R.id.none_reaction));
         auxToggle.add((ToggleButton) v.findViewById(R.id.approach_reaction));
         auxToggle.add((ToggleButton) v.findViewById(R.id.avoidance_reaction));
-        auxToggle.add((ToggleButton) v.findViewById(R.id.other_reaction));
+
+        ToggleButton other_reaction_toggle = (ToggleButton) v.findViewById(R.id.other_reaction);
+
+        other_reaction_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    v.findViewById(R.id.other_reaction_layout).setVisibility(View.VISIBLE);
+                }else{
+                    v.findViewById(R.id.other_reaction_layout).setVisibility(View.GONE);
+                }
+            }
+        });
+
+        sighting.setOtherReaction((EditText) v.findViewById(R.id.other_reaction_text));
+
+        auxToggle.add(other_reaction_toggle);
 
         sighting.setReactions_to_vessel(auxToggle);
 

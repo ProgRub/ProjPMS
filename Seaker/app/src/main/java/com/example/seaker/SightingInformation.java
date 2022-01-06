@@ -3,6 +3,7 @@ package com.example.seaker;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -21,6 +22,8 @@ public class SightingInformation {
     private ArrayList<ToggleButton> behavior_type;
     private ArrayList<ToggleButton> reactions_to_vessel;
     private ArrayList<ToggleButton> trustLevel;
+    private EditText otherBehavior;
+    private EditText otherReaction;
 
     public SightingInformation(int sightingBoxID){
         this.sightingBoxID = sightingBoxID;
@@ -136,14 +139,31 @@ public class SightingInformation {
         if(behavior_types.contains("Eating")) this.behavior_type.get(1).setChecked(true);
         if(behavior_types.contains("Resting")) this.behavior_type.get(2).setChecked(true);
         if(behavior_types.contains("Social Interaction")) this.behavior_type.get(3).setChecked(true);
-        if(behavior_types.contains("Other")) this.behavior_type.get(4).setChecked(true);
+        String otherBehaviorString = behavior_types.replace("Traveling", "");
+        otherBehaviorString = otherBehaviorString.replace("Eating", "");
+        otherBehaviorString = otherBehaviorString.replace("Resting", "");
+        otherBehaviorString = otherBehaviorString.replace("Social Interaction", "");
+        otherBehaviorString = otherBehaviorString.replace(";", "");
+        otherBehaviorString = otherBehaviorString.replace(" ", "");
+        if(!otherBehaviorString.isEmpty()){
+            this.behavior_type.get(4).setChecked(true);
+            this.otherBehavior.setText(otherBehaviorString);
+        }
     }
 
     public void fillReactionToVessel(String reactions) {
         if(reactions.contains("None")) this.reactions_to_vessel.get(0).setChecked(true);
         if(reactions.contains("Approach")) this.reactions_to_vessel.get(1).setChecked(true);
         if(reactions.contains("Avoidance")) this.reactions_to_vessel.get(2).setChecked(true);
-        if(reactions.contains("Other")) this.reactions_to_vessel.get(3).setChecked(true);
+        String otherReactionString = reactions.replace("None", "");
+        otherReactionString = otherReactionString.replace("Approach", "");
+        otherReactionString = otherReactionString.replace("Avoidance", "");
+        otherReactionString = otherReactionString.replace(";", "");
+        otherReactionString = otherReactionString.replace(" ", "");
+        if(!otherReactionString.isEmpty()){
+            this.reactions_to_vessel.get(3).setChecked(true);
+            this.otherReaction.setText(otherReactionString);
+        }
     }
 
     public void fillTrustLevel(String trust_level){
@@ -196,7 +216,10 @@ public class SightingInformation {
     public String getBehaviorTypesString(){
         String info = "";
         for(ToggleButton toggleButton : behavior_type){
-            if (toggleButton.isChecked()) info += toggleButton.getTextOff().toString() + ";";
+            if (toggleButton.isChecked()) {
+                if (toggleButton.getTextOff().toString().equals("Other")) info += getOtherBehavior() + ";";
+                else info += toggleButton.getTextOff().toString() + ";";
+            }
         }
         return info;
     }
@@ -204,7 +227,10 @@ public class SightingInformation {
     public String getReactionToVesselString(){
         String info = "";
         for(ToggleButton toggleButton : reactions_to_vessel){
-            if (toggleButton.isChecked()) info += toggleButton.getTextOff().toString() + ";";
+            if (toggleButton.isChecked()){
+                if(toggleButton.getTextOff().toString().equals("Other"))  info += getOtherReaction() + ";";
+                else info += toggleButton.getTextOff().toString() + ";";
+            }
         }
         return info;
     }
@@ -259,4 +285,19 @@ public class SightingInformation {
         }
     };
 
+    public String getOtherBehavior() {
+        return otherBehavior.getText().toString();
+    }
+
+    public void setOtherBehavior(EditText otherBehavior) {
+        this.otherBehavior = otherBehavior;
+    }
+
+    public String getOtherReaction() {
+        return otherReaction.getText().toString();
+    }
+
+    public void setOtherReaction(EditText otherReaction) {
+        this.otherReaction = otherReaction;
+    }
 }

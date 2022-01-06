@@ -1,347 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingRight="10dp">
+    android:layout_width="380dp"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
         android:orientation="vertical"
-        android:background="@drawable/edit_text_background"
-        tools:ignore="MissingConstraints">
+        android:background="@drawable/edit_text_background">
 
-        <RelativeLayout
-            android:layout_width="370dp"
-            android:layout_height="513dp">
+        <!-- Title - Specie Name + "Sighting" -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:text="SPECIE Sighting"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold">
 
-            <!-- Title - Specie Name + "Sighting" -->
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="300dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:maxLines="1"
-                android:text="SPECIE Sighting"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                android:textStyle="bold">
-
-            </TextView>
+        </TextView>
 
 
-            <!-- Number of individuals -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="35dp"
-                android:text="Number of individuals: *"
-                android:textColor="@color/dark_blue"
-                android:textSize="14dp">
+        <!-- Number of individuals -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Number of individuals: *"
+            android:textColor="@color/dark_blue"
+            android:textSize="14dp">
 
-            </TextView>
+        </TextView>
 
-            <LinearLayout
-                android:id="@+id/first_row_nr_individuals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="69dp"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="55dp"
-                android:layout_marginEnd="53dp"
-                android:layout_marginBottom="625dp">
+        <LinearLayout
+            android:id="@+id/first_row_nr_individuals"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_1"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="1"
-                    android:textOn="1"
-                    android:textSize="14dp"/>
+            <ToggleButton
+                android:id="@+id/nr_individuals_1"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="1"
+                android:textOn="1"
+                android:textSize="14dp"/>
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_2"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="2"
-                    android:textOn="2"
-                    android:textSize="14dp"/>
+            <ToggleButton
+                android:id="@+id/nr_individuals_2"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="2"
+                android:textOn="2"
+                android:textSize="14dp"/>
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_3"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="3"
-                    android:textOn="3"/>
+            <ToggleButton
+                android:id="@+id/nr_individuals_3"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="3"
+                android:textOn="3"/>
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_4"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="4"
-                    android:textOn="4"
-                    android:textSize="14dp"/>
+            <ToggleButton
+                android:id="@+id/nr_individuals_4"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="4"
+                android:textOn="4"
+                android:textSize="14dp"/>
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_5"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="5"
-                    android:textOn="5"
-                    android:textSize="14dp"/>
+            <ToggleButton
+                android:id="@+id/nr_individuals_5"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="5"
+                android:textOn="5"
+                android:textSize="14dp"/>
 
-            </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/second_row_nr_individuals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="96dp"
-                android:layout_marginEnd="23dp"
-                android:layout_marginBottom="584dp">
+        <LinearLayout
+            android:id="@+id/second_row_nr_individuals"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_height="40dp">
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_6_10"
-                    android:layout_width="63dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="6-10"
-                    android:textOn="6-10"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_individuals_6_10"
+                android:layout_width="63dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="6-10"
+                android:textOn="6-10"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_10_20"
-                    android:layout_width="63dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="10-20"
-                    android:textOn="10-20"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_individuals_10_20"
+                android:layout_width="63dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="10-20"
+                android:textOn="10-20"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_25_50"
-                    android:layout_width="63dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="25-50"
-                    android:textOn="25-50"
-                    android:textSize="14dp"/>
+            <ToggleButton
+                android:id="@+id/nr_individuals_25_50"
+                android:layout_width="63dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="25-50"
+                android:textOn="25-50"
+                android:textSize="14dp"/>
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_50_100"
-                    android:layout_width="63dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="50-100"
-                    android:textOn="50-100"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_individuals_50_100"
+                android:layout_width="63dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="50-100"
+                android:textOn="50-100"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_individuals_100"
-                    android:layout_width="63dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="+100"
-                    android:textOn="+100"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_individuals_100"
+                android:layout_width="63dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="+100"
+                android:textOn="+100"
+                android:textSize="14dp" />
 
-            </LinearLayout>
+        </LinearLayout>
 
-            <!-- Number of offspring -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="145dp"
-                android:text="Number of offspring:"
-                android:textColor="@color/dark_blue"
-                android:textSize="14dp">
+        <!-- Number of offspring -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:text="Number of offspring:"
+            android:textColor="@color/dark_blue"
+            android:textSize="14dp">
 
-            </TextView>
+        </TextView>
 
-            <LinearLayout
-                android:id="@+id/first_row_nr_offspring"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="165dp"
-                android:layout_marginEnd="28dp">
+        <LinearLayout
+            android:id="@+id/first_row_nr_offspring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
 
-                <ToggleButton
-                    android:id="@+id/nr_offspring_0"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="0"
-                    android:textOn="0"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_offspring_0"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="0"
+                android:textOn="0"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_offspring_1"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="1"
-                    android:textOn="1"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_offspring_1"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="1"
+                android:textOn="1"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_offspring_2"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="2"
-                    android:textOn="2"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_offspring_2"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="2"
+                android:textOn="2"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_offspring_3"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="3"
-                    android:textOn="3"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_offspring_3"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="3"
+                android:textOn="3"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_offspring_4"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="4"
-                    android:textOn="4"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_offspring_4"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="4"
+                android:textOn="4"
+                android:textSize="14dp" />
 
-                <ToggleButton
-                    android:id="@+id/nr_offspring_5"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:button="@android:color/transparent"
-                    android:background="@drawable/sighting_info_btn_selector"
-                    android:textColor="@drawable/sighting_text_selector"
-                    android:elevation="4dp"
-                    android:gravity="center"
-                    android:textOff="5"
-                    android:textOn="5"
-                    android:textSize="14dp" />
+            <ToggleButton
+                android:id="@+id/nr_offspring_5"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:background="@drawable/sighting_info_btn_selector"
+                android:textColor="@drawable/sighting_text_selector"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:textOff="5"
+                android:textOn="5"
+                android:textSize="14dp" />
 
-            </LinearLayout>
+        </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/second_row_nr_offspring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="35dp"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="206dp"
-                android:layout_marginEnd="23dp">
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
                 <ToggleButton
                     android:id="@+id/nr_offspring_6_10"
@@ -423,9 +404,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="250dp"
+                android:layout_marginTop="15dp"
                 android:text="Behaviour Type:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp"></TextView>
@@ -433,13 +413,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="275dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginRight="5dp">
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
                 <ToggleButton
                     android:id="@+id/traveling_behavior"
@@ -512,13 +487,46 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/other_behavior_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="15dp"
+                    android:text="Other: "
+                    >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/other_behavior_text"
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:textAlignment="center"
+                    android:textSize="15dp"
+                    android:maxLength="20"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/login_input">
+                </EditText>
+
+            </LinearLayout>
+
+
             <!-- Reaction to Vessel -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="335dp"
+                android:layout_marginTop="15dp"
                 android:text="Reaction to vessel:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp"></TextView>
@@ -526,16 +534,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="365dp"
-                android:layout_marginRight="5dp">
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                >
 
                 <ToggleButton
                     android:id="@+id/none_reaction"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/single_btn_sighting_info_selector"
@@ -548,7 +553,7 @@
 
                 <ToggleButton
                     android:id="@+id/approach_reaction"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
@@ -562,7 +567,7 @@
 
                 <ToggleButton
                     android:id="@+id/avoidance_reaction"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
@@ -576,7 +581,7 @@
 
                 <ToggleButton
                     android:id="@+id/other_reaction"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
@@ -590,14 +595,43 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/other_reaction_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="15dp"
+                android:text="Other: "
+                >
+            </TextView>
+
+            <EditText
+                android:id="@+id/other_reaction_text"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                android:maxLength="20"
+                android:textColor="@android:color/black"
+                android:background="@drawable/login_input">
+            </EditText>
+
+        </LinearLayout>
+
             <!-- Trust Level: -->
             <TextView
                 android:layout_width="177dp"
-                android:layout_height="31dp"
-                android:layout_marginStart="15dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="425dp"
-                android:layout_marginBottom="194dp"
+                android:layout_marginTop="15dp"
                 android:text="Trust level:"
                 android:textColor="@color/dark_blue"
                 android:textSize="14dp"></TextView>
@@ -605,16 +639,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="455dp"
-                android:layout_marginRight="5dp">
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                >
 
                 <ToggleButton
                     android:id="@+id/low_trust_level"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/single_btn_sighting_info_selector"
@@ -627,7 +658,7 @@
 
                 <ToggleButton
                     android:id="@+id/middle_trust_level"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
@@ -641,7 +672,7 @@
 
                 <ToggleButton
                     android:id="@+id/high_trust_level"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
@@ -655,7 +686,5 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
