@@ -175,101 +175,8 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         int index = 0;
         for(String specie : model.getSpecies()) {
-            switch (specie) {
-                case "Blue Whale":
-                    clickSpecie(getView().findViewById(R.id.blue_whale_btn), false);
-                    break;
-                case "Fin Whale":
-                    clickSpecie(getView().findViewById(R.id.fin_whale_btn), false);
-                    break;
-                case "Sperm Whale":
-                    clickSpecie(getView().findViewById(R.id.sperm_whale_btn), false);
-                    break;
-                case "North Atlantic Right Whale":
-                    clickSpecie(getView().findViewById(R.id.north_atlantic_right_whale_btn), false);
-                    break;
-                case "Sowerby's Beaker Whale":
-                    clickSpecie(getView().findViewById(R.id.sowerbys_beaker_whale_btn), false);
-                    break;
-                case "Sei Whale":
-                    clickSpecie(getView().findViewById(R.id.sei_whale_btn), false);
-                    break;
-                case "Blainville's Beaked Whale":
-                    clickSpecie(getView().findViewById(R.id.blainville_whale_btn), false);
-                    break;
-                case "Gervais' Beaked Whale":
-                    clickSpecie(getView().findViewById(R.id.gervais_whale_btn), false);
-                    break;
-                case "Bryde's Whale":
-                    clickSpecie(getView().findViewById(R.id.brides_whale_btn), false);
-                    break;
-                case "Minke Whale":
-                    clickSpecie(getView().findViewById(R.id.minke_whale_btn), false);
-                    break;
-                case "True's Beaked Whale":
-                    clickSpecie(getView().findViewById(R.id.trues_whale_btn), false);
-                    break;
-                case "Orca Whale":
-                    clickSpecie(getView().findViewById(R.id.orca_whale_btn), false);
-                    break;
-                case "Short Finned Pilot Whale":
-                    clickSpecie(getView().findViewById(R.id.short_finned_pilot_whale_btn), false);
-                    break;
-                case "Humpback Whale":
-                    clickSpecie(getView().findViewById(R.id.humpback_whale_btn), false);
-                    break;
-                case "Northern Bottlenose Whale":
-                    clickSpecie(getView().findViewById(R.id.northern_whale_btn), false);
-                    break;
-                case "Long Finned Pilot Whale":
-                    clickSpecie(getView().findViewById(R.id.long_finned_pilot_whale_btn), false);
-                    break;
-                case "False Killer Whale":
-                    clickSpecie(getView().findViewById(R.id.false_killer_whale_btn), false);
-                    break;
-                case "Melon Whale":
-                    clickSpecie(getView().findViewById(R.id.melon_whale_btn), false);
-                    break;
-                case "Cuvier's Beaked Whale":
-                    clickSpecie(getView().findViewById(R.id.cuviers_whale_btn), false);
-                    break;
-                case "Pigmy Whale":
-                    clickSpecie(getView().findViewById(R.id.pigmy_whale_btn), false);
-                    break;
-                case "Not Specified Whale":
-                    clickSpecie(getView().findViewById(R.id.not_specified_whale_btn), false);
-                    break;
-                case "Bottlenose Dolphin":
-                    clickSpecie(getView().findViewById(R.id.bottlenose_dolphin_btn), false);
-                    break;
-                case "Risso's Dolphin":
-                    clickSpecie(getView().findViewById(R.id.rissos_dolphin_btn), false);
-                    break;
-                case "Rough Toothed Dolphin":
-                    clickSpecie(getView().findViewById(R.id.rough_toothed_dolphin_btn), false);
-                    break;
-                case "Atlantic Spotted Dolphin":
-                    clickSpecie(getView().findViewById(R.id.atlantic_spotted_dolphin_btn), false);
-                    break;
-                case "Striped Dolphin":
-                    clickSpecie(getView().findViewById(R.id.striped_dolphin_btn), false);
-                    break;
-                case "Common Dolphin":
-                    clickSpecie(getView().findViewById(R.id.common_dolphin_btn), false);
-                    break;
-                case "Fraser's Dolphin":
-                    clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn), false);
-                    break;
-                case "Not Specified Dolphin":
-                    clickSpecie(getView().findViewById(R.id.not_specified_dolphin_btn), false);
-                    break;
-                case "Harbour Porpoise":
-                    clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), false);
-                    break;
-                case "Not Specified Porpoise":
-                    clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn), false);
-                    break;
-            }
+            try{clickSpecie(getView().findViewWithTag(specie), false);}catch (Exception e){}
+
             fillSpecieSightingInformation(specie, index);
             index++;
         }
@@ -295,6 +202,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         });
         beaufortSeekBar.setThumb(getThumb(beafortValue, thumbView));
     }
+
 
     private void fillSpecieSightingInformation(String specie, int index){
         SightingInformation sightingInformation = sightingInformations.get(getSightingInformationId(specie));
@@ -450,73 +358,18 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     }
 
     private void findAndSelect() {
-        String insertedText = searchBar.getText().toString().toLowerCase();
-        boolean found = true;
-        if(insertedText.contains("blue")) clickSpecie(getView().findViewById(R.id.blue_whale_btn), true);
-        else if(insertedText.contains("fin")) clickSpecie(getView().findViewById(R.id.fin_whale_btn), true);
-        else if(insertedText.contains("sperm")) clickSpecie(getView().findViewById(R.id.sperm_whale_btn), true);
-        else if((insertedText.contains("north") && !insertedText.contains("northern")) || insertedText.contains("right"))clickSpecie(getView().findViewById(R.id.north_atlantic_right_whale_btn), true);
-        else if(insertedText.contains("sowerby")) clickSpecie(getView().findViewById(R.id.sowerbys_beaker_whale_btn), true);
-        else if(insertedText.contains("sei")) clickSpecie(getView().findViewById(R.id.sei_whale_btn), true);
-        else if(insertedText.contains("minke")) clickSpecie(getView().findViewById(R.id.minke_whale_btn), true);
-        else if(insertedText.contains("blainville")) clickSpecie(getView().findViewById(R.id.blainville_whale_btn), true);
-        else if(insertedText.contains("gervai")) clickSpecie(getView().findViewById(R.id.gervais_whale_btn), true);
-        else if(insertedText.contains("bryde") || insertedText.contains("bride")) clickSpecie(getView().findViewById(R.id.brides_whale_btn), true);
-        else if(insertedText.contains("true")) clickSpecie(getView().findViewById(R.id.trues_whale_btn), true);
-        else if(insertedText.contains("orca")) clickSpecie(getView().findViewById(R.id.orca_whale_btn), true);
-        else if(insertedText.contains("short")) clickSpecie(getView().findViewById(R.id.short_finned_pilot_whale_btn), true);
-        else if(insertedText.contains("humpback")) clickSpecie(getView().findViewById(R.id.humpback_whale_btn), true);
-        else if(insertedText.contains("northern") || (insertedText.contains("bottlenose") && insertedText.contains("whale"))) clickSpecie(getView().findViewById(R.id.northern_whale_btn), true);
-        else if(insertedText.contains("long")) clickSpecie(getView().findViewById(R.id.long_finned_pilot_whale_btn), true);
-        else if(insertedText.contains("false")) clickSpecie(getView().findViewById(R.id.false_killer_whale_btn), true);
-        else if(insertedText.contains("melon") || insertedText.contains("headed")) clickSpecie(getView().findViewById(R.id.melon_whale_btn), true);
-        else if(insertedText.contains("cuvier")) clickSpecie(getView().findViewById(R.id.cuviers_whale_btn), true);
-        else if(insertedText.contains("pigmy")) clickSpecie(getView().findViewById(R.id.pigmy_whale_btn), true);
-        else if(insertedText.contains("not specified whale")) clickSpecie(getView().findViewById(R.id.not_specified_whale_btn), true);
-        else if(insertedText.contains("bottlenose") && insertedText.contains("dolphin")) clickSpecie(getView().findViewById(R.id.bottlenose_dolphin_btn), true);
-        else if(insertedText.contains("risso")) clickSpecie(getView().findViewById(R.id.rissos_dolphin_btn), true);
-        else if(insertedText.contains("rough") || insertedText.contains("toothed")) clickSpecie(getView().findViewById(R.id.rough_toothed_dolphin_btn), true);
-        else if(insertedText.contains("spotted")) clickSpecie(getView().findViewById(R.id.atlantic_spotted_dolphin_btn), true);
-        else if(insertedText.contains("striped")) clickSpecie(getView().findViewById(R.id.striped_dolphin_btn), true);
-        else if(insertedText.contains("common")) clickSpecie(getView().findViewById(R.id.common_dolphin_btn), true);
-        else if(insertedText.contains("fraser")) clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn), true);
-        else if(insertedText.contains("not specified dolphin")) clickSpecie(getView().findViewById(R.id.not_specified_dolphin_btn), true);
-        else if(insertedText.contains("harbour")) clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), true);
-        else if(insertedText.contains("not specified porpoise")) clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn), true);
-        else{
-            //verifica se escreveu um nome comum a várias espécies:
-            String[] foundMultipleSpecies = {"atlantic", "bottlenose", "beaked", "killer", "finned", "pilot"};
-            if(found) {
-                for (String specie : foundMultipleSpecies) {
-                    if (insertedText.contains(specie)){
-                        ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "There are multiple species with that name!");
-                        found = false;
-                    }
-                }
-            }
-
-            //verifica se não escreveu uma espécie conhecida de um animal:
-            String[] foundMultipleAnimals = {"whale", "dolphin", "porpoise"};
-            if(found){
-                for(String animal : foundMultipleAnimals){
-                    if(insertedText.contains(animal)){
-                        ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, specify the "+ animal +" specie!");
-                        found = false;
-                    }
-                }
-            }
-
-            if(found) {
-                found = false;
-                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
-            }
+        String insertedText = searchBar.getText().toString();
+        try{
+            clickSpecie(getView().findViewWithTag(insertedText),true);
+            searchBar.setText("");
         }
-
-        if(found) searchBar.setText("");
+        catch (Exception e){
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
+        }
 
         try{
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(getActivity().getCurrentFocus().getWindowToken() != null) imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
         catch(NullPointerException e ){
         }
@@ -542,10 +395,32 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
     private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
 
-        if(sightingInformations.size() == 0) return false; //se não escolheu nenhuma espécie
+        ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView2);
+        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) getView().findViewById(R.id.horizontalSightings);
 
-        for(SightingInformation sighting : sightingInformations){
-            if(sighting.getNumberOfIndividualsString().equals("ERROR")) return false; //se não preencheu o número de individuos de alguma espécie
+
+        if(sightingInformations.size() == 0){ //se não escolheu nenhuma espécie
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Choose the sighting species!");
+            scrollView.smoothScrollTo(0, (getView().findViewById(R.id.choose_sighting_species)).getTop());
+            return false;
+        }
+
+        for(SightingInformation sighting : sightingInformations){ //se não preencheu o número de individuos de alguma espécie
+            if(sighting.getNumberOfIndividualsString().equals("ERROR")){
+                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Select the number of "+ sighting.getSpecieName()+"s!");
+                scrollView.smoothScrollTo(0, (getView().findViewById(R.id.sighting_informations)).getTop());
+                horizontalScrollView.smoothScrollTo((getView().findViewById(sighting.getSightingBoxID())).getLeft(), (getView().findViewById(sighting.getSightingBoxID())).getTop());
+                return false;
+            }
+        }
+
+        for(SightingInformation sighting : sightingInformations){ //se não preencheu o número de individuos de alguma espécie
+            if(!sighting.allOtherFieldsFilled()){
+                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specifiy the "+ sighting.getSpecieName()+"'s 'Other' field!");
+                scrollView.smoothScrollTo(0, (getView().findViewById(R.id.sighting_informations)).getTop());
+                horizontalScrollView.smoothScrollTo((getView().findViewById(sighting.getSightingBoxID())).getLeft(), (getView().findViewById(sighting.getSightingBoxID())).getTop());
+                return false;
+            }
         }
 
         return true;

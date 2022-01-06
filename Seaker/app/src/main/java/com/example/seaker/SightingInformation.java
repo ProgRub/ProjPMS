@@ -151,6 +151,18 @@ public class SightingInformation {
         }
     }
 
+    public boolean allOtherFieldsFilled(){
+        if(behavior_type.get(4).isChecked()){
+            if(otherBehavior.getText().toString().isEmpty()) return false;
+        }
+
+        if(reactions_to_vessel.get(3).isChecked()){
+            if(otherReaction.getText().toString().isEmpty()) return false;
+        }
+
+        return true;
+    }
+
     public void fillReactionToVessel(String reactions) {
         if(reactions.contains("None")) this.reactions_to_vessel.get(0).setChecked(true);
         if(reactions.contains("Approach")) this.reactions_to_vessel.get(1).setChecked(true);

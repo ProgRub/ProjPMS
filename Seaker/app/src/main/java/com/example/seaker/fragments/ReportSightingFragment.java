@@ -51,13 +51,11 @@ import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.jsonwriter.AnimalJson;
 import com.example.seaker.jsonwriter.JsonWriter;
 import com.example.seaker.jsonwriter.SightingJson;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -105,7 +103,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private AutoCompleteTextView searchBar;
     private ImageButton findSelectBtn;
 
-    public static final String ip = "192.168.1.80"; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
@@ -341,79 +339,17 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     private void findAndSelect() {
         String insertedText = searchBar.getText().toString();
-        boolean found = true;
         try{
             clickSpecie(getView().findViewWithTag(insertedText),true);
+            searchBar.setText("");
         }
         catch (Exception e){
-            found = false;
             ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
         }
-//        if(insertedText.contains("blue")) clickSpecie(getView().findViewById(R.id.blue_whale_btn), true);
-//        else if(insertedText.contains("fin")) clickSpecie(getView().findViewById(R.id.fin_whale_btn), true);
-//        else if(insertedText.contains("sperm")) clickSpecie(getView().findViewById(R.id.sperm_whale_btn), true);
-//        else if((insertedText.contains("north") && !insertedText.contains("northern")) || insertedText.contains("right"))clickSpecie(getView().findViewById(R.id.north_atlantic_right_whale_btn), true);
-//        else if(insertedText.contains("sowerby")) clickSpecie(getView().findViewById(R.id.sowerbys_beaker_whale_btn), true);
-//        else if(insertedText.contains("sei")) clickSpecie(getView().findViewById(R.id.sei_whale_btn), true);
-//        else if(insertedText.contains("minke")) clickSpecie(getView().findViewById(R.id.minke_whale_btn), true);
-//        else if(insertedText.contains("blainville")) clickSpecie(getView().findViewById(R.id.blainville_whale_btn), true);
-//        else if(insertedText.contains("gervai")) clickSpecie(getView().findViewById(R.id.gervais_whale_btn), true);
-//        else if(insertedText.contains("bryde") || insertedText.contains("bride")) clickSpecie(getView().findViewById(R.id.brides_whale_btn), true);
-//        else if(insertedText.contains("true")) clickSpecie(getView().findViewById(R.id.trues_whale_btn), true);
-//        else if(insertedText.contains("orca")) clickSpecie(getView().findViewById(R.id.orca_whale_btn), true);
-//        else if(insertedText.contains("short")) clickSpecie(getView().findViewById(R.id.short_finned_pilot_whale_btn), true);
-//        else if(insertedText.contains("humpback")) clickSpecie(getView().findViewById(R.id.humpback_whale_btn), true);
-//        else if(insertedText.contains("northern") || (insertedText.contains("bottlenose") && insertedText.contains("whale"))) clickSpecie(getView().findViewById(R.id.northern_whale_btn), true);
-//        else if(insertedText.contains("long")) clickSpecie(getView().findViewById(R.id.long_finned_pilot_whale_btn), true);
-//        else if(insertedText.contains("false")) clickSpecie(getView().findViewById(R.id.false_killer_whale_btn), true);
-//        else if(insertedText.contains("melon") || insertedText.contains("headed")) clickSpecie(getView().findViewById(R.id.melon_whale_btn), true);
-//        else if(insertedText.contains("cuvier")) clickSpecie(getView().findViewById(R.id.cuviers_whale_btn), true);
-//        else if(insertedText.contains("pigmy")) clickSpecie(getView().findViewById(R.id.pigmy_whale_btn), true);
-//        else if(insertedText.contains("not specified whale")) clickSpecie(getView().findViewById(R.id.not_specified_whale_btn), true);
-//        else if(insertedText.contains("bottlenose") && insertedText.contains("dolphin")) clickSpecie(getView().findViewById(R.id.bottlenose_dolphin_btn), true);
-//        else if(insertedText.contains("risso")) clickSpecie(getView().findViewById(R.id.rissos_dolphin_btn), true);
-//        else if(insertedText.contains("rough") || insertedText.contains("toothed")) clickSpecie(getView().findViewById(R.id.rough_toothed_dolphin_btn), true);
-//        else if(insertedText.contains("spotted")) clickSpecie(getView().findViewById(R.id.atlantic_spotted_dolphin_btn), true);
-//        else if(insertedText.contains("striped")) clickSpecie(getView().findViewById(R.id.striped_dolphin_btn), true);
-//        else if(insertedText.contains("common")) clickSpecie(getView().findViewById(R.id.common_dolphin_btn), true);
-//        else if(insertedText.contains("fraser")) clickSpecie(getView().findViewById(R.id.frasers_dolphin_btn), true);
-//        else if(insertedText.contains("not specified dolphin")) clickSpecie(getView().findViewById(R.id.not_specified_dolphin_btn), true);
-//        else if(insertedText.contains("harbour")) clickSpecie(getView().findViewById(R.id.harbour_porpoise_btn), true);
-//        else if(insertedText.contains("not specified porpoise")) clickSpecie(getView().findViewById(R.id.not_specified_porpoise_btn), true);
-//        else{
-//            //verifica se escreveu um nome comum a várias espécies:
-//            String[] foundMultipleSpecies = {"atlantic", "bottlenose", "beaked", "killer", "finned", "pilot"};
-//            if(found) {
-//                for (String specie : foundMultipleSpecies) {
-//                    if (insertedText.contains(specie)){
-//                        ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "There are multiple species with that name!");
-//                        found = false;
-//                    }
-//                }
-//            }
-//
-//            //verifica se não escreveu uma espécie conhecida de um animal:
-//            String[] foundMultipleAnimals = {"whale", "dolphin", "porpoise"};
-//            if(found){
-//                for(String animal : foundMultipleAnimals){
-//                    if(insertedText.contains(animal)){
-//                        ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, specify the "+ animal +" specie!");
-//                        found = false;
-//                    }
-//                }
-//            }
-//
-//            if(found) {
-//                found = false;
-//                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specie not found!");
-//            }
-//        }
-
-        if(found) searchBar.setText("");
 
         try{
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(getActivity().getCurrentFocus().getWindowToken() != null) imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
         catch(NullPointerException e ){
         }
@@ -1238,9 +1174,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                     MainActivity.switchFragment(new TeamMemberHomeFragment());
                 }
             }, 2000);
-
-        }else{ //se não preencheu todos os campos obrigatórios
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Required fields missing!");
         }
     }
 
@@ -1437,18 +1370,38 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-
     private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
+        ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView2);
+        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) getView().findViewById(R.id.horizontalSightings);
 
-        if(!clickedCoordinatesOnce) return false; //se não clicou no mapa nenhuma vez
+        if(!clickedCoordinatesOnce){ //se não clicou no mapa nenhuma vez
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Sighting coordinates missing!");
+            scrollView.smoothScrollTo(0, (getView().findViewById(R.id.coordinates)).getTop());
+            return false;
+        }
 
-        if(sightingDate.getText().toString().equals("")) return false; //se não preencheu a data
-        if(sightingTime.getText().toString().equals("")) return false; //se não preencheu o tempo
+        if(sightingInformations.size() == 0){ //se não escolheu nenhuma espécie
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Choose the sighting species!");
+            scrollView.smoothScrollTo(0, (getView().findViewById(R.id.choose_sighting_species)).getTop());
+            return false;
+        }
 
-        if(sightingInformations.size() == 0) return false; //se não escolheu nenhuma espécie
+        for(SightingInformation sighting : sightingInformations){ //se não preencheu o número de individuos de alguma espécie
+            if(sighting.getNumberOfIndividualsString().equals("ERROR")){
+                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Select the number of "+ sighting.getSpecieName()+"s!");
+                scrollView.smoothScrollTo(0, (getView().findViewById(R.id.sighting_informations)).getTop());
+                horizontalScrollView.smoothScrollTo((getView().findViewById(sighting.getSightingBoxID())).getLeft(), (getView().findViewById(sighting.getSightingBoxID())).getTop());
+                return false;
+            }
+        }
 
-        for(SightingInformation sighting : sightingInformations){
-            if(sighting.getNumberOfIndividualsString().equals("ERROR")) return false; //se não preencheu o número de individuos de alguma espécie
+        for(SightingInformation sighting : sightingInformations){ //se não preencheu o número de individuos de alguma espécie
+            if(!sighting.allOtherFieldsFilled()){
+                ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Specifiy the "+ sighting.getSpecieName()+"'s 'Other' field!");
+                scrollView.smoothScrollTo(0, (getView().findViewById(R.id.sighting_informations)).getTop());
+                horizontalScrollView.smoothScrollTo((getView().findViewById(sighting.getSightingBoxID())).getLeft(), (getView().findViewById(sighting.getSightingBoxID())).getTop());
+                return false;
+            }
         }
 
         return true;
@@ -1489,7 +1442,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     public static void SaveArrayListToSD(Context mContext, String filename, ArrayList<ArrayList<String>> list){
         try {
-
             FileOutputStream fos = mContext.openFileOutput(filename + ".dat", mContext.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(list);

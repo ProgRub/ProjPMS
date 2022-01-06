@@ -197,6 +197,7 @@
 
             <!-- Coordinates title -->
             <TextView
+                android:id="@+id/coordinates"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -254,6 +255,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/choose_sighting_species"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -712,6 +714,7 @@
 
             <!-- Sightings Information title -->
             <TextView
+                android:id="@+id/sighting_informations"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -733,6 +736,7 @@
 
             <!-- Sighting Information Boxes -->
             <HorizontalScrollView
+                android:id="@+id/horizontalSightings"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp">
