@@ -1,6 +1,8 @@
 package com.example.seaker.fragments;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -35,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -217,6 +221,20 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         takePhoto = (ImageButton) view.findViewById(R.id.take_photo_btn);
         uploadPhoto = (ImageButton) view.findViewById(R.id.upload_photo_btn);
 
+        sightingDate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                datePicking(view);
+            }
+        });
+
+        sightingTime.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                timePicking(view);
+            }
+        });
+
         beaufortSeekBar = (SeekBar) view.findViewById(R.id.beaufort_slider);
 
         sightingComment = (EditText) view.findViewById(R.id.sighting_comment);
@@ -371,6 +389,47 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void datePicking(View view) {
+        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
+
+        String actualValue = editText.getText().toString();
+        String previousDate[] = actualValue.split("/");
+
+        int yy = Integer.parseInt(previousDate[2]);
+        int mm = Integer.parseInt(previousDate[1])-1;
+        int dd = Integer.parseInt(previousDate[0]);
+
+        DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1)
+                        + "/" + String.valueOf(year);
+                editText.setText(date);
+            }
+        }, yy, mm, dd);
+
+        datePicker.show();
+    }
+
+    public void timePicking(View view) {
+        EditText editText = (EditText) getView().findViewById(R.id.pickTime);
+        String actualValue = editText.getText().toString();
+        String previousTime[] = actualValue.split(":");
+
+        int hour = Integer.parseInt(previousTime[0]);
+        int minute = Integer.parseInt(previousTime[1]);
+
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                editText.setText( selectedHour + ":" + selectedMinute);
+            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
     }
 
     private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
