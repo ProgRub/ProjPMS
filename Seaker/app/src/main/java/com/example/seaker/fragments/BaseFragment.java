@@ -50,4 +50,6 @@ public class BaseFragment extends Fragment {
             });
         }
     }
+
+    public final void ShowPopupBox(String message){((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), message);}
 }

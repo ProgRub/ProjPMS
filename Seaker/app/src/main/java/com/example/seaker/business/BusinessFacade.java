@@ -1,6 +1,6 @@
 package com.example.seaker.business;
 
-import com.example.seaker.database.DTOs.SightingDTO;
+import com.example.seaker.database.DTOs.*;
 import com.example.seaker.business.services.ReportService;
 import com.example.seaker.business.services.SightingsService;
 import com.example.seaker.business.services.UserService;
@@ -8,14 +8,7 @@ import com.example.seaker.business.services.UserService;
 public class BusinessFacade {
     private static BusinessFacade instance=null;
 
-    private SightingsService sightingsService;
-    private ReportService reportService;
-    private UserService userService;
-
     public void BusinessFacade(){
-        sightingsService=SightingsService.getInstance();
-        reportService=ReportService.getInstance();
-        userService=UserService.getInstance();
     }
 
     public static BusinessFacade getInstance(){
@@ -24,6 +17,9 @@ public class BusinessFacade {
     }
 
     public void addSighting(SightingDTO sighting){
-        sightingsService.addNewSighting(sighting);
+        SightingsService.getInstance().addNewSighting(sighting);
     }
+    public void addUser(UserDTO user){UserService.getInstance().addUser(user);}
+
+    public ErrorType userIsValid(UserDTO user){return UserService.getInstance().validateFields(user);}
 }

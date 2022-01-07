@@ -15,6 +15,14 @@ public class UserDTO {
         this.type = type;
     }
 
+    public UserDTO(String name, String email, String password, String type) {
+        this.id = -1;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.type = type;
+    }
+
     public long getId() {
         return id;
     }

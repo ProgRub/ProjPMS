@@ -70,6 +70,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1407,25 +1408,25 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return true;
     }
 
-    public static String getAllSightingsInformations(String person_id){
+    public static String getAllSightingsInformations(String person_id) {
         String result = "";
         String getSightings = "http://" + ip + "/seaker/getallsightings.php";
         try {
             URL url = new URL(getSightings);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(person_id, "UTF-8");
+            String post_data = URLEncoder.encode("person_id", "UTF-8") + "=" + URLEncoder.encode(person_id, "UTF-8");
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
             bufferedWriter.close();
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String line = "";
-            while((line = bufferedReader.readLine())!=null){
+            while ((line = bufferedReader.readLine()) != null) {
                 result += line;
             }
             bufferedReader.close();
@@ -1434,9 +1435,13 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             Log.d("TODOS OS AVISTAMENTOS: ", result);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        } catch (ConnectException e){
+            e.printStackTrace();
+            return "NO_CONNECTION";
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
