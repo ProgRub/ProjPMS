@@ -88,6 +88,8 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private ImageButton saveChangesBtn;
     private ImageButton deleteSightingBtn;
     private AutoCompleteTextView searchBar;
+    private LinearLayout navSightingBoxBtns;
+    private ArrayList<Button> sightingBoxesButtons;
 
     private static final DecimalFormat df = new DecimalFormat("0.00000");
 
@@ -156,6 +158,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 findAndSelect();
             }
         });
+
+        navSightingBoxBtns= (LinearLayout) view.findViewById(R.id.navSightingBoxes);
+        navSightingBoxBtns.setVisibility((View.GONE));
+        sightingBoxesButtons = new ArrayList<Button>();
 
         int index = 0;
         for(String specie : model.getSpecies()) {
@@ -513,6 +519,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             unselectSpecie(view);
             if(sightingInformations.size() == 0 ){
                 noSelectedSpecies.setVisibility(View.VISIBLE);
+                navSightingBoxBtns.setVisibility((View.GONE));
             }
         }else if(String.valueOf(view.getTag()).contains("Selected") && fromSearch){
             createToast(view.getTag().toString().split("Selected ")[1] + " is already selected.");
@@ -531,12 +538,30 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             sightingInformations.get(sightingInformations.size() - 1).setSpecieName(String.valueOf(view.getTag()));
 
             TextView textView = (TextView) v.findViewById(R.id.title);
-            textView.setText(String.valueOf(view.getTag()) + " Sighting");
+            textView.setText(view.getTag() + " Sighting");
 
-            view.setTag("Selected "+String.valueOf(view.getTag()));
+            LayoutInflater vin = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View buttonLayout = vin.inflate(R.layout.sighting_information_nav_btn_layout, null);
+
+            Button button = (Button) buttonLayout.findViewById(R.id.button);
+            button.setText(view.getTag().toString());
+            button.setTag(view.getTag().toString()+"Nav");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    HorizontalScrollView horizontalSightings = (HorizontalScrollView) getView().findViewById(R.id.horizontalSightings);
+                    horizontalSightings.smoothScrollTo(v.getLeft(), v.getTop());
+                }
+            });
+
+            navSightingBoxBtns.addView(button);
+            sightingBoxesButtons.add(button);
+
+            view.setTag("Selected "+view.getTag());
 
             if(sightingInformations.size() > 0 ){
                 noSelectedSpecies.setVisibility(View.GONE);
+                navSightingBoxBtns.setVisibility((View.VISIBLE));
             }
 
             sightingInformationsLayout.addView(v);
@@ -1018,6 +1043,8 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         for(SightingInformation sighting : sightingInformations){
             if(sighting.getSightingBoxID() == sightingId){
                 sightingInformations.remove(i);
+                navSightingBoxBtns.removeView(getView().findViewWithTag(sightingBoxesButtons.get(i).getTag().toString()));
+                sightingBoxesButtons.remove(i);
                 return;
             }
             i++;

@@ -103,8 +103,10 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private DataViewModel model;
     private JsonWriter jsonWriter;
     private AutoCompleteTextView searchBar;
+    private LinearLayout navSightingBoxBtns;
+    private ArrayList<Button> sightingBoxesButtons;
 
-    public static final String ip = "10.82.103.237"; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
@@ -178,6 +180,10 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                 findAndSelect();
             }
         });
+
+        navSightingBoxBtns= (LinearLayout) view.findViewById(R.id.navSightingBoxes);
+        navSightingBoxBtns.setVisibility((View.GONE));
+        sightingBoxesButtons = new ArrayList<Button>();
 
         takePhoto.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -334,6 +340,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
         catch(NullPointerException e ){
+
         }
     }
 
@@ -390,6 +397,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             unselectSpecie(view);
             if (sightingInformations.size() == 0) {
                 noSelectedSpecies.setVisibility(View.VISIBLE);
+                navSightingBoxBtns.setVisibility((View.GONE));
             }
         }else{
             if(fromSearch){
@@ -408,10 +416,28 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             TextView textView = (TextView) v.findViewById(R.id.title);
             textView.setText(view.getTag() + " Sighting");
 
+            LayoutInflater vin = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View buttonLayout = vin.inflate(R.layout.sighting_information_nav_btn_layout, null);
+
+            Button button = (Button) buttonLayout.findViewById(R.id.button);
+            button.setText(view.getTag().toString());
+            button.setTag(view.getTag().toString()+"Nav");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    HorizontalScrollView horizontalSightings = (HorizontalScrollView) getView().findViewById(R.id.horizontalSightings);
+                    horizontalSightings.smoothScrollTo(v.getLeft(), v.getTop());
+                }
+            });
+
+            navSightingBoxBtns.addView(button);
+            sightingBoxesButtons.add(button);
+
             view.setTag("Selected "+ view.getTag());
 
             if(sightingInformations.size() > 0 ){
                 noSelectedSpecies.setVisibility(View.GONE);
+                navSightingBoxBtns.setVisibility((View.VISIBLE));
             }
 
             sightingInformationsLayout.addView(v);
@@ -430,6 +456,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
         toast.show();
     }
+
 
     public void scrollToSpecie(View view){
         HorizontalScrollView species = (HorizontalScrollView) getView().findViewById(R.id.all_species);
@@ -936,6 +963,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         for(SightingInformation sighting : sightingInformations){
             if(sighting.getSightingBoxID() == sightingId){
                 sightingInformations.remove(i);
+                navSightingBoxBtns.removeView(getView().findViewWithTag(sightingBoxesButtons.get(i).getTag().toString()));
+                sightingBoxesButtons.remove(i);
                 return;
             }
             i++;
