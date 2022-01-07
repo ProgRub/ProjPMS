@@ -68,11 +68,6 @@ public class AllMembersFragment extends BaseFragment {
             String[] team_member = tm[j].split("###");
             addMember(team_member[0], team_member[1], team_member[2], team_member[3]);
         }
-        //addMember("Diego Briceño", "diego@gmail.com", "diego123", "Team Member");
-        //addMember("Sílvia Fernandes", "silvia@gmail.com", "silvia123", "Team Member");
-        //addMember("Rúben Rodrigues", "ruben@gmail.com", "ruben123", "Team Member");
-        //addMember("Mara Dionísio", "mara@gmail.com", "maraaa", "Company Manager");
-        //addMember("Pedro Campos", "pedro@gmail.com", "pedrooo", "Company Manager");
     }
 
     private void addMember(String name, String email, String password, String type){

@@ -3,7 +3,7 @@ package com.example.seaker.database.repositories;
 import com.example.seaker.database.DTOs.SightingDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class SightingRepository extends IRepository<SightingDTO> {
+public class SightingRepository extends Repository<SightingDTO> {
     @Override
     public void add(SightingDTO item) {
 

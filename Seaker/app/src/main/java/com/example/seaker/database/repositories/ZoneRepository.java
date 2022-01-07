@@ -3,7 +3,7 @@ package com.example.seaker.database.repositories;
 import com.example.seaker.database.DTOs.ZoneDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class ZoneRepository extends IRepository<ZoneDTO> {
+public class ZoneRepository extends Repository<ZoneDTO> {
     @Override
     public void add(ZoneDTO item) {
 

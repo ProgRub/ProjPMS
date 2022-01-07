@@ -2,7 +2,6 @@ package com.example.seaker.database.repositories;
 
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.specifications.ISpecification;
-import com.example.seaker.fragments.ReportSightingFragment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,7 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class UserRepository extends IRepository<UserDTO>{
+public class UserRepository extends Repository<UserDTO> {
     @Override
     public void add(UserDTO item) {
         String insertTeamMember = "http://" + ip + "/seaker/addteammember.php";
@@ -61,6 +60,32 @@ public class UserRepository extends IRepository<UserDTO>{
 
     @Override
     public Iterable<UserDTO> getAll() {
+//        String allTeamMembers = "";
+//        String getMembers = "http://" + ip + "/seaker/getallteammembers.php";
+//        try {
+//            URL url = new URL(getMembers);
+//            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+//            httpURLConnection.setDoInput(true);
+//            InputStream inputStream = httpURLConnection.getInputStream();
+//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+//            String line = "";
+//            while((line = bufferedReader.readLine())!=null){
+//                allTeamMembers += line;
+//            }
+//            bufferedReader.close();
+//            inputStream.close();
+//            httpURLConnection.disconnect();
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String[] tm = allTeamMembers.split("&&&");
+//        for(int j=0;j<tm.length;j++){
+//            String[] team_member = tm[j].split("###");
+//            addMember(team_member[0], team_member[1], team_member[2], team_member[3]);
+//        }
+//        return result;
         return null;
     }
 

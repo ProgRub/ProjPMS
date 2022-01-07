@@ -27,25 +27,19 @@ public class UserService {
     }
 
     public ErrorType validateFields(UserDTO user) {
-
-//        boolean missing = false;
-
         if (user.getName().equals("")) return ErrorType.NameMissing;
         else {
             if (containsNumbers(user.getName())) {
-//                ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "Name can't contain numbers!");
                 return ErrorType.NameHasNumbers;
             }
 
             if (containsSpecialCharacters(user.getName())) {
-//                ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "Name can't contain special characters!");
                 return ErrorType.NameHasSpecialCharacters;
             }
         }
         if (user.getEmail().equals("")) return ErrorType.EmailMissing;
         else {
             if (!isValidEmailAddress(user.getEmail())) {
-//                ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "Invalid email format!");
                 return ErrorType.EmailNotValid;
             }
         }
@@ -53,12 +47,6 @@ public class UserService {
         if (user.getPassword().equals("")) return ErrorType.PasswordMissing;
         if (user.getType().equals("")) return ErrorType.UserTypeNotSpecified;
 
-//        if (missing) {
-//            ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "Required fields missing!");
-//            return false;
-//        }
-//
-//        return true;
         return ErrorType.NoError;
     }
 
