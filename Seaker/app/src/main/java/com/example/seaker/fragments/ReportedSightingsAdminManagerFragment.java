@@ -119,9 +119,10 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
             }
         }
         String species_ = "";
-        for(int k=0;k<species_name.size();k++){
+        for(int k=0;k<species_name.size()-1;k++){
             species_ += species_name.get(k) + ", ";
         }
+        species_ += species_name.get(species_name.size()-1);
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
         editSightingBtn.setOnClickListener(item -> {
