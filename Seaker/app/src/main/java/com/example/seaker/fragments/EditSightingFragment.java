@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -83,7 +84,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private ImageButton saveChangesBtn;
     private ImageButton deleteSightingBtn;
     private AutoCompleteTextView searchBar;
-    private ImageButton findSelectBtn;
 
     private static final DecimalFormat df = new DecimalFormat("0.00000");
 
@@ -131,8 +131,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         sightingComment.setText(model.getComment());
 
-        findSelectBtn = (ImageButton) view.findViewById(R.id.find_and_select_btn);
-
         searchBar = (AutoCompleteTextView) view.findViewById(R.id.search_bar);
 
         String[] species = new String[]{"Blue Whale", "Fin Whale", "North Atlantic Right Whale",
@@ -147,28 +145,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
         searchBar.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, species));
 
-        searchBar.addTextChangedListener(new TextWatcher() {
+        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length() != 0){
-                    findSelectBtn.setClickable(true);
-                    findSelectBtn.setFocusable(true);
-                    findSelectBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.find_select_available_btn));
-                }else{
-                    findSelectBtn.setClickable(false);
-                    findSelectBtn.setFocusable(false);
-                    findSelectBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.find_select_unavailable_btn));
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
-        findSelectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
                 findAndSelect();
             }
         });
