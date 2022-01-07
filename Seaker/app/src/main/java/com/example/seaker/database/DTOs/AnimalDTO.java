@@ -1,22 +1,28 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.database.DTOs;
 
-public class Animal {
+public class AnimalDTO {
     private long id;
     private Iterable<String> behaviours;
     private Iterable<String> reactionsToBoat;
     private int amountOfAnimals;
     private int amountOfOffspring;
-    private long speciesId;
+    private String speciesName;
 
-    public Animal(long id, Iterable<String> behaviours, Iterable<String> reactionsToBoat, int amountOfAnimals, int amountOfOffspring, long speciesId) {
+    public AnimalDTO(long id, Iterable<String> behaviours, Iterable<String> reactionsToBoat, int amountOfAnimals, int amountOfOffspring, String speciesName) {
         this.id = id;
         this.behaviours = behaviours;
         this.reactionsToBoat = reactionsToBoat;
         this.amountOfAnimals = amountOfAnimals;
         this.amountOfOffspring = amountOfOffspring;
-        this.speciesId = speciesId;
+        this.speciesName = speciesName;
     }
-
+    public AnimalDTO(Iterable<String> behaviours, Iterable<String> reactionsToBoat, int amountOfAnimals, int amountOfOffspring, String speciesName) {
+        this.behaviours = behaviours;
+        this.reactionsToBoat = reactionsToBoat;
+        this.amountOfAnimals = amountOfAnimals;
+        this.amountOfOffspring = amountOfOffspring;
+        this.speciesName = speciesName;
+    }
 
     public long getId() {
         return id;
@@ -58,11 +64,11 @@ public class Animal {
         this.amountOfOffspring = amountOfOffspring;
     }
 
-    public long getSpeciesId() {
-        return speciesId;
+    public String getSpeciesName() {
+        return speciesName;
     }
 
-    public void setSpeciesId(long speciesId) {
-        this.speciesId = speciesId;
+    public void setSpeciesName(String speciesName) {
+        this.speciesName = speciesName;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.seaker.business.DTOs;
+package com.example.seaker.database.DTOs;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,36 +1,36 @@
 package com.example.seaker.database.repositories;
 
-import com.example.seaker.database.entities.Sighting;
+import com.example.seaker.database.DTOs.SightingDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class SightingRepository implements IRepository<Sighting> {
+public class SightingRepository implements IRepository<SightingDTO> {
     @Override
-    public void add(Sighting item) {
+    public void add(SightingDTO item) {
 
     }
 
     @Override
-    public Iterable<Sighting> getAll() {
+    public Iterable<SightingDTO> getAll() {
         return null;
     }
 
     @Override
-    public Sighting getById(long itemId) {
+    public SightingDTO getById(long itemId) {
         return null;
     }
 
     @Override
-    public Iterable<Sighting> find(ISpecification specification) {
+    public Iterable<SightingDTO> find(ISpecification specification) {
         return null;
     }
 
     @Override
-    public void update(Sighting oldItem, Sighting newItem) {
+    public void update(SightingDTO oldItem, SightingDTO newItem) {
 
     }
 
     @Override
-    public void remove(Sighting itemToRemove) {
+    public void remove(SightingDTO itemToRemove) {
 
     }
 

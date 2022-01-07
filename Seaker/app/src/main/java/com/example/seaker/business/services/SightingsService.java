@@ -1,11 +1,6 @@
 package com.example.seaker.business.services;
 
-import android.graphics.drawable.Drawable;
-import android.view.View;
-import android.widget.ImageButton;
-
-import com.example.seaker.R;
-import com.example.seaker.business.DTOs.SightingDTO;
+import com.example.seaker.database.DTOs.SightingDTO;
 
 public class SightingsService {
     private static SightingsService instance = null;

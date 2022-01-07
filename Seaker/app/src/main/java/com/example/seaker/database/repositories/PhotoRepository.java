@@ -1,36 +1,36 @@
 package com.example.seaker.database.repositories;
 
-import com.example.seaker.database.entities.Photo;
+import com.example.seaker.database.DTOs.PhotoDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class PhotoRepository implements IRepository<Photo> {
+public class PhotoRepository implements IRepository<PhotoDTO> {
     @Override
-    public void add(Photo item) {
+    public void add(PhotoDTO item) {
 
     }
 
     @Override
-    public Iterable<Photo> getAll() {
+    public Iterable<PhotoDTO> getAll() {
         return null;
     }
 
     @Override
-    public Photo getById(long itemId) {
+    public PhotoDTO getById(long itemId) {
         return null;
     }
 
     @Override
-    public Iterable<Photo> find(ISpecification specification) {
+    public Iterable<PhotoDTO> find(ISpecification specification) {
         return null;
     }
 
     @Override
-    public void update(Photo oldItem, Photo newItem) {
+    public void update(PhotoDTO oldItem, PhotoDTO newItem) {
 
     }
 
     @Override
-    public void remove(Photo itemToRemove) {
+    public void remove(PhotoDTO itemToRemove) {
 
     }
 

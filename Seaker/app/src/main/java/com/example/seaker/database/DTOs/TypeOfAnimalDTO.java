@@ -1,10 +1,10 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.database.DTOs;
 
-public class Photo {
+public class TypeOfAnimalDTO {
     private long id;
     private String name;
 
-    public Photo(long id, String name) {
+    public TypeOfAnimalDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }

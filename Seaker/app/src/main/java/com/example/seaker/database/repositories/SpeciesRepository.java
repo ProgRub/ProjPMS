@@ -1,36 +1,36 @@
 package com.example.seaker.database.repositories;
 
-import com.example.seaker.database.entities.Species;
+import com.example.seaker.database.DTOs.SpeciesDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class SpeciesRepository implements IRepository<Species> {
+public class SpeciesRepository implements IRepository<SpeciesDTO> {
     @Override
-    public void add(Species item) {
+    public void add(SpeciesDTO item) {
 
     }
 
     @Override
-    public Iterable<Species> getAll() {
+    public Iterable<SpeciesDTO> getAll() {
         return null;
     }
 
     @Override
-    public Species getById(long itemId) {
+    public SpeciesDTO getById(long itemId) {
         return null;
     }
 
     @Override
-    public Iterable<Species> find(ISpecification specification) {
+    public Iterable<SpeciesDTO> find(ISpecification specification) {
         return null;
     }
 
     @Override
-    public void update(Species oldItem, Species newItem) {
+    public void update(SpeciesDTO oldItem, SpeciesDTO newItem) {
 
     }
 
     @Override
-    public void remove(Species itemToRemove) {
+    public void remove(SpeciesDTO itemToRemove) {
 
     }
 

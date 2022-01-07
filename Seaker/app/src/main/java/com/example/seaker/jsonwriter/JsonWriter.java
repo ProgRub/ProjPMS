@@ -6,7 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.seaker.MainActivity;
-import com.example.seaker.database.entities.Animal;
+import com.example.seaker.database.DTOs.AnimalDTO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

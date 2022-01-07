@@ -1,6 +1,6 @@
 package com.example.seaker.business;
 
-import com.example.seaker.business.DTOs.SightingDTO;
+import com.example.seaker.database.DTOs.SightingDTO;
 import com.example.seaker.business.services.ReportService;
 import com.example.seaker.business.services.SightingsService;
 import com.example.seaker.business.services.UserService;

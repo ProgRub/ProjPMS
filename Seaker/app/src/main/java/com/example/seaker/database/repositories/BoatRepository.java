@@ -1,36 +1,36 @@
 package com.example.seaker.database.repositories;
 
-import com.example.seaker.database.entities.Boat;
+import com.example.seaker.database.DTOs.BoatDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class BoatRepository implements IRepository<Boat> {
+public class BoatRepository implements IRepository<BoatDTO> {
     @Override
-    public void add(Boat item) {
+    public void add(BoatDTO item) {
 
     }
 
     @Override
-    public Iterable<Boat> getAll() {
+    public Iterable<BoatDTO> getAll() {
         return null;
     }
 
     @Override
-    public Boat getById(long itemId) {
+    public BoatDTO getById(long itemId) {
         return null;
     }
 
     @Override
-    public Iterable<Boat> find(ISpecification specification) {
+    public Iterable<BoatDTO> find(ISpecification specification) {
         return null;
     }
 
     @Override
-    public void update(Boat oldItem, Boat newItem) {
+    public void update(BoatDTO oldItem, BoatDTO newItem) {
 
     }
 
     @Override
-    public void remove(Boat itemToRemove) {
+    public void remove(BoatDTO itemToRemove) {
 
     }
 

@@ -1,10 +1,10 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.database.DTOs;
 
-public class Zone {
+public class ZoneDTO {
     private long id;
     private String name;
 
-    public Zone(long id, String name) {
+    public ZoneDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }

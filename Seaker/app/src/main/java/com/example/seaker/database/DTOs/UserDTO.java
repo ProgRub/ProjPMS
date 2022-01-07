@@ -1,13 +1,13 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.database.DTOs;
 
-public class User {
+public class UserDTO {
     private long id;
     private String name;
     private String email;
     private String password;
-    private UserType type;
+    private String type;
 
-    public User(long id, String name, String email, String password, UserType type) {
+    public UserDTO(long id, String name, String email, String password, String type) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -47,11 +47,11 @@ public class User {
         this.password = password;
     }
 
-    public UserType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(UserType type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

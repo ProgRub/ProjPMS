@@ -1,10 +1,10 @@
-package com.example.seaker.database.entities;
+package com.example.seaker.database.DTOs;
 
-public class Boat {
+public class BoatDTO {
     private long id;
     private String name;
 
-    public Boat(long id, String name) {
+    public BoatDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }

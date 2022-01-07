@@ -1,36 +1,36 @@
 package com.example.seaker.database.repositories;
 
-import com.example.seaker.database.entities.User;
+import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
-public class UserRepository implements IRepository<User>{
+public class UserRepository implements IRepository<UserDTO>{
     @Override
-    public void add(User item) {
+    public void add(UserDTO item) {
 
     }
 
     @Override
-    public Iterable<User> getAll() {
+    public Iterable<UserDTO> getAll() {
         return null;
     }
 
     @Override
-    public User getById(long itemId) {
+    public UserDTO getById(long itemId) {
         return null;
     }
 
     @Override
-    public Iterable<User> find(ISpecification specification) {
+    public Iterable<UserDTO> find(ISpecification specification) {
         return null;
     }
 
     @Override
-    public void update(User oldItem, User newItem) {
+    public void update(UserDTO oldItem, UserDTO newItem) {
 
     }
 
     @Override
-    public void remove(User itemToRemove) {
+    public void remove(UserDTO itemToRemove) {
 
     }
 

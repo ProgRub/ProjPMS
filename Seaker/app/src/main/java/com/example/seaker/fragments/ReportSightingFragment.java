@@ -103,7 +103,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private AutoCompleteTextView searchBar;
     private ImageButton findSelectBtn;
 
-    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = "10.82.103.237"; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
