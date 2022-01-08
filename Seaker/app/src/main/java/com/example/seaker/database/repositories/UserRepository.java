@@ -1,7 +1,10 @@
 package com.example.seaker.database.repositories;
 
+import android.content.Context;
+
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.specifications.ISpecification;
+import com.example.seaker.fragments.ReportSightingFragment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -107,5 +110,50 @@ public class UserRepository extends Repository<UserDTO> {
     @Override
     public void removeById(long itemId) {
 
+    }
+
+    public boolean loginAdminCompanyManager(UserDTO loginCredentials) {String result = "";
+        String login = "http://" + ip + "/seaker/verifylogin.php";
+        try {
+            URL url = new URL(login);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(loginCredentials.getEmail(), "UTF-8") +"&"
+                    + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(loginCredentials.getPassword(), "UTF-8")+"&"
+                    + URLEncoder.encode("role", "UTF-8")+"="+URLEncoder.encode(loginCredentials.getType(), "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (result.contains("*")){
+            ArrayList<ArrayList<String>> aux = new ArrayList<>();
+            ArrayList<String> person_info = new ArrayList<>();
+            String[] person = result.split("\\*");
+            person_info.add(person[0]);
+            person_info.add(person[1]);
+            aux.add(person_info);
+//            Context cont = (Context) getActivity().getApplicationContext();
+//            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

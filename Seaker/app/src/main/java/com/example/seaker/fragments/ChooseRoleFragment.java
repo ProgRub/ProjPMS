@@ -16,10 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
 
 public class ChooseRoleFragment extends BaseFragment {
 
-    private DataViewModel model;
     private ImageButton teamMemberBtn;
     private ImageButton companyMemberBtn;
     private ImageButton adminBtn;
@@ -43,8 +43,6 @@ public class ChooseRoleFragment extends BaseFragment {
         SetButtonOnClickNextFragment(R.id.buttonCompanyManager,new LoginManagerAdminFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAdministrator,new LoginManagerAdminFragment(),view);
 
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
-
         teamMemberBtn = (ImageButton) view.findViewById(R.id.buttonTeamMember);
         companyMemberBtn = (ImageButton) view.findViewById(R.id.buttonCompanyManager);
         adminBtn = (ImageButton) view.findViewById(R.id.buttonAdministrator);
@@ -52,7 +50,7 @@ public class ChooseRoleFragment extends BaseFragment {
         teamMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.setUserType("TeamMember");
+                BusinessFacade.getInstance().selectRole("TeamMember");
                 MainActivity.switchFragment(new LoginTeamMemberFragment());
             }
         });
@@ -60,7 +58,7 @@ public class ChooseRoleFragment extends BaseFragment {
         companyMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.setUserType("CompanyManager");
+                BusinessFacade.getInstance().selectRole("CompanyManager");
                 MainActivity.switchFragment(new LoginManagerAdminFragment());
             }
         });
@@ -68,7 +66,7 @@ public class ChooseRoleFragment extends BaseFragment {
         adminBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.setUserType("Administrator");
+                BusinessFacade.getInstance().selectRole("Administrator");
                 MainActivity.switchFragment(new LoginManagerAdminFragment());
             }
         });
