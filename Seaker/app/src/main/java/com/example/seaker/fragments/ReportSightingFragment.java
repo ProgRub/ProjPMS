@@ -528,6 +528,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                 editText.setText(date);
             }
         }, yy, mm, dd);
+        datePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
 
         datePicker.show();
     }
