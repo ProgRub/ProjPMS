@@ -1,34 +1,25 @@
 package com.example.seaker.business.services;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.example.seaker.MainActivity;
-import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.business.ErrorType;
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.repositories.UserRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserService {
-    private static UserService instance=null;
+    private static UserService instance = null;
     private UserRepository userRepository;
+    private String selectedRole;
+    private UserDTO loggedInUser;
 
     public UserService() {
-        userRepository=new UserRepository();
+        userRepository = new UserRepository();
     }
 
-    public static UserService getInstance(){
-        if(instance==null) instance=new UserService();
+    public static UserService getInstance() {
+        if (instance == null) instance = new UserService();
         return instance;
     }
 
@@ -78,17 +69,17 @@ public class UserService {
     }
 
     public Iterable<UserDTO> getTeamMembers() {
-        ArrayList<UserDTO> teamMembers=new ArrayList<>();
-        for (UserDTO user: userRepository.getAll()) {
-            if(user.getType().equals("TeamMember")) teamMembers.add(user);
+        ArrayList<UserDTO> teamMembers = new ArrayList<>();
+        for (UserDTO user : userRepository.getAll()) {
+            if (user.getType().equals("TeamMember")) teamMembers.add(user);
         }
         return teamMembers;
     }
 
     public Iterable<UserDTO> getCompanyManagers() {
-        ArrayList<UserDTO> companyManagers=new ArrayList<>();
-        for (UserDTO user: userRepository.getAll()) {
-            if(user.getType().equals("CompanyManager")) companyManagers.add(user);
+        ArrayList<UserDTO> companyManagers = new ArrayList<>();
+        for (UserDTO user : userRepository.getAll()) {
+            if (user.getType().equals("CompanyManager")) companyManagers.add(user);
         }
         return companyManagers;
     }
@@ -101,6 +92,27 @@ public class UserService {
         return userRepository.getAll();
     }
 
-    public void deleteUser(long id) {userRepository.removeById(id);
+    public void deleteUser(long id) {
+        userRepository.removeById(id);
+    }
+
+    public ErrorType verifyLogin(UserDTO loginCredentials) {
+        if (loginCredentials.getEmail().equals("")) return ErrorType.EmailMissing;
+        if(loginCredentials.getPassword().equals("")) return ErrorType.PasswordMissing;
+        if(!isValidEmailAddress(loginCredentials.getEmail())) return ErrorType.EmailNotValid;
+        if(!userRepository.loginAdminCompanyManager(loginCredentials)) return ErrorType.WrongLoginData;
+        return ErrorType.NoError;
+    }
+
+    public String getSelectedRole() {
+        return selectedRole;
+    }
+
+    public void setSelectedRole(String selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }
