@@ -285,6 +285,16 @@
                         android:background="@drawable/docx_format_btn"
                         ></RadioButton>
 
+                    <RadioButton
+                        android:id="@+id/json_format"
+                        android:layout_gravity="center"
+                        android:layout_width="110dp"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="10dp"
+                        android:button="@null"
+                        android:background="@drawable/json_format_btn"
+                        ></RadioButton>
+
                 </RadioGroup>
 
                 <ImageButton

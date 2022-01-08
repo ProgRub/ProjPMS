@@ -79,6 +79,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private TextView chooseFormatText;
     private RadioButton pdfFormat;
     private RadioButton docxFormat;
+    private RadioButton jsonFormat;
     private ImageButton exportReportBtn;
     private ImageButton shareViaEmailBtn;
     private LinearLayout summary;
@@ -127,6 +128,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         chooseFormatText = (TextView) view.findViewById(R.id.chooseFormatText);
         pdfFormat = (RadioButton) view.findViewById(R.id.pdf_format);
         docxFormat = (RadioButton) view.findViewById(R.id.docx_format);
+        jsonFormat = (RadioButton) view.findViewById(R.id.json_format);
         exportReportBtn = (ImageButton) view.findViewById(R.id.export_report_btn);
         shareViaEmailBtn = (ImageButton) view.findViewById(R.id.share_via_email_btn);
         summary = (LinearLayout) view.findViewById(R.id.summary_layout);
@@ -136,6 +138,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         chooseFormatText.setVisibility(View.GONE);
         pdfFormat.setVisibility(View.GONE);
         docxFormat.setVisibility(View.GONE);
+        jsonFormat.setVisibility(View.GONE);
         exportReportBtn.setVisibility(View.GONE);
         shareViaEmailBtn.setVisibility(View.GONE);
 
@@ -171,6 +174,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                     generatePDF(true);
                 }else if(docxFormat.isChecked()){
                     generateDocx(true);
+                }else if(jsonFormat.isChecked()){
+                    //generateJson(true);
                 }else{
                     ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
                 }
@@ -186,6 +191,9 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                 }else if(docxFormat.isChecked()){
                     generateDocx(false);
                     sendViaEmail("docx");
+                }else if(jsonFormat.isChecked()){
+                    //generateJson(true);
+                    //sendViaEmail("json");
                 }else{
                     ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
                 }
@@ -267,6 +275,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                 editText.setText(date);
             }
         }, yy, mm, dd);
+        datePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
 
         datePicker.show();
     }
@@ -340,6 +349,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         chooseFormatText.setVisibility(View.VISIBLE);
         pdfFormat.setVisibility(View.VISIBLE);
         docxFormat.setVisibility(View.VISIBLE);
+        jsonFormat.setVisibility(View.VISIBLE);
         exportReportBtn.setVisibility(View.VISIBLE);
         shareViaEmailBtn.setVisibility(View.VISIBLE);
 

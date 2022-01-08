@@ -415,6 +415,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 editText.setText(date);
             }
         }, yy, mm, dd);
+        datePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
 
         datePicker.show();
     }
