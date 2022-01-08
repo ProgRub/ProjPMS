@@ -4,10 +4,13 @@ package com.example.seaker.jsonwriter;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 
+import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
 import com.example.seaker.database.DTOs.AnimalDTO;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,14 +20,9 @@ import java.util.Arrays;
 
 public class JsonWriter {
 
-    public JsonWriter(){}
+    public JsonWriter() {}
 
-    public void createSightingJson(SightingJson sighting){
-
-        //AnimalJson animal1 = new AnimalJson("Blue Whale", 1,0, new ArrayList<String>(Arrays.asList("Social Interaction", "Approach")), new ArrayList<String>(Arrays.asList("Other")));
-        //AnimalJson animal2 = new AnimalJson("Fin Whale", 3,1, new ArrayList<String>(Arrays.asList("Social Interaction", "Other")), new ArrayList<String>(Arrays.asList("Other")));
-
-        //SightingJson sighting = new SightingJson("12/12/2021", "14:35", 35.66342, -16.15432, new ArrayList<AnimalJson>(Arrays.asList(animal1, animal2)), 3, "Low", "Catamaran 1", "Comment :)", "Diego Briceño");
+    public String createSightingJson(SightingJson sighting){
 
         try
         {
@@ -56,14 +54,16 @@ public class JsonWriter {
 
             //Log.e("TESTING", jsonObject.toString());
 
-            FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory() + "/sighting.json");
+            //FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory() + "/sighting.json");
+            //fileWriter.write(jsonObject.toString());
+            //fileWriter.close();
 
-            fileWriter.write(jsonObject.toString());
-            fileWriter.close();
+            return jsonObject.toString();
 
         } catch (Exception e)
         {
             e.printStackTrace();
+            return "null";
         }
     }
 }

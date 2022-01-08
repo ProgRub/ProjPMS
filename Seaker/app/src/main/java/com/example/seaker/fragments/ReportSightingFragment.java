@@ -45,6 +45,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
+import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
@@ -59,6 +60,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -105,8 +108,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private AutoCompleteTextView searchBar;
     private LinearLayout navSightingBoxBtns;
     private ArrayList<Button> sightingBoxesButtons;
+    private MQTTHelper mqtt;
 
-    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = "192.168.1.80"; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
@@ -130,6 +134,13 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         jsonWriter = new JsonWriter();
         businessFacade = BusinessFacade.getInstance();
+
+        //MQTT:
+        try {
+            mqtt = new MQTTHelper(getContext(), view);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
 
         onStartView(view);
 
@@ -1201,7 +1212,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             }
 
             String reactions = sightingInformation.getReactionToVesselString();
-            String[] reactionToVessel = behaviors.split(";");
+            String[] reactionToVessel = reactions.split(";");
             ArrayList<String> reactionsList = new ArrayList<String>();
             for(String reaction : reactionToVessel){
                 reactionsList.add(reaction);
@@ -1233,7 +1244,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         SightingJson sighting = new SightingJson(day, hour, latitude_, longitude_, animalJsons, sea_state, getVesselId(), comment, getPersonName());
 
-        jsonWriter.createSightingJson(sighting);
+        String jsonAsString = jsonWriter.createSightingJson(sighting);
+        jsonAsString = jsonAsString.replace("\\", "");
+        mqtt.publish(getContext(), jsonAsString);
     }
 
     public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person_id, String person_name, String boat_id, String animal, String trip_from, String trip_to){
