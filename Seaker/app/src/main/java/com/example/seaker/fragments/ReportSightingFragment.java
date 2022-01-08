@@ -135,9 +135,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         jsonWriter = new JsonWriter();
         businessFacade = BusinessFacade.getInstance();
 
-        //MQTT:
         try {
-            mqtt = new MQTTHelper(getContext(), view);
+            mqtt = MQTTHelper.getInstance(getActivity().getApplicationContext());
+            if(!mqtt.isConnected()) mqtt.tryConnect(getActivity().getApplicationContext());
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -1242,17 +1242,19 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         String jsonAsString = jsonWriter.createSightingJson(sighting);
         jsonAsString = jsonAsString.replace("\\", "");
 
-        String published = mqtt.publish(getContext(), jsonAsString);
+
         //se ocorrer um erro na publicação da mensagem, é guardada localmente até ser possível envia-la:
-        if(published == "error"){
+        if(!isInternetWorking() && !mqtt.isConnected()){
             insertSightingJsonStringIntoFile(jsonAsString);
+        }else{
+            mqtt.publish(getContext(), jsonAsString);
         }
     }
 
     public void insertSightingJsonStringIntoFile(String jsonAsString){
-        ArrayList<String> notPublishedJsons = ReadJsonArrayFromSD(getContext(), "notPublishedJson");
+        ArrayList<String> notPublishedJsons = ReadJsonArrayFromSD(getContext(), "notpublishedjsons");
         notPublishedJsons.add(jsonAsString);
-        SaveSightingJsonStringToSD(getContext(), "notPublishedJson", notPublishedJsons);
+        SaveSightingJsonStringToSD(getContext(), "notpublishedjsons", notPublishedJsons);
     }
 
 

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -29,14 +30,23 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.fragments.BaseFragment;
+import com.example.seaker.fragments.ReportSightingFragment;
 import com.example.seaker.fragments.SplashFragment;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private BusinessFacade businessFacade;
+    private MQTTHelper mqtt;
 
     private static FragmentManager supportFragmentManager;
     @Override
@@ -60,6 +70,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         businessFacade = BusinessFacade.getInstance();
+
+        try {
+            mqtt = MQTTHelper.getInstance(getApplicationContext());
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+        Context cont = (Context) getApplicationContext();
+
+        try {
+            FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(new ArrayList<String>());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //JsonWriter json = new JsonWriter();
         //json.createSightingJson();
     }

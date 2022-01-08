@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,8 @@ public class TeamMemberHomeFragment extends BaseFragment {
 
         //MQTT:
         try {
-            mqtt = new MQTTHelper(getContext(), view);
+            mqtt = MQTTHelper.getInstance(getActivity().getApplicationContext());
+            if(!mqtt.isConnected()) mqtt.tryConnect(getActivity().getApplicationContext());
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -108,36 +110,18 @@ public class TeamMemberHomeFragment extends BaseFragment {
 
     private void publishNotPublishedSightings(){
         Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<String> sightingJson = ReportSightingFragment.ReadJsonArrayFromSD(cont,"notPublishedJson");
+        ArrayList<String> sightingJson = ReportSightingFragment.ReadJsonArrayFromSD(cont,"notpublishedjsons");
 
-        if(ReportSightingFragment.isInternetWorking()){
+        if(ReportSightingFragment.isInternetWorking() && mqtt.isConnected()){
             ArrayList<Integer> publishedJsonIndexes = new ArrayList<>();
             if(!sightingJson.isEmpty()){
                 for(int json=0; json < sightingJson.size(); json++){
-                    String published = mqtt.publish(getContext(), sightingJson.get(json));
-                    if(published == "published"){
-                        publishedJsonIndexes.add(json);
-                    }
+                    mqtt.publish(getContext(), sightingJson.get(json));
                 }
-
-                arrayDeleteIndexes(sightingJson, publishedJsonIndexes);
-
-                ReportSightingFragment.SaveSightingJsonStringToSD(cont, "notPublishedJson", sightingJson);
-            }
-
-        }
-    }
-
-    private void arrayDeleteIndexes(ArrayList<String> jsonsArray, ArrayList<Integer> publishedJsonIndexes){
-        for(int x = jsonsArray.size() - 1; x > 0; x--)
-        {
-            for(Integer jsonIndex : publishedJsonIndexes){
-                if(jsonIndex == x) jsonsArray.remove(x);
+                sightingJson = new ArrayList<>();
+                ReportSightingFragment.SaveSightingJsonStringToSD(cont, "notpublishedjsons", sightingJson);
             }
         }
     }
-
-
-
 
 }

@@ -15,9 +15,12 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
+import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
+
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +31,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
     private DataViewModel model;
     private LinearLayout recentSightings;
     private LinearLayout otherSightings;
+    private MQTTHelper mqtt;
 
     public ReportedSightingsTeamMemberFragment() {
         // Required empty public constructor
@@ -50,6 +54,13 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
+
+        try {
+            mqtt = MQTTHelper.getInstance(getActivity().getApplicationContext());
+            if(!mqtt.isConnected()) mqtt.tryConnect(getActivity().getApplicationContext());
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
 
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont,"notSubmittedSightings");
