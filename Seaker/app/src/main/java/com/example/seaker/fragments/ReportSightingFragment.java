@@ -1225,20 +1225,15 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             animalJsons.add(animal);
         }
 
-        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
-        String day = editText.getText().toString();
-        EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
-        String hour = editText1.getText().toString();
-        TextView textView = (TextView) getView().findViewById(R.id.latitude);
-        String latitude = textView.getText().toString();
+        String day = sightingDate.getText().toString();
+        String hour = sightingTime.getText().toString();
+        String latitude = sightingLatitude.getText().toString();
         String[] result = latitude.split(": ");
         String latitude_ = result[1];
-        TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
-        String longitude = textView1.getText().toString();
+        String longitude = sightingLongitude.getText().toString();
         String[] result1 = longitude.split(": ");
         String longitude_ = result1[1];
-        SeekBar sb = (SeekBar) getView().findViewById(R.id.beaufort_slider);
-        String sea_state = Integer.toString(sb.getProgress());
+        String sea_state = Integer.toString(beaufortSeekBar.getProgress());
         EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
         String comment = editText3.getText().toString();
 
@@ -1246,8 +1241,46 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
         String jsonAsString = jsonWriter.createSightingJson(sighting);
         jsonAsString = jsonAsString.replace("\\", "");
-        mqtt.publish(getContext(), jsonAsString);
+
+        String published = mqtt.publish(getContext(), jsonAsString);
+        //se ocorrer um erro na publicação da mensagem, é guardada localmente até ser possível envia-la:
+        if(published == "error"){
+            insertSightingJsonStringIntoFile(jsonAsString);
+        }
     }
+
+    public void insertSightingJsonStringIntoFile(String jsonAsString){
+        ArrayList<String> notPublishedJsons = ReadJsonArrayFromSD(getContext(), "notPublishedJson");
+        notPublishedJsons.add(jsonAsString);
+        SaveSightingJsonStringToSD(getContext(), "notPublishedJson", notPublishedJsons);
+    }
+
+
+    public static ArrayList<String> ReadJsonArrayFromSD(Context mContext,String filename){
+        try {
+            FileInputStream fis = mContext.openFileInput(filename + ".dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<String> obj= (ArrayList<String>) ois.readObject();
+            fis.close();
+            return obj;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public static void SaveSightingJsonStringToSD(Context mContext, String filename, ArrayList<String> list){
+        try {
+            FileOutputStream fos = mContext.openFileOutput(filename + ".dat", mContext.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(list);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void insertSightingInformationIntoFile(String day, String hour, String sea_state, String latitude_, String longitude_, String comment, String person_id, String person_name, String boat_id, String animal, String trip_from, String trip_to){
 
@@ -1475,6 +1508,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             e.printStackTrace();
         }
     }
+
 
     public static ArrayList<ArrayList<String>> ReadArrayListFromSD(Context mContext,String filename){
         try {

@@ -14,8 +14,11 @@ import android.widget.ImageButton;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
+import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
 
     private DataViewModel model;
     private ImageButton logoutBtn;
+    private MQTTHelper mqtt;
 
     public TeamMemberHomeFragment() {
         // Required empty public constructor
@@ -43,6 +47,14 @@ public class TeamMemberHomeFragment extends BaseFragment {
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsTeamMember,new ReportedSightingsTeamMemberFragment(),view);
 
         model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+
+        //MQTT:
+        try {
+            mqtt = new MQTTHelper(getContext(), view);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
 
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutTeamMember);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +79,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
             model.setTripTo(tripTo_id);
         }
 
+        publishNotPublishedSightings();
 
         return view;
     }
@@ -92,4 +105,39 @@ public class TeamMemberHomeFragment extends BaseFragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void publishNotPublishedSightings(){
+        Context cont = (Context) getActivity().getApplicationContext();
+        ArrayList<String> sightingJson = ReportSightingFragment.ReadJsonArrayFromSD(cont,"notPublishedJson");
+
+        if(ReportSightingFragment.isInternetWorking()){
+            ArrayList<Integer> publishedJsonIndexes = new ArrayList<>();
+            if(!sightingJson.isEmpty()){
+                for(int json=0; json < sightingJson.size(); json++){
+                    String published = mqtt.publish(getContext(), sightingJson.get(json));
+                    if(published == "published"){
+                        publishedJsonIndexes.add(json);
+                    }
+                }
+
+                arrayDeleteIndexes(sightingJson, publishedJsonIndexes);
+
+                ReportSightingFragment.SaveSightingJsonStringToSD(cont, "notPublishedJson", sightingJson);
+            }
+
+        }
+    }
+
+    private void arrayDeleteIndexes(ArrayList<String> jsonsArray, ArrayList<Integer> publishedJsonIndexes){
+        for(int x = jsonsArray.size() - 1; x > 0; x--)
+        {
+            for(Integer jsonIndex : publishedJsonIndexes){
+                if(jsonIndex == x) jsonsArray.remove(x);
+            }
+        }
+    }
+
+
+
+
 }

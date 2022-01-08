@@ -66,11 +66,13 @@ public class MQTTHelper {
         }
     }
 
-    public void publish(Context context, String jsonAsString){
+    public String publish(Context context, String jsonAsString){
         try{
             client.publish("Projeto/PMS/Grupo1/Grupo4", jsonAsString.getBytes(),0,false);
+            return "published";
         }catch (MqttException e){
             e.printStackTrace();
+            return "error";
         }
     }
 
@@ -86,7 +88,6 @@ public class MQTTHelper {
             public void messageArrived(String topic, MqttMessage jsonAsString) throws Exception {
 
                 //AQUI RECEBEM A MENSAGEM jsonAsString (UMA STRING EM FORMATO JSON) - COM OS DADOS QUE NÓS ENVIAMOS:
-
 
                 Log.d("Message:", jsonAsString + " from " + topic);
             }
