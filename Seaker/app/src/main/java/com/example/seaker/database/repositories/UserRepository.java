@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class UserRepository extends Repository<UserDTO> {
     @Override
@@ -38,12 +39,6 @@ public class UserRepository extends Repository<UserDTO> {
             bufferedWriter.close();
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            /*String result = "";
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }*/
-
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
@@ -60,33 +55,33 @@ public class UserRepository extends Repository<UserDTO> {
 
     @Override
     public Iterable<UserDTO> getAll() {
-//        String allTeamMembers = "";
-//        String getMembers = "http://" + ip + "/seaker/getallteammembers.php";
-//        try {
-//            URL url = new URL(getMembers);
-//            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-//            httpURLConnection.setDoInput(true);
-//            InputStream inputStream = httpURLConnection.getInputStream();
-//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-//            String line = "";
-//            while((line = bufferedReader.readLine())!=null){
-//                allTeamMembers += line;
-//            }
-//            bufferedReader.close();
-//            inputStream.close();
-//            httpURLConnection.disconnect();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String[] tm = allTeamMembers.split("&&&");
-//        for(int j=0;j<tm.length;j++){
-//            String[] team_member = tm[j].split("###");
-//            addMember(team_member[0], team_member[1], team_member[2], team_member[3]);
-//        }
-//        return result;
-        return null;
+        String allTeamMembers = "";
+        String getMembers = "http://" + ip + "/seaker/getallteammembers.php";
+        try {
+            URL url = new URL(getMembers);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoInput(true);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                allTeamMembers += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] tm = allTeamMembers.split("&&&");
+        ArrayList<UserDTO> users=new ArrayList<>();
+        for(int j=0;j<tm.length;j++){
+            String[] team_member = tm[j].split("###");
+            users.add(new UserDTO(Long.parseLong(team_member[0]),team_member[1], team_member[2], team_member[3], team_member[4]) );
+        }
+        return users;
     }
 
     @Override

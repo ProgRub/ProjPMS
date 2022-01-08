@@ -9,7 +9,7 @@ $result = "";
 
 while($row = mysqli_fetch_array($r)){
 		
-	$result = $result . $row['name'] . "###" . $row['email'] . "###" . $row['password'] . "###" . $row['role'] . "&&&";
+	$result = $result . $row['id'] . "###" . $row['name'] . "###" . $row['email'] . "###" . $row['password'] . "###" . $row['role'] . "&&&";
 	
 }
 

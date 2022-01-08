@@ -22,4 +22,12 @@ public class BusinessFacade {
     public void addUser(UserDTO user){UserService.getInstance().addUser(user);}
 
     public ErrorType userIsValid(UserDTO user){return UserService.getInstance().validateFields(user);}
+
+    public Iterable<UserDTO> getAllTeamMembers(){return UserService.getInstance().getTeamMembers();}
+
+    public Iterable<UserDTO> getAllCompanyManagers(){return UserService.getInstance().getCompanyManagers();}
+    public Iterable<UserDTO> getAllUsers(){ return UserService.getInstance().getUsers();}
+
+    public void deleteUser(UserDTO userDTO) {UserService.getInstance().deleteUser(userDTO.getId());
+    }
 }

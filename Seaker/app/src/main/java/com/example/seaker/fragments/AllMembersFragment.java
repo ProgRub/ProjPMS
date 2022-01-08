@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import android.os.Debug;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.seaker.DataViewModel;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.database.DTOs.UserDTO;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,11 +32,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class AllMembersFragment extends BaseFragment {
 
     private DataViewModel model;
     private LinearLayout members;
+    private ArrayList<UserDTO> teamMembers;
 
     public AllMembersFragment() {
         // Required empty public constructor
@@ -61,12 +66,9 @@ public class AllMembersFragment extends BaseFragment {
 
     private void onStartView(View view){
         members = (LinearLayout) view.findViewById(R.id.all_members);
-
-        String allTeamMembers = getAllTeamMembers();
-        String[] tm = allTeamMembers.split("&&&");
-        for(int j=0;j<tm.length;j++){
-            String[] team_member = tm[j].split("###");
-            addMember(team_member[0], team_member[1], team_member[2], team_member[3]);
+        teamMembers= (ArrayList<UserDTO>) BusinessFacade.getInstance().getAllTeamMembers();
+        for (UserDTO teamMember:teamMembers ) {
+            addMember(teamMember.getName(),teamMember.getEmail(),teamMember.getPassword(),teamMember.getType());
         }
     }
 
@@ -115,6 +117,7 @@ public class AllMembersFragment extends BaseFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //COLOCAR AQUI A FUNÇÃO PARA APAGAR DA BD
+                        BusinessFacade.getInstance().deleteUser(teamMembers.get(0));
                         members.removeView(view);
                     }
                 });
@@ -124,27 +127,5 @@ public class AllMembersFragment extends BaseFragment {
         dialog.show();
     }
 
-    public static String getAllTeamMembers(){
-        String result = "";
-        String getMembers = "http://" + ReportSightingFragment.ip + "/seaker/getallteammembers.php";
-        try {
-            URL url = new URL(getMembers);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setDoInput(true);
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+
 }
