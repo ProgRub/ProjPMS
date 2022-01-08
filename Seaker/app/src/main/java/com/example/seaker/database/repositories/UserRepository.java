@@ -1,5 +1,7 @@
 package com.example.seaker.database.repositories;
 
+import android.util.Log;
+
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
@@ -86,6 +88,35 @@ public class UserRepository extends Repository<UserDTO> {
 
     @Override
     public UserDTO getById(long itemId) {
+
+        //ESTA QUERY DEVIA SER APENAS ENCONTRAR O USER PELO ID!!! (EU REUTILIZEI A QUERY getallteammembers APENAS PARA TESTAR)!!
+        String allTeamMembers = "";
+        String getMembers = "http://" + ip + "/seaker/getallteammembers.php";
+        try {
+            URL url = new URL(getMembers);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoInput(true);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                allTeamMembers += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] tm = allTeamMembers.split("&&&");
+        for(int j=0;j<tm.length;j++){
+            String[] team_member = tm[j].split("###");
+            if(Long.parseLong(team_member[0]) == itemId){
+                return new UserDTO(Long.parseLong(team_member[0]),team_member[1], team_member[2], team_member[3], team_member[4]);
+            }
+        }
         return null;
     }
 
@@ -106,6 +137,6 @@ public class UserRepository extends Repository<UserDTO> {
 
     @Override
     public void removeById(long itemId) {
-
+        //FALTA IMPLEMENTAR
     }
 }

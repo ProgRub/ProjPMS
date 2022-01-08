@@ -28,6 +28,9 @@ public class BusinessFacade {
     public Iterable<UserDTO> getAllCompanyManagers(){return UserService.getInstance().getCompanyManagers();}
     public Iterable<UserDTO> getAllUsers(){ return UserService.getInstance().getUsers();}
 
-    public void deleteUser(UserDTO userDTO) {UserService.getInstance().deleteUser(userDTO.getId());
-    }
+    public void deleteUser(UserDTO userDTO) {UserService.getInstance().deleteUser(userDTO.getId());}
+
+    public UserDTO getUserByID(long id){return UserService.getInstance().getUserByID(id);}
+
 }
+
