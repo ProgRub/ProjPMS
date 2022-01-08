@@ -72,23 +72,11 @@ public class MainActivity extends AppCompatActivity {
         businessFacade = BusinessFacade.getInstance();
 
         try {
-            mqtt = MQTTHelper.getInstance(getApplicationContext());
+            mqtt = MQTTHelper.getInstance(getApplicationContext()); //apenas para iniciar conexão ao MQTT
         } catch (MqttException e) {
             e.printStackTrace();
         }
 
-        Context cont = (Context) getApplicationContext();
-
-        try {
-            FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(new ArrayList<String>());
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //JsonWriter json = new JsonWriter();
-        //json.createSightingJson();
     }
 
 

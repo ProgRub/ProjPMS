@@ -24,9 +24,11 @@ import com.example.seaker.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
@@ -99,6 +101,16 @@ public class LoginTeamMemberFragment extends BaseFragment {
             editor.putString("tripFrom", trip_from.getSelectedItem().toString());
             editor.putString("tripTo", trip_to.getSelectedItem().toString());
             editor.commit();
+
+            //Faz reset do ficheiro:
+            try {
+                FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(new ArrayList<String>());
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             MainActivity.switchFragment(new TeamMemberHomeFragment());
         }else{
