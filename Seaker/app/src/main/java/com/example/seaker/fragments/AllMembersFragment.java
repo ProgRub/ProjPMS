@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import android.os.Debug;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +19,13 @@ import com.example.seaker.R;
 import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.database.DTOs.UserDTO;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class AllMembersFragment extends BaseFragment {
 
     private DataViewModel model;
     private LinearLayout members;
-    private ArrayList<UserDTO> teamMembers;
+    private ArrayList<UserDTO> users;
 
     public AllMembersFragment() {
         // Required empty public constructor
@@ -66,9 +53,9 @@ public class AllMembersFragment extends BaseFragment {
 
     private void onStartView(View view){
         members = (LinearLayout) view.findViewById(R.id.all_members);
-        teamMembers= (ArrayList<UserDTO>) BusinessFacade.getInstance().getAllTeamMembers();
-        for (UserDTO teamMember:teamMembers ) {
-            addMember(teamMember.getId(), teamMember.getName(),teamMember.getEmail(),teamMember.getPassword(),teamMember.getType());
+        users = (ArrayList<UserDTO>) BusinessFacade.getInstance().getAllUsers();
+        for (UserDTO user: users) {
+            addMember(user.getId(), user.getName(),user.getEmail(),user.getPassword(),user.getType());
         }
     }
 
@@ -104,7 +91,7 @@ public class AllMembersFragment extends BaseFragment {
         userEmail.setText(email);
 
         TextView userType = (TextView) v.findViewById(R.id.user_type);
-        userType.setText(type);
+        userType.setText(String.join(" ",type.split("(?=\\p{Upper})")));
 
         members.addView(v);
     }
