@@ -727,14 +727,14 @@
             <!-- Nav Buttons for Sighting Information Boxes -->
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 >
 
                 <LinearLayout
                     android:id="@+id/navSightingBoxes"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:orientation="horizontal"
                     >
 

@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -76,7 +77,7 @@ public class LoginTeamMemberFragment extends BaseFragment {
     private void login(){
         if(!validateInput()) return;
 
-        if(verify_login(email.getText().toString(), password.getText().toString(), model.getUserType())){
+        if(verify_login(email.getText().toString(), password.getText().toString(), BusinessFacade.getInstance().getSelectedRole())){
             model.setVesselID(vessel_id.getSelectedItem().toString());
             model.setTripFrom(trip_from.getSelectedItem().toString());
             model.setTripTo(trip_to.getSelectedItem().toString());
