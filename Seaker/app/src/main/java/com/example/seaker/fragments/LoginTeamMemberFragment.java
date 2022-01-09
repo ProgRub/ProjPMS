@@ -21,6 +21,11 @@ import android.widget.Spinner;
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.business.ErrorType;
+import com.example.seaker.database.DTOs.BoatDTO;
+import com.example.seaker.database.DTOs.UserDTO;
+import com.example.seaker.database.DTOs.ZoneDTO;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -64,95 +69,73 @@ public class LoginTeamMemberFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login_team_member, container, false);
 
-        SetButtonOnClickNextFragment(R.id.buttonBack,new ChooseRoleFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonBack, new ChooseRoleFragment(), view);
 
         model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
-        onStartView (view);
+        onStartView(view);
 
         return view;
     }
 
-    private void login(){
-        if(!validateInput()) return;
+    private void login() {
+        UserDTO loginCredentials = new UserDTO("", this.email.getText().toString(), this.password.getText().toString(), BusinessFacade.getInstance().getSelectedRole());
+        ErrorType errorType = BusinessFacade.getInstance().loginIsValid(loginCredentials);
+        switch (errorType) {
+            case EmailMissing:
+            case PasswordMissing:
+                ShowPopupBox("Please, enter your credentials!");
+                break;
+            case EmailNotValid:
+                ShowPopupBox("Please, enter a valid email!");
+                break;
+            case WrongLoginData:
+                ShowPopupBox("Incorrect credentials!");
+                break;
+            case VesselMissing:
+                ShowPopupBox("Please, choose the vessel!");
+                break;
+            case ZoneFromMissing:
+                ShowPopupBox("Please, choose the trip's departure!");
+                break;
+            case ZoneToMissing:
+                ShowPopupBox("Please, choose the trip's destination!");
+                break;
+            case NoError:
+                BusinessFacade.getInstance().setCurrentBoat(Long.parseLong(vessel_id.getSelectedItem().toString().split("\\.")[0]));
+                BusinessFacade.getInstance().setZoneFrom(trip_from.getSelectedItem().toString());
+                BusinessFacade.getInstance().setZoneTo(trip_to.getSelectedItem().toString());
 
-        if(verify_login(email.getText().toString(), password.getText().toString(), model.getUserType())){
-            model.setVesselID(vessel_id.getSelectedItem().toString());
-            model.setTripFrom(trip_from.getSelectedItem().toString());
-            model.setTripTo(trip_to.getSelectedItem().toString());
+                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                SharedPreferences.Editor editor = pref.edit();
+                UserDTO loggedInUser = BusinessFacade.getInstance().getLoggedInUser();
+                editor.putString("userId", String.valueOf(loggedInUser.getId()));
+                editor.putString("userName", loggedInUser.getName());
+                editor.commit();
+//                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+//                SharedPreferences.Editor editor = pref.edit();
+//                editor.putString("isLogged", model.getUserType());
+//                editor.putString("vesselID", vessel_id[0]);
+//                editor.putString("tripFrom", trip_from.getSelectedItem().toString());
+//                editor.putString("tripTo", trip_to.getSelectedItem().toString());
+//                editor.commit();
+                //Faz reset do ficheiro:
+                try {
+                    Context cont = (Context) getActivity().getApplicationContext();
+                    FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(new ArrayList<String>());
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            String vessel = vessel_id.getSelectedItem().toString();
-            String[] vessel_id = vessel.split("\\.");
-
-            ArrayList<String> sighting = new ArrayList<>();
-            sighting.add(vessel_id[0]);
-            sighting.add(trip_from.getSelectedItem().toString());
-            sighting.add(trip_to.getSelectedItem().toString());
-
-            Context cont = (Context) getActivity().getApplicationContext();
-            ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-            sightings.add(sighting);
-            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", sightings);
-
-            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("isLogged", model.getUserType());
-            editor.putString("vesselID", vessel_id[0]);
-            editor.putString("tripFrom", trip_from.getSelectedItem().toString());
-            editor.putString("tripTo", trip_to.getSelectedItem().toString());
-            editor.commit();
-
-            //Faz reset do ficheiro:
-            try {
-                FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(new ArrayList<String>());
-                fos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            MainActivity.switchFragment(new TeamMemberHomeFragment());
-        }else{
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Incorrect credentials!");
+                MainActivity.switchFragment(new TeamMemberHomeFragment());
+                break;
         }
     }
 
-    private boolean validateInput(){
-        String email = this.email.getText().toString();
-        String password =  this.password.getText().toString();
-        String vesselId = vessel_id.getSelectedItem().toString();
-        String tripFrom = trip_from.getSelectedItem().toString();
-        String tripTo = trip_to.getSelectedItem().toString();
-
-        if(email.isEmpty() || password.isEmpty()) {
-            ((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), "Please, enter your credentials!");
-            return false;
-        }else if(!isValidEmailAddress(email)){
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, enter a valid email!");
-            return false;
-        }else if(vesselId.isEmpty()){
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, choose the vessel ID!");
-            return false;
-        }else if(tripFrom.isEmpty()){
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, choose the trip's departure!");
-            return false;
-        }else if(tripTo.isEmpty()){
-            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(getView(), "Please, choose the trip's destination!");
-            return false;
-        }
-
-        return true;
-    }
-
-    public static boolean isValidEmailAddress(String email) {
-        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-        java.util.regex.Matcher m = p.matcher(email);
-        return m.matches();
-    }
-
-    private void onStartView(View view){
+    private void onStartView(View view) {
         email = (EditText) view.findViewById(R.id.email_input);
         password = (EditText) view.findViewById(R.id.password_input);
         vessel_id = (Spinner) view.findViewById(R.id.vessel_id_spinner);
@@ -161,30 +144,21 @@ public class LoginTeamMemberFragment extends BaseFragment {
         login_btn = (ImageButton) view.findViewById(R.id.login_btn);
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
-        String all_boats = getInfoBD("getallboats.php");
-        String[] boats = all_boats.split("\\*");
-        for(int i = 0; i < boats.length; i++){
-            adapter.add(boats[i]);
+        for (BoatDTO boat : BusinessFacade.getInstance().getAllBoats()) {
+            adapter.add(String.format("%d. %s", boat.getId(), boat.getName()));
         }
         vessel_id.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
         ArrayAdapter<CharSequence> adapter2 = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_center_item);
 
-        String trip_from_ = getInfoBD("getallzonestripfrom.php");
-        String trip_to_ = getInfoBD("getallzonestripto.php");
-
-        String[] zones_trip_from = trip_from_.split("\\*");
-        for(int i = 0; i < zones_trip_from.length; i++){
-            adapter1.add(zones_trip_from[i]);
+        for (ZoneDTO zoneDTO : BusinessFacade.getInstance().getAllZonesFrom()) {
+            adapter1.add(zoneDTO.getName());
         }
-
-        String[] zones_trip_to = trip_to_.split("\\*");
-        for(int i = 0; i < zones_trip_to.length; i++){
-            adapter2.add(zones_trip_to[i]);
-        }
-
         trip_from.setAdapter(adapter1);
+        for (ZoneDTO zoneDTO : BusinessFacade.getInstance().getAllZonesTo()) {
+            adapter2.add(zoneDTO.getName());
+        }
         trip_to.setAdapter(adapter2);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -193,83 +167,5 @@ public class LoginTeamMemberFragment extends BaseFragment {
                 login();
             }
         });
-    }
-
-
-
-    public Boolean verify_login(String email, String password, String role){
-        String result = "";
-        String insertSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/verifylogin.php";
-        try {
-            URL url = new URL(insertSightingUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(email, "UTF-8") +"&"
-                    + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password, "UTF-8")+"&"
-                    + URLEncoder.encode("role", "UTF-8")+"="+URLEncoder.encode(role, "UTF-8");
-            bufferedWriter.write(post_data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (result.contains("*")){
-            ArrayList<ArrayList<String>> aux = new ArrayList<>();
-            ArrayList<String> person_info = new ArrayList<>();
-            String[] person = result.split("\\*");
-            person_info.add(person[0]);
-            person_info.add(person[1]);
-            aux.add(person_info);
-            Context cont = (Context) getActivity().getApplicationContext();
-            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
-
-            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("userId", person[0]);
-            editor.putString("userName", person[1]);
-            editor.commit();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static String getInfoBD(String php_file){
-        String result = "";
-        String login = "http://" + ReportSightingFragment.ip + "/seaker/" + php_file;
-        try {
-            URL url = new URL(login);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setDoInput(true);
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 }
