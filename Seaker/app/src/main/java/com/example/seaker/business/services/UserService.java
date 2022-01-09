@@ -1,9 +1,13 @@
 package com.example.seaker.business.services;
 
+import android.content.Context;
+
 import com.example.seaker.business.ErrorType;
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.repositories.UserRepository;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,6 +101,12 @@ public class UserService {
         if(loginCredentials.getPassword().equals("")) return ErrorType.PasswordMissing;
         if(!isValidEmailAddress(loginCredentials.getEmail())) return ErrorType.EmailNotValid;
         if(!userRepository.loginAdminCompanyManager(loginCredentials)) return ErrorType.WrongLoginData;
+        for (UserDTO user:getUsers()) {
+            if(user.getEmail().equals(loginCredentials.getEmail()))
+                loggedInUser=user;
+        }
+//        Context cont = (Context) getActivity().getApplicationContext();
+//        saveArrayListToSD(cont, "person_boat_zones", loginCredentials);
         return ErrorType.NoError;
     }
 
@@ -108,7 +118,18 @@ public class UserService {
         this.selectedRole = selectedRole;
     }
 
-    public void setLoggedInUser(UserDTO loggedInUser) {
-        this.loggedInUser = loggedInUser;
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
     }
+
+
+//    public void saveArrayListToSD(Context mContext, String filename, UserDTO user) {try {
+//        FileOutputStream fos = mContext.openFileOutput(filename + ".dat", mContext.MODE_PRIVATE);
+//        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//        oos.writeObject(user);
+//        fos.close();
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
+//    }
 }

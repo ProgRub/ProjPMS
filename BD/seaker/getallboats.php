@@ -8,7 +8,7 @@ $r = mysqli_query($conn,$sql);
 $result = "";
 
 while($row = mysqli_fetch_array($r)){
-	$result = $result . $row['id'] . ". " . $row['name'] . "*";
+	$result = $result . $row['id'] . "|" . $row['name'] . "*";
 }
 
 echo $result;

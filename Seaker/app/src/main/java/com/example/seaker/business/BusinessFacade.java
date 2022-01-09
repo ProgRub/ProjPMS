@@ -1,11 +1,16 @@
 package com.example.seaker.business;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.seaker.database.DTOs.*;
 import com.example.seaker.business.services.ReportService;
 import com.example.seaker.business.services.SightingsService;
 import com.example.seaker.business.services.UserService;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class BusinessFacade {
     private static BusinessFacade instance = null;
@@ -59,6 +64,28 @@ public class BusinessFacade {
         return UserService.getInstance().getSelectedRole();
     }
 
-    public void setLoggedInUser(UserDTO loginCredentials) {UserService.getInstance().setLoggedInUser(loginCredentials);
+
+    public void setCurrentBoat(long boatID){SightingsService.getInstance().setCurrentBoat(boatID);}
+
+    public Iterable<BoatDTO> getAllBoats(){return SightingsService.getInstance().getAllBoats();}
+
+    public Iterable<ZoneDTO> getAllZonesFrom(){return SightingsService.getInstance().getZonesFrom();}
+    public Iterable<ZoneDTO> getAllZonesTo(){return SightingsService.getInstance().getZonesTo();}
+
+    public void setZoneFrom(String zoneFrom) {
+        SightingsService.getInstance().setStartingZone(zoneFrom);
     }
+
+    public void setZoneTo(String zoneTo) {
+        SightingsService.getInstance().setEndingZone(zoneTo);
+    }
+
+    public BoatDTO getCurrentBoat(){return SightingsService.getInstance().getCurrentBoat();}
+    public ZoneDTO getStartingZone(){return SightingsService.getInstance().getStartingZone();}
+    public ZoneDTO getEndingZone(){return SightingsService.getInstance().getEndingZone();}
+
+    public UserDTO getLoggedInUser(){return UserService.getInstance().getLoggedInUser();}
+//    public void saveArrayListToSD(Context mContext, String filename, ArrayList<ArrayList<String>> list){
+//        UserService.getInstance().saveArrayListToSD(mContext,filename,list);
+//    }
 }
