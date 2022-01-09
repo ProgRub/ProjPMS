@@ -1256,7 +1256,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         } else {
             String aux2[] = sighting_id.split("\\?");
             String index_sighting = aux2[1];
-            int index = Integer.parseInt(index_sighting);
+            int index = Integer.parseInt(index_sighting)-1;
             Context cont = (Context) getActivity().getApplicationContext();
 
             if(ReportSightingFragment.isInternetWorking()){
@@ -1312,7 +1312,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         } else {
             String aux2[] = sighting_id.split("\\?");
             String index_sighting = aux2[1];
-            int index = Integer.parseInt(index_sighting);
+            int index = Integer.parseInt(index_sighting) - 1;
             deleteArrayList(index);
             showHandler(view, "Sighting successfully deleted!");
         }

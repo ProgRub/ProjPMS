@@ -130,6 +130,16 @@ public class LoginTeamMemberFragment extends BaseFragment {
                     e.printStackTrace();
                 }
 
+                try {
+                    Context cont = (Context) getActivity().getApplicationContext();
+                    FileOutputStream fos = cont.openFileOutput("notSubmittedSightings.dat", cont.MODE_PRIVATE);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(new ArrayList<>());
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 MainActivity.switchFragment(new TeamMemberHomeFragment());
                 break;
         }

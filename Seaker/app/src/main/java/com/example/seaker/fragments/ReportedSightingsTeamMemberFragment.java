@@ -85,7 +85,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         } else {
             if(!sightings.isEmpty()){
                 for(int i=sightings.size()-1;i>=0;i--){
-                    String sighting_id = "?" + i;
+                    String sighting_id = "?" + (i+1);
                     addSightingToView(sighting_id, false, sightings.get(i).get(0), sightings.get(i).get(1), sightings.get(i).get(2), sightings.get(i).get(3), sightings.get(i).get(4), sightings.get(i).get(5), sightings.get(i).get(9), sightings.get(i).get(7));
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.seaker.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -14,6 +15,10 @@ import com.example.seaker.R;
 import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.business.ErrorType;
 import com.example.seaker.database.DTOs.UserDTO;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class LoginManagerAdminFragment extends BaseFragment {
 
@@ -68,6 +73,15 @@ public class LoginManagerAdminFragment extends BaseFragment {
                 else if (BusinessFacade.getInstance().getSelectedRole() == "Administrator")
                     MainActivity.switchFragment(new AdminHomeFragment());
                 break;
+        }
+        try {
+            Context cont = (Context) getActivity().getApplicationContext();
+            FileOutputStream fos = cont.openFileOutput("notSubmittedSightings.dat", cont.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(new ArrayList<>());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
