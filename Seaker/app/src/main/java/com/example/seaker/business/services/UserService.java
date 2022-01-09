@@ -88,6 +88,10 @@ public class UserService {
         return companyManagers;
     }
 
+    public UserDTO getUserByID(long id) {
+        return userRepository.getById(id);
+    }
+
     public Iterable<UserDTO> getUsers() {
         return userRepository.getAll();
     }

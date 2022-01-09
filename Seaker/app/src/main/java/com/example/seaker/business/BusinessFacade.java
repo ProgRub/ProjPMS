@@ -63,7 +63,7 @@ public class BusinessFacade {
     public String getSelectedRole(){
         return UserService.getInstance().getSelectedRole();
     }
-
+    public UserDTO getUserByID(long id){return UserService.getInstance().getUserByID(id);}
 
     public void setCurrentBoat(long boatID){SightingsService.getInstance().setCurrentBoat(boatID);}
 
@@ -88,4 +88,6 @@ public class BusinessFacade {
 //    public void saveArrayListToSD(Context mContext, String filename, ArrayList<ArrayList<String>> list){
 //        UserService.getInstance().saveArrayListToSD(mContext,filename,list);
 //    }
+
 }
+

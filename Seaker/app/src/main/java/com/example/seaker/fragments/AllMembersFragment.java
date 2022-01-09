@@ -68,11 +68,11 @@ public class AllMembersFragment extends BaseFragment {
         members = (LinearLayout) view.findViewById(R.id.all_members);
         teamMembers= (ArrayList<UserDTO>) BusinessFacade.getInstance().getAllTeamMembers();
         for (UserDTO teamMember:teamMembers ) {
-            addMember(teamMember.getName(),teamMember.getEmail(),teamMember.getPassword(),teamMember.getType());
+            addMember(teamMember.getId(), teamMember.getName(),teamMember.getEmail(),teamMember.getPassword(),teamMember.getType());
         }
     }
 
-    private void addMember(String name, String email, String password, String type){
+    private void addMember(long id, String name, String email, String password, String type){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View v = vi.inflate(R.layout.team_member_box_cm, null);
@@ -85,6 +85,8 @@ public class AllMembersFragment extends BaseFragment {
             userPassword.setText(password);
 
             ImageButton removeButton = (ImageButton) v.findViewById(R.id.remove_member_btn);
+
+            v.setTag(id+"");
 
             View finalV = v;
             removeButton.setOnClickListener(new View.OnClickListener() {
@@ -116,8 +118,9 @@ public class AllMembersFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //COLOCAR AQUI A FUNÇÃO PARA APAGAR DA BD
-                        BusinessFacade.getInstance().deleteUser(teamMembers.get(0));
+                        long userID = Long.parseLong((String) view.getTag());
+                        UserDTO userDTO = BusinessFacade.getInstance().getUserByID(userID);
+                        BusinessFacade.getInstance().deleteUser(userDTO);
                         members.removeView(view);
                     }
                 });
