@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
 
 public class CompanyManagerHomeFragment extends BaseFragment {
 
@@ -38,17 +39,16 @@ public class CompanyManagerHomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_company_manager_home, container, false);
         SetButtonOnClickNextFragment(R.id.buttonCreateReport,new CreateReportFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersCM,new AllMembersFragment(),view);
+        BusinessFacade.getInstance().loadPreferences();
 
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
-        model.setUserType("CompanyManager");
-
-        reportedSightingsBtn = (ImageButton) view.findViewById(R.id.buttonReportedSightingsCM);
-        reportedSightingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.switchFragment(new ReportedSightingsAdminManagerFragment());
-            }
-        });
+//        reportedSightingsBtn = (ImageButton) view.findViewById(R.id.buttonReportedSightingsCM);
+//        reportedSightingsBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                MainActivity.switchFragment(new ReportedSightingsAdminManagerFragment(this));
+//            }
+//        });
+        SetButtonOnClickNextFragment(R.id.buttonReportedSightingsCM,new ReportedSightingsAdminManagerFragment(this),view);
 
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutCM);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,10 +69,7 @@ public class CompanyManagerHomeFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.clear();
-                        editor.commit();
+                        BusinessFacade.getInstance().clearPreferences();
                         MainActivity.switchFragment(new ChooseRoleFragment());
                     }
                 });

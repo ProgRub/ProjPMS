@@ -4,6 +4,7 @@ import com.example.seaker.database.DTOs.BoatDTO;
 import com.example.seaker.database.DTOs.SightingDTO;
 import com.example.seaker.database.DTOs.ZoneDTO;
 import com.example.seaker.database.repositories.BoatRepository;
+import com.example.seaker.database.repositories.SightingRepository;
 import com.example.seaker.database.repositories.UserRepository;
 import com.example.seaker.database.repositories.ZoneRepository;
 
@@ -13,12 +14,14 @@ public class SightingsService {
     private static SightingsService instance = null;
     private BoatRepository boatRepository;
     private ZoneRepository zoneRepository;
+    private SightingRepository sightingRepository;
     private BoatDTO currentBoat;
     private ZoneDTO startingZone,endingZone;
 
     public SightingsService() {
         boatRepository=new BoatRepository();
         zoneRepository=new ZoneRepository();
+        sightingRepository=new SightingRepository();
     }
 
 
@@ -85,4 +88,6 @@ public class SightingsService {
         }
         return zonesTo;
     }
+
+    public Iterable<SightingDTO> getAllSightings(){return sightingRepository.getAll();}
 }

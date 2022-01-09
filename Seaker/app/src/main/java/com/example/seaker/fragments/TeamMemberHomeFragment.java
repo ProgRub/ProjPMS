@@ -18,6 +18,7 @@ import com.example.seaker.DataViewModel;
 import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -56,8 +57,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
-
+        BusinessFacade.getInstance().loadPreferences();
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutTeamMember);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,21 +65,6 @@ public class TeamMemberHomeFragment extends BaseFragment {
                 logout();
             }
         });
-
-        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-
-        String userId = pref.getString("userId", "");
-        String userName = pref.getString("userName", "");
-
-        if(!userId.equals("") && !userName.equals("")){
-            String vessel_id = pref.getString("vesselID", "");
-            String tripFrom_id = pref.getString("tripFrom", "");
-            String tripTo_id = pref.getString("tripTo", "");
-            model.setUserType("TeamMember");
-            model.setVesselID(vessel_id);
-            model.setTripFrom(tripFrom_id);
-            model.setTripTo(tripTo_id);
-        }
 
         publishNotPublishedSightings();
 
@@ -95,10 +80,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.clear();
-                        editor.commit();
+                        BusinessFacade.getInstance().clearPreferences();
                         MainActivity.switchFragment(new ChooseRoleFragment());
                     }
                 });
@@ -112,7 +94,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<String> sightingJson = ReportSightingFragment.ReadJsonArrayFromSD(cont,"notpublishedjsons");
 
-        if(ReportSightingFragment.isInternetWorking() && mqtt.isConnected()){
+        if(BusinessFacade.getInstance().isInternetWorking() && mqtt.isConnected()){
             ArrayList<Integer> publishedJsonIndexes = new ArrayList<>();
             if(!sightingJson.isEmpty()){
                 for(int json=0; json < sightingJson.size(); json++){

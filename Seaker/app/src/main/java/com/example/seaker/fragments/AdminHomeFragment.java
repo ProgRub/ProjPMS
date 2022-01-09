@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
 
 public class AdminHomeFragment extends BaseFragment {
 
@@ -37,10 +38,8 @@ public class AdminHomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_admin_home, container, false);
         SetButtonOnClickNextFragment(R.id.buttonAddTeamMember,new AddMemberFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersAdmin,new AllMembersFragment(),view);
-        SetButtonOnClickNextFragment(R.id.buttonReportedSightingsAdmin,new ReportedSightingsAdminManagerFragment(),view);
-
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
-        model.setUserType("Administrator");
+        SetButtonOnClickNextFragment(R.id.buttonReportedSightingsAdmin,new ReportedSightingsAdminManagerFragment(this),view);
+        BusinessFacade.getInstance().loadPreferences();
 
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutAdmin);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,10 +62,7 @@ public class AdminHomeFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.clear();
-                        editor.commit();
+                        BusinessFacade.getInstance().clearPreferences();
                         MainActivity.switchFragment(new ChooseRoleFragment());
                     }
                 });
