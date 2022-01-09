@@ -1,6 +1,7 @@
 package com.example.seaker.database.repositories;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.specifications.ISpecification;
@@ -184,5 +185,24 @@ public class UserRepository extends Repository<UserDTO> {
         } else {
             return false;
         }
+//        if (result.contains("*")){
+//            ArrayList<ArrayList<String>> aux = new ArrayList<>();
+//            ArrayList<String> person_info = new ArrayList<>();
+//            String[] person = result.split("\\*");
+//            person_info.add(person[0]);
+//            person_info.add(person[1]);
+//            aux.add(person_info);
+//            Context cont = (Context) getActivity().getApplicationContext();
+//            ReportSightingFragment.SaveArrayListToSD(cont, "person_boat_zones", aux);
+//
+//            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+//            SharedPreferences.Editor editor = pref.edit();
+//            editor.putString("userId", person[0]);
+//            editor.putString("userName", person[1]);
+//            editor.commit();
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 }

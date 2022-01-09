@@ -63,7 +63,6 @@ public class LoginManagerAdminFragment extends BaseFragment {
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("isLogged", BusinessFacade.getInstance().getSelectedRole());
                 editor.commit();
-                BusinessFacade.getInstance().setLoggedInUser(loginCredentials);
                 if (BusinessFacade.getInstance().getSelectedRole() == "CompanyManager")
                     MainActivity.switchFragment(new CompanyManagerHomeFragment());
                 else if (BusinessFacade.getInstance().getSelectedRole() == "Administrator")

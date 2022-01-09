@@ -45,7 +45,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BusinessFacade businessFacade;
     private MQTTHelper mqtt;
 
     private static FragmentManager supportFragmentManager;
@@ -68,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
         }
-
-        businessFacade = BusinessFacade.getInstance();
 
         try {
             mqtt = MQTTHelper.getInstance(getApplicationContext()); //apenas para iniciar conexão ao MQTT
