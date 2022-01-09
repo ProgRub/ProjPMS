@@ -5,8 +5,10 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -27,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +50,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import org.apache.poi.sl.usermodel.Line;
 import org.apache.poi.xwpf.usermodel.BreakType;
@@ -60,6 +66,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -75,7 +82,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private TextView nrSightingsFound;
     private FragmentContainerView mapBox;
     private GoogleMap map;
-    private TextView totalNrIndividuals;
+    private TextView totalNrAnimals;
     private TextView chooseFormatText;
     private RadioButton pdfFormat;
     private RadioButton docxFormat;
@@ -89,6 +96,14 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private File docxFile;
     private ArrayList<SpecieSummary> speciesSummary;
     private ArrayList<LatLng> coordinatesFromSummary;
+    private TextView totalWhalesAnimals;
+    private TextView totalDolphinsAnimals;
+    private TextView totalPorpoiseAnimals;
+    private TextView sightingSpecies;
+    private TextView whalesTitle;
+    private TextView dolphinsTitle;
+    private TextView porpoisesTitle;
+
 
     private static final int PERMISSION_REQUEST_CODE = 200;
     public CreateReportFragment() {
@@ -124,7 +139,18 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         createSummaryBtn = (ImageButton) view.findViewById(R.id.create_summary_btn);
         nrSightingsFound = (TextView) view.findViewById(R.id.nr_sightings_found);
         mapBox = (FragmentContainerView) view.findViewById(R.id.map);
-        totalNrIndividuals = (TextView) view.findViewById(R.id.total_nr_individuals);
+        totalNrAnimals = (TextView) view.findViewById(R.id.total_nr_animals);
+
+
+        totalWhalesAnimals = (TextView) view.findViewById(R.id.total_whales_animals);
+        totalDolphinsAnimals = (TextView) view.findViewById(R.id.total_dolphin_animals);
+        totalPorpoiseAnimals = (TextView) view.findViewById(R.id.total_porpoises_animals);
+        sightingSpecies = (TextView) view.findViewById(R.id.sightingSpecies);
+        whalesTitle = (TextView) view.findViewById(R.id.whalesTitle);
+        dolphinsTitle = (TextView) view.findViewById(R.id.dolphinsTitle);
+        porpoisesTitle = (TextView) view.findViewById(R.id.porpoisesTitle);
+
+
         chooseFormatText = (TextView) view.findViewById(R.id.chooseFormatText);
         pdfFormat = (RadioButton) view.findViewById(R.id.pdf_format);
         docxFormat = (RadioButton) view.findViewById(R.id.docx_format);
@@ -134,13 +160,20 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         summary = (LinearLayout) view.findViewById(R.id.summary_layout);
 
         mapBox.setVisibility(View.GONE);
-        totalNrIndividuals.setVisibility(View.GONE);
+        totalNrAnimals.setVisibility(View.GONE);
         chooseFormatText.setVisibility(View.GONE);
         pdfFormat.setVisibility(View.GONE);
         docxFormat.setVisibility(View.GONE);
         jsonFormat.setVisibility(View.GONE);
         exportReportBtn.setVisibility(View.GONE);
         shareViaEmailBtn.setVisibility(View.GONE);
+        totalWhalesAnimals.setVisibility(View.GONE);
+        totalDolphinsAnimals.setVisibility(View.GONE);
+        totalPorpoiseAnimals.setVisibility(View.GONE);
+        sightingSpecies.setVisibility(View.GONE);
+        whalesTitle.setVisibility(View.GONE);
+        dolphinsTitle.setVisibility(View.GONE);
+        porpoisesTitle.setVisibility(View.GONE);
 
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,44 +241,51 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     }
 
 
-    private void addSpecieSummary(String specie, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostComReact, String averBeaufort, String averTrustLvl, String nrPics){
+    private void addSpecieSummary(String specie, String percent, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostTrustLvl, String mostSightedIn){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.summary_specie_layout, null);
 
         TextView specieName = (TextView) v.findViewById(R.id.specie_name);
-        specieName.setText(specie);
+        specieName.setText("- " + specie + ":");
+
+        TextView averageTrustLevel = (TextView) v.findViewById(R.id.percent);
+        averageTrustLevel.setText(percent);
 
         TextView nrIndividuals = (TextView) v.findViewById(R.id.nr_individuals);
-        nrIndividuals.setText("- Total number of individuals: "+ nrIndiv);
+        nrIndividuals.setText(nrIndiv);
 
-        TextView averageNumberIndividuals = (TextView) v.findViewById(R.id.average_number_individuals);
-        averageNumberIndividuals.setText("- Average number of individuals per sighting: "+ averageNrIndiv);
+        TextView averageNumberIndividuals = (TextView) v.findViewById(R.id.average_nr_individuals);
+        averageNumberIndividuals.setText(averageNrIndiv);
 
         TextView mostCommonBehavior = (TextView) v.findViewById(R.id.most_common_behavior);
-        mostCommonBehavior.setText("- Most common behavior type: "+ mostComBeh);
+        mostCommonBehavior.setText(mostComBeh);
 
-        TextView mostCommonReaction = (TextView) v.findViewById(R.id.most_common_reaction);
-        mostCommonReaction.setText("- Most common reaction to vessel: "+ mostComReact);
+        TextView mostCommonReaction = (TextView) v.findViewById(R.id.most_common_trust_lvl);
+        mostCommonReaction.setText(mostTrustLvl);
 
-        TextView averageBeaufortSeaState = (TextView) v.findViewById(R.id.average_beaufort_sea_state);
-        averageBeaufortSeaState.setText("- Average Beaufort sea state: "+ averBeaufort);
-
-        TextView averageTrustLevel = (TextView) v.findViewById(R.id.average_trust_level);
-        averageTrustLevel.setText("- Average trust level: "+ averTrustLvl);
-
-        TextView nrPhotos  = (TextView) v.findViewById(R.id.nr_photos);
-        nrPhotos.setText("- Photos: "+ nrPics);
-
+        TextView averageBeaufortSeaState = (TextView) v.findViewById(R.id.most_sighted_in);
+        averageBeaufortSeaState.setText(mostSightedIn);
 
         //APENAS PARA TESTAR INSERÇÃO DE FOTOS:
-        Random rand = new Random();
-        int n = rand.nextInt(10);
+        //Random rand = new Random();
+        //        int n = rand.nextInt(10);
+        //
+        //        addPhotosOfSummary(v, n);
 
-        addPhotosOfSummary(v, n);
+        speciesSummary.add( new SpecieSummary(v, specie, percent, nrIndiv, averageNrIndiv, mostComBeh, mostTrustLvl, mostSightedIn));
 
-        speciesSummary.add( new SpecieSummary(v, specie, nrIndiv, averageNrIndiv, mostComBeh, mostComReact, averBeaufort, averTrustLvl, nrPics));
-
-        summary.addView(v);
+        if(specie.contains("Whale")){
+            whalesTitle.setVisibility(View.VISIBLE);
+            ((LinearLayout) summary.findViewById(R.id.whales_summary)).addView(v);
+        }
+        else if(specie.contains("Dolphin")){
+            dolphinsTitle.setVisibility(View.VISIBLE);
+            ((LinearLayout) summary.findViewById(R.id.dolphins_summary)).addView(v);
+        }
+        else if(specie.contains("Porpoise")){
+            porpoisesTitle.setVisibility(View.VISIBLE);
+            ((LinearLayout) summary.findViewById(R.id.porpoises_summary)).addView(v);
+        }
     }
 
     public void datePicking(View view, boolean startDate) {
@@ -345,7 +385,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
 
-        totalNrIndividuals.setVisibility(View.VISIBLE);
+        totalNrAnimals.setVisibility(View.VISIBLE);
         chooseFormatText.setVisibility(View.VISIBLE);
         pdfFormat.setVisibility(View.VISIBLE);
         docxFormat.setVisibility(View.VISIBLE);
@@ -353,20 +393,32 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         exportReportBtn.setVisibility(View.VISIBLE);
         shareViaEmailBtn.setVisibility(View.VISIBLE);
 
+        totalWhalesAnimals.setVisibility(View.VISIBLE);
+        totalDolphinsAnimals.setVisibility(View.VISIBLE);
+        totalPorpoiseAnimals.setVisibility(View.VISIBLE);
+        sightingSpecies.setVisibility(View.VISIBLE);
+
         //Para testar inserção do pin nas coordenadas:
-        addCoordinatesFound(32.644313, -16.914312);
-        addCoordinatesFound(32.643579, -16.915613);
-        addCoordinatesFound(32.642859, -16.916211);
+        addCoordinatesFound(32.630313, -16.914312);
+        addCoordinatesFound(32.630579, -16.915613);
+        addCoordinatesFound(32.630859, -16.916211);
+        addCoordinatesFound(32.633579, -16.925613);
+        addCoordinatesFound(32.632859, -16.926211);
 
         mapBox.setVisibility(View.VISIBLE); //ADICIONAR AS COORDENADAS ANTES DE TORNAR O MAPA VISIVEL !!!
 
         //Apenas para testar:
-        nrSightingsFound.setText("5" + " sightings found."); //ALTERAR COM VALOR CORRETO
-        totalNrIndividuals.setText("Total number of individuals: " + "34"); //ALTERAR COM VALOR CORRETO
+        nrSightingsFound.setText("X" + " sightings found."); //ALTERAR COM VALOR CORRETO
+        totalNrAnimals.setText("Total number of animals: " + "X"); //ALTERAR COM VALOR CORRETO
+        totalWhalesAnimals.setText("- " + "X" + " Whales "+ "X%"); //ALTERAR COM VALOR CORRETO
+        totalDolphinsAnimals.setText("- " + "X" + " Dolphins "+ "X%"); //ALTERAR COM VALOR CORRETO
+        totalPorpoiseAnimals.setText("- " + "X" + " Porpoises "+ "X%"); //ALTERAR COM VALOR CORRETO
 
         //Adicionar as espécies dos avistamentos encontrados:
-        addSpecieSummary("Blue Whale", "12", "2", "Social Interaction", "Approach", "2", "High", "8");
-        addSpecieSummary("Fin Whale", "5", "1", "Other", "None", "4", "Low", "2");
+        addSpecieSummary("Blue Whale", "12%", "27", "3", "Social Interaction",  "High", "Cais do Sardinha");
+        addSpecieSummary("Fin Whale", "10%", "22", "1", "Other",  "High", "Desertas Island");
+        addSpecieSummary("Bottlenose Dolphin", "5%", "15", "2", "Other",  "Low", "Cabo Girão");
+        addSpecieSummary("Harbour Porpoise", "2%", "7", "1", "Other",  "Middle", "Porto Santo");
 
     }
 
@@ -374,7 +426,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     //addSpecieSummary -> recebe como parametros os dados para criar o sumário de cada espécie
     //addCoordinatesFound -> recebe como parâmetro a latitude e a longitude de cada avistamento onde irá colocar um pin no mapa
     //nrSightingsFound.setText(NUMBER_SIGHTINGS + " sightings found."); -> NUMBER_SIGHTINGS -> numero de avistamentos entre a start date e end date
-    //totalNrIndividuals.setText("Total number of individuals: " + NUMBER_INDIVIDUALS); -> NUMBER_INDIVIDUALS -> numero de individuos total das espécies avistadas entre as datas
+    //totalNrAnimals.setText("Total number of individuals: " + NUMBER_INDIVIDUALS); -> NUMBER_INDIVIDUALS -> numero de individuos total das espécies avistadas entre as datas
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createDifferentSummary(View view){
@@ -383,6 +435,10 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         for(SpecieSummary specieSummary : speciesSummary){
             summary.removeView(specieSummary.getSummary());
         }
+
+        whalesTitle.setVisibility(View.GONE);
+        dolphinsTitle.setVisibility(View.GONE);
+        porpoisesTitle.setVisibility(View.GONE);
 
         speciesSummary.clear();
         coordinatesFromSummary.clear();
@@ -419,11 +475,24 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
     }
 
-
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
         MarkerOptions options = new MarkerOptions();
+
+        map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+            @Override
+            public void onCameraMoveStarted(int i) {
+                ((ScrollView) getView().findViewById(R.id.scrollView2)).requestDisallowInterceptTouchEvent(true);
+            }
+        });
+
+        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                ((ScrollView) getView().findViewById(R.id.scrollView2)).requestDisallowInterceptTouchEvent(false);
+            }
+        });
 
         int sightingNr = 1;
         for (LatLng point : coordinatesFromSummary) {
@@ -434,13 +503,12 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             sightingNr++;
             moveToCurrentLocation(point);
         }
+
     }
 
     private void moveToCurrentLocation(LatLng currentLocation)
     {
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
-        map.animateCamera(CameraUpdateFactory.zoomIn());
-        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,14));
     }
 
     private void generatePDF(boolean export) {
@@ -491,13 +559,13 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             title.setTextSize(30);
             title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
             title.setTextAlign(Paint.Align.LEFT);
-            specieCanvas.drawText("- Total number of individuals: "+specieSummary.getTotalNrIndividuals(), 50, 200, title);
-            specieCanvas.drawText("- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting(), 50, 240, title);
-            specieCanvas.drawText("- Most common behavior type: "+specieSummary.getMostCommonBehavior(), 50, 280, title);
-            specieCanvas.drawText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction(), 50, 320, title);
-            specieCanvas.drawText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort(), 50, 360, title);
-            specieCanvas.drawText("- Average trust level: "+specieSummary.getAverageTrustLvl(), 50, 400, title);
-            specieCanvas.drawText("- Photos: "+specieSummary.getNrPhotos(), 50, 440, title);
+            //specieCanvas.drawText("- Total number of animals: "+specieSummary.getTotalNrIndividuals(), 50, 200, title);
+            //            specieCanvas.drawText("- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting(), 50, 240, title);
+            //            specieCanvas.drawText("- Most common behavior type: "+specieSummary.getMostCommonBehavior(), 50, 280, title);
+            //            specieCanvas.drawText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction(), 50, 320, title);
+            //            specieCanvas.drawText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort(), 50, 360, title);
+            //            specieCanvas.drawText("- Average trust level: "+specieSummary.getAverageTrustLvl(), 50, 400, title);
+            //            specieCanvas.drawText("- Photos: "+specieSummary.getNrPhotos(), 50, 440, title);
 
             pdfDocument.finishPage(speciePage);
         }
@@ -586,12 +654,12 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
-                xwpfRun.setText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction());
+                //xwpfRun.setText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction());
                 xwpfRun.setFontSize(18);
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
-                xwpfRun.setText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort());
+                //xwpfRun.setText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort());
                 xwpfRun.setFontSize(18);
 
                 xwpfParagraph = xwpfDocument.createParagraph();
@@ -601,7 +669,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
-                xwpfRun.setText("- Photos: "+specieSummary.getNrPhotos());
+                //xwpfRun.setText("- Photos: "+specieSummary.getNrPhotos());
                 xwpfRun.setFontSize(18);
 
                 if(size != i) xwpfRun.addBreak(BreakType.PAGE);

@@ -12,4 +12,5 @@
     <color name="recentSightings">#00b2ff</color>
     <color name="otherSightings">#0051ad</color>
     <color name="notSubmitted">#c60000</color>
+    <color name="column_blue">#005CD5</color>
 </resources>

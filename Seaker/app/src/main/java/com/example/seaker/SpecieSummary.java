@@ -6,27 +6,49 @@ public class SpecieSummary {
 
     private View summary;
     private String specie;
+    private String percent;
     private String totalNrIndividuals;
     private String averageNrIndividualsPerSighting;
     private String mostCommonBehavior;
-    private String mostCommonReaction;
-    private String averageBeaufort;
     private String averageTrustLvl;
-    private String nrPhotos;
+    private String mostSightedIn;
 
 
-    public SpecieSummary(View summary, String specie, String totalNrIndividuals, String averageNrIndividualsPerSighting, String mostCommonBehavior, String mostCommonReaction, String averageBeaufort, String averageTrustLvl, String nrPhotos) {
+    public SpecieSummary(View summary, String specie, String percent, String totalNrIndividuals, String averageNrIndividualsPerSighting, String mostCommonBehavior, String averageTrustLvl, String mostSightedIn) {
         this.summary = summary;
         this.specie = specie;
+        this.percent = percent;
         this.totalNrIndividuals = totalNrIndividuals;
         this.averageNrIndividualsPerSighting = averageNrIndividualsPerSighting;
         this.mostCommonBehavior = mostCommonBehavior;
-        this.mostCommonReaction = mostCommonReaction;
-        this.averageBeaufort = averageBeaufort;
         this.averageTrustLvl = averageTrustLvl;
-        this.nrPhotos = nrPhotos;
+        this.mostSightedIn = mostSightedIn;
     }
 
+
+    public View getSummary() {
+        return summary;
+    }
+
+    public void setSummary(View summary) {
+        this.summary = summary;
+    }
+
+    public String getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(String specie) {
+        this.specie = specie;
+    }
+
+    public String getPercent() {
+        return percent;
+    }
+
+    public void setPercent(String percent) {
+        this.percent = percent;
+    }
 
     public String getTotalNrIndividuals() {
         return totalNrIndividuals;
@@ -52,22 +74,6 @@ public class SpecieSummary {
         this.mostCommonBehavior = mostCommonBehavior;
     }
 
-    public String getMostCommonReaction() {
-        return mostCommonReaction;
-    }
-
-    public void setMostCommonReaction(String mostCommonReaction) {
-        this.mostCommonReaction = mostCommonReaction;
-    }
-
-    public String getAverageBeaufort() {
-        return averageBeaufort;
-    }
-
-    public void setAverageBeaufort(String averageBeaufort) {
-        this.averageBeaufort = averageBeaufort;
-    }
-
     public String getAverageTrustLvl() {
         return averageTrustLvl;
     }
@@ -76,23 +82,11 @@ public class SpecieSummary {
         this.averageTrustLvl = averageTrustLvl;
     }
 
-    public String getNrPhotos() {
-        return nrPhotos;
+    public String getMostSightedIn() {
+        return mostSightedIn;
     }
 
-    public void setNrPhotos(String nrPhotos) {
-        this.nrPhotos = nrPhotos;
-    }
-
-    public String getSpecie() {
-        return specie;
-    }
-
-    public void setSpecie(String specie) {
-        this.specie = specie;
-    }
-
-    public View getSummary() {
-        return summary;
+    public void setMostSightedIn(String mostSightedIn) {
+        this.mostSightedIn = mostSightedIn;
     }
 }

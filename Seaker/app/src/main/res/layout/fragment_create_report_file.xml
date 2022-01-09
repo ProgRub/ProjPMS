@@ -225,10 +225,10 @@
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_marginTop="20dp"
-                    android:layout_height="230dp" />
+                    android:layout_height="300dp" />
 
                 <TextView
-                    android:id="@+id/total_nr_individuals"
+                    android:id="@+id/total_nr_animals"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -236,7 +236,105 @@
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold"
-                    android:layout_marginLeft="30dp"></TextView>
+                    android:layout_marginLeft="10dp"></TextView>
+
+                <TextView
+                    android:id="@+id/total_whales_animals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="- X Whales (%)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="20dp"></TextView>
+
+                <TextView
+                    android:id="@+id/total_dolphin_animals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="- X Dolphins (%)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="20dp"></TextView>
+
+                <TextView
+                    android:id="@+id/total_porpoises_animals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="- X Porpoises (%)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="20dp"></TextView>
+
+                <TextView
+                    android:id="@+id/sightingSpecies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Sighting Species: "
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"></TextView>
+
+
+                <LinearLayout
+                    android:id="@+id/whales_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/whalesTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Whales:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dolphins_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/dolphinsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dolphins:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/porpoises_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/porpoisesTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Porpoises:"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
 
             </LinearLayout>
 

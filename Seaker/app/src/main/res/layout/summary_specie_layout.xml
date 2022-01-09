@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/summary"
-    android:layout_width="wrap_content"
+    android:layout_width="390dp"
     android:orientation="vertical"
-    android:layout_marginLeft="20dp"
-    android:layout_height="wrap_content">
+    android:layout_marginLeft="5dp"
+    android:layout_height="match_parent">
+
 
     <TextView
         android:id="@+id/specie_name"
@@ -12,87 +13,226 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="SPECIE NAME"
-        android:textColor="@color/dark_blue"
-        android:textSize="18dp"
+        android:textColor="@color/purple"
+        android:textSize="14dp"
+        android:layout_marginLeft="30dp"
         android:textStyle="bold"></TextView>
 
-    <TextView
-        android:id="@+id/nr_individuals"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Total number of individuals:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <TextView
-        android:id="@+id/average_number_individuals"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Average number of individuals per sighting:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <TextView
-        android:id="@+id/most_common_behavior"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Most common behavior type:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <TextView
-        android:id="@+id/most_common_reaction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Most common reaction to vessel:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <TextView
-        android:id="@+id/average_beaufort_sea_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Average Beaufort sea state:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <TextView
-        android:id="@+id/average_trust_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Average trust level:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <TextView
-        android:id="@+id/nr_photos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Photos:"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"></TextView>
-
-    <HorizontalScrollView
+    <TableLayout
+        android:background="@drawable/shadow"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/uploaded_photos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <TableRow
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            >
 
-        </LinearLayout>
+            <TextView
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="   %   "
+                android:layout_margin="1dp"
+                android:textSize="18dp"
+                android:layout_column="0"
+                android:background="@color/column_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
 
-    </HorizontalScrollView>
+            <TextView
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Nº\nindividuals"
+                android:layout_margin="1dp"
+                android:layout_column="1"
+                android:background="@color/column_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="11dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Average nº\nindividuals\nper\n sighting"
+                android:layout_margin="1dp"
+                android:layout_column="2"
+                android:background="@color/column_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="11dp"
+                android:gravity="center"
+                android:textAlignment="center" />
+
+            <TextView
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Most\nCommon\nBehavior"
+                android:layout_margin="1dp"
+                android:layout_column="3"
+                android:background="@color/column_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="11dp"
+                android:gravity="center"
+                android:textAlignment="center"  />
+
+            <TextView
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Most\nCommon\nTrust\nLevel"
+                android:layout_margin="1dp"
+                android:layout_column="4"
+                android:background="@color/column_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="11dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Most\nSighted\nIn"
+                android:layout_margin="1dp"
+                android:layout_column="4"
+                android:background="@color/column_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="11dp"
+                android:gravity="center"
+                android:textAlignment="center"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:id="@+id/percent"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="   %   "
+                android:layout_margin="1dp"
+                android:textSize="18dp"
+                android:layout_column="0"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/nr_individuals"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Nº\nindividuals"
+                android:layout_margin="1dp"
+                android:layout_column="1"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/average_nr_individuals"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Average nº\nindividuals\nper\n sighting"
+                android:layout_margin="1dp"
+                android:layout_column="2"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/most_common_behavior"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Most\nCommon\nBehavior"
+                android:layout_margin="1dp"
+                android:layout_column="3"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textAlignment="center"  />
+
+            <TextView
+                android:id="@+id/most_common_trust_lvl"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Most\nCommon\nTrust\nLevel"
+                android:layout_margin="1dp"
+                android:layout_column="4"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/most_sighted_in"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Most\nSighted\nIn"
+                android:layout_margin="1dp"
+                android:layout_column="4"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textAlignment="center"/>
+        </TableRow>
+
+    </TableLayout>
+
 
 
 </LinearLayout>
