@@ -1559,18 +1559,21 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    public static boolean isInternetWorking() {
-        boolean success = false;
+    public static boolean isInternetWorking() { //VERIFICA CONEXÃO COM A BD
         try {
-            URL url = new URL("https://google.com");
+            HttpURLConnection.setFollowRedirects(false);
+            URL url = new URL("http://" + ip + "/seaker/getallboats.php");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
             connection.setConnectTimeout(1000);
             connection.connect();
-            success = connection.getResponseCode() == 200;
-        } catch (IOException e) {
-            e.printStackTrace();
+            return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+        } catch (java.net.SocketTimeoutException e) {
+            return false;
         }
-        return success;
+        catch (IOException e) {
+            return false;
+        }
     }
 
     private String getIdPerson(){
