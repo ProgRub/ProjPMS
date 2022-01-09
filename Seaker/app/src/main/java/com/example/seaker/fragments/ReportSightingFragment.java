@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -110,7 +111,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<Button> sightingBoxesButtons;
     private MQTTHelper mqtt;
 
-    public static final String ip = "192.168.1.80"; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
@@ -425,7 +426,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             sightingInformations.get(sightingInformations.size() - 1).setSpecieName(String.valueOf(view.getTag()));
 
             TextView textView = (TextView) v.findViewById(R.id.title);
-            textView.setText(view.getTag() + " Sighting");
+            textView.setText(sightingInformations.size() +" - " + view.getTag() + " Sighting");
 
             LayoutInflater vin = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View buttonLayout = vin.inflate(R.layout.sighting_information_nav_btn_layout, null);
@@ -441,8 +442,12 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                 }
             });
 
+            LinearLayout.LayoutParams rel_bottone = new LinearLayout.LayoutParams(150, 150);
+            button.setLayoutParams(rel_bottone);
+
             navSightingBoxBtns.addView(button);
             sightingBoxesButtons.add(button);
+            numerateNavButtons();
 
             view.setTag("Selected "+ view.getTag());
 
@@ -452,6 +457,31 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             }
 
             sightingInformationsLayout.addView(v);
+        }
+    }
+    
+    private void numerateNavButtons(){
+        for(int index = 0; index < ((LinearLayout) navSightingBoxBtns).getChildCount(); index++) {
+            View nextChild = ((LinearLayout) navSightingBoxBtns).getChildAt(index);
+            if (nextChild instanceof Button) {
+                ((Button) nextChild).setText(""+(index+1));
+            }
+        }
+    }
+
+    private void numerateSightingBoxes(){
+        for(SightingInformation sightingBox : sightingInformations){
+            View nextChild = getView().findViewById(sightingBox.getSightingBoxID());
+            TextView title = (TextView) nextChild.findViewById(R.id.title);
+            String oldTitle = title.getText().toString();
+            String[] oldTitleSplit = oldTitle.split(" - ");
+
+            for(int index = 0; index < ((LinearLayout) sightingInformationsLayout).getChildCount(); index++) {
+                View child = sightingInformationsLayout.getChildAt(index);
+                if(((TextView) child.findViewById(R.id.title)).getText().equals(oldTitle)){
+                    title.setText((index+1) + " - " + oldTitleSplit[1]);
+                }
+            }
         }
     }
 
@@ -975,8 +1005,10 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         for(SightingInformation sighting : sightingInformations){
             if(sighting.getSightingBoxID() == sightingId){
                 sightingInformations.remove(i);
+                numerateSightingBoxes();
                 navSightingBoxBtns.removeView(getView().findViewWithTag(sightingBoxesButtons.get(i).getTag().toString()));
                 sightingBoxesButtons.remove(i);
+                numerateNavButtons();
                 return;
             }
             i++;

@@ -1,7 +1,9 @@
 package com.example.seaker.database.repositories;
 
 import android.content.Context;
+import android.util.Log;
 import android.content.SharedPreferences;
+
 
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.specifications.ISpecification;
@@ -139,7 +141,35 @@ public class UserRepository extends Repository<UserDTO> {
 
     @Override
     public void removeById(long itemId) {
-        //FALTA IMPLEMENTAR
+
+        String disableTeamMember = "http://" + ip + "/seaker/deletememberteambyid.php";
+        try {
+            URL url = new URL(disableTeamMember);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("id_team_member", "UTF-8")+"="+URLEncoder.encode(Long.toString(itemId), "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean loginAdminCompanyManager(UserDTO loginCredentials) {String result = "";

@@ -539,7 +539,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             sightingInformations.get(sightingInformations.size() - 1).setSpecieName(String.valueOf(view.getTag()));
 
             TextView textView = (TextView) v.findViewById(R.id.title);
-            textView.setText(view.getTag() + " Sighting");
+            textView.setText(sightingInformations.size() +" - " + view.getTag() + " Sighting");
 
             LayoutInflater vin = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View buttonLayout = vin.inflate(R.layout.sighting_information_nav_btn_layout, null);
@@ -555,8 +555,12 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 }
             });
 
+            LinearLayout.LayoutParams rel_bottone = new LinearLayout.LayoutParams(150, 150);
+            button.setLayoutParams(rel_bottone);
+
             navSightingBoxBtns.addView(button);
             sightingBoxesButtons.add(button);
+            numerateNavButtons();
 
             view.setTag("Selected "+view.getTag());
 
@@ -566,6 +570,31 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             }
 
             sightingInformationsLayout.addView(v);
+        }
+    }
+
+    private void numerateNavButtons(){
+        for(int index = 0; index < ((LinearLayout) navSightingBoxBtns).getChildCount(); index++) {
+            View nextChild = ((LinearLayout) navSightingBoxBtns).getChildAt(index);
+            if (nextChild instanceof Button) {
+                ((Button) nextChild).setText(""+(index+1));
+            }
+        }
+    }
+
+    private void numerateSightingBoxes(){
+        for(SightingInformation sightingBox : sightingInformations){
+            View nextChild = getView().findViewById(sightingBox.getSightingBoxID());
+            TextView title = (TextView) nextChild.findViewById(R.id.title);
+            String oldTitle = title.getText().toString();
+            String[] oldTitleSplit = oldTitle.split(" - ");
+
+            for(int index = 0; index < ((LinearLayout) sightingInformationsLayout).getChildCount(); index++) {
+                View child = sightingInformationsLayout.getChildAt(index);
+                if(((TextView) child.findViewById(R.id.title)).getText().equals(oldTitle)){
+                    title.setText((index+1) + " - " + oldTitleSplit[1]);
+                }
+            }
         }
     }
 
@@ -1044,8 +1073,10 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         for(SightingInformation sighting : sightingInformations){
             if(sighting.getSightingBoxID() == sightingId){
                 sightingInformations.remove(i);
+                numerateSightingBoxes();
                 navSightingBoxBtns.removeView(getView().findViewWithTag(sightingBoxesButtons.get(i).getTag().toString()));
                 sightingBoxesButtons.remove(i);
+                numerateNavButtons();
                 return;
             }
             i++;
