@@ -293,7 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Whales:"
-                        android:textColor="@color/dark_blue"
+                        android:textColor="@color/whale_column_blue"
                         android:textSize="16dp"
                         android:layout_marginLeft="10dp"
                         android:textStyle="bold"></TextView>
@@ -312,7 +312,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Dolphins:"
-                        android:textColor="@color/dark_blue"
+                        android:textColor="@color/dolphin_column_blue"
                         android:textSize="16dp"
                         android:layout_marginLeft="10dp"
                         android:textStyle="bold"></TextView>
@@ -330,7 +330,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Porpoises:"
-                        android:textColor="@color/dark_blue"
+                        android:textColor="@color/porpoise_column_blue"
                         android:textSize="16dp"
                         android:layout_marginLeft="10dp"
                         android:textStyle="bold"></TextView>

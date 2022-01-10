@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -30,6 +31,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentContainerView;
 
 import com.example.seaker.MainActivity;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.poi.sl.usermodel.TableCell;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.TextAlignment;
@@ -231,6 +234,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.summary_specie_layout, null);
 
+
         TextView specieName = (TextView) v.findViewById(R.id.specie_name);
         specieName.setText("- " + specie + ":");
 
@@ -260,16 +264,46 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
         speciesSummary.add( new SpecieSummary(v, specie, percent, nrIndiv, averageNrIndiv, mostComBeh, mostTrustLvl, mostSightedIn));
 
+        TextView cell1 = (TextView) v.findViewById(R.id.cell1);
+        TextView cell2 = (TextView) v.findViewById(R.id.cell2);
+        TextView cell3 = (TextView) v.findViewById(R.id.cell3);
+        TextView cell4 = (TextView) v.findViewById(R.id.cell4);
+        TextView cell5 = (TextView) v.findViewById(R.id.cell5);
+        TextView cell6 = (TextView) v.findViewById(R.id.cell6);
+
+        int color;
         if(specie.contains("Whale")){
             whalesTitle.setVisibility(View.VISIBLE);
+            color = ResourcesCompat.getColor(getResources(), R.color.whale_column_blue, null);
+            specieName.setTextColor(color);
+            cell1.setBackgroundColor(color);
+            cell2.setBackgroundColor(color);
+            cell3.setBackgroundColor(color);
+            cell4.setBackgroundColor(color);
+            cell5.setBackgroundColor(color);
+            cell6.setBackgroundColor(color);
             ((LinearLayout) summary.findViewById(R.id.whales_summary)).addView(v);
         }
         else if(specie.contains("Dolphin")){
-            dolphinsTitle.setVisibility(View.VISIBLE);
+            dolphinsTitle.setVisibility(View.VISIBLE);color = ResourcesCompat.getColor(getResources(), R.color.dolphin_column_blue, null);
+            specieName.setTextColor(color);
+            cell1.setBackgroundColor(color);
+            cell2.setBackgroundColor(color);
+            cell3.setBackgroundColor(color);
+            cell4.setBackgroundColor(color);
+            cell5.setBackgroundColor(color);
+            cell6.setBackgroundColor(color);
             ((LinearLayout) summary.findViewById(R.id.dolphins_summary)).addView(v);
         }
         else if(specie.contains("Porpoise")){
-            porpoisesTitle.setVisibility(View.VISIBLE);
+            porpoisesTitle.setVisibility(View.VISIBLE);color = ResourcesCompat.getColor(getResources(), R.color.porpoise_column_blue, null);
+            specieName.setTextColor(color);
+            cell1.setBackgroundColor(color);
+            cell2.setBackgroundColor(color);
+            cell3.setBackgroundColor(color);
+            cell4.setBackgroundColor(color);
+            cell5.setBackgroundColor(color);
+            cell6.setBackgroundColor(color);
             ((LinearLayout) summary.findViewById(R.id.porpoises_summary)).addView(v);
         }
     }

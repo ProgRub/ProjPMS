@@ -12,5 +12,7 @@
     <color name="recentSightings">#00b2ff</color>
     <color name="otherSightings">#0051ad</color>
     <color name="notSubmitted">#c60000</color>
-    <color name="column_blue">#005CD5</color>
+    <color name="whale_column_blue">#0046A2</color>
+    <color name="dolphin_column_blue">#005CD5</color>
+    <color name="porpoise_column_blue">#00A7D1</color>
 </resources>
