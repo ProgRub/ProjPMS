@@ -32,6 +32,8 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
     private DataViewModel model;
     private LinearLayout recentSightings;
     private LinearLayout otherSightings;
+    private TextView noRecentSightings;
+    private TextView noOtherSightings;
     private MQTTHelper mqtt;
 
     public ReportedSightingsTeamMemberFragment() {
@@ -55,6 +57,8 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
+        noRecentSightings = (TextView) view.findViewById(R.id.no_recent_sightings);
+        noOtherSightings = (TextView) view.findViewById(R.id.no_other_sightings);
 
         try {
             mqtt = MQTTHelper.getInstance(getActivity().getApplicationContext());
@@ -179,8 +183,10 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         LocalDateTime after24h = dateTime.plusHours(24);
 
         if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
-           recentSightings.addView(v);
+            noRecentSightings.setVisibility(View.GONE);
+            recentSightings.addView(v);
         }else{ //já não pode editar - mais de 24h
+            noOtherSightings.setVisibility(View.GONE);
             editSightingBtn.setVisibility(View.GONE);
             otherSightings.addView(v);
         }

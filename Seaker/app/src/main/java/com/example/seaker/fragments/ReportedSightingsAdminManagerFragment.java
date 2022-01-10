@@ -20,9 +20,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReportedSightingsAdminManagerFragment extends BaseFragment {
+
     private LinearLayout recentSightings;
     private ImageButton backBtn;
     private LinearLayout otherSightings;
+    private TextView noRecentSightings;
+    private TextView noOtherSightings;
 
     public ReportedSightingsAdminManagerFragment() {
         // Required empty public constructor
@@ -46,6 +49,8 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_reported_sightings_admin_manager, container, false);
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
+        noRecentSightings = (TextView) view.findViewById(R.id.no_recent_sightings);
+        noOtherSightings = (TextView) view.findViewById(R.id.no_other_sightings);
         backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,8 +166,10 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         LocalDateTime after24h = dateTime.plusHours(24);
 
         if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
+            noRecentSightings.setVisibility(View.GONE);
             recentSightings.addView(v);
         }else{ //mais de 24h
+            noOtherSightings.setVisibility(View.GONE);
             otherSightings.addView(v);
         }
     }

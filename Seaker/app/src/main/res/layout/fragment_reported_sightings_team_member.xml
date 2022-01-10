@@ -87,6 +87,17 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/no_recent_sightings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No recent sightings."
+                    android:textSize="18dp"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="30dp"
+                    >
+                </TextView>
+
             </LinearLayout>
 
             <!-- Other Sightings List -->
@@ -109,6 +120,17 @@
                     android:paddingBottom="15dp"
                     android:textSize="20dp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/no_other_sightings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No other sightings."
+                    android:textSize="18dp"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="30dp"
+                    >
+                </TextView>
             </LinearLayout>
 
         </LinearLayout>
