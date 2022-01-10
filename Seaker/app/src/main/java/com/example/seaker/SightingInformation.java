@@ -141,6 +141,7 @@ public class SightingInformation {
             else if(behaviour.equals("Eating")) this.behavior_type.get(1).setChecked(true);
             else if(behaviour.equals("Resting")) this.behavior_type.get(2).setChecked(true);
             else if(behaviour.equals("Social Interaction")) this.behavior_type.get(3).setChecked(true);
+            else if(behaviour.equals(""));
             else {
                 this.behavior_type.get(4).setChecked(true);
                 this.otherBehavior.setText(behaviour);
@@ -165,6 +166,7 @@ public class SightingInformation {
             if(reaction.equals("None")) this.reactions_to_vessel.get(0).setChecked(true);
             else if(reaction.equals("Approach")) this.reactions_to_vessel.get(1).setChecked(true);
             else if(reaction.equals("Avoidance")) this.reactions_to_vessel.get(2).setChecked(true);
+            else if(reaction.equals(""));
             else{
                 this.reactions_to_vessel.get(3).setChecked(true);
                 this.otherReaction.setText(reaction);
