@@ -79,6 +79,9 @@ public class LoginTeamMemberFragment extends BaseFragment {
     }
 
     private void login() {
+        BusinessFacade.getInstance().setCurrentBoat(Long.parseLong(vessel_id.getSelectedItem().toString().split("\\.")[0]));
+        BusinessFacade.getInstance().setZoneFrom(trip_from.getSelectedItem().toString());
+        BusinessFacade.getInstance().setZoneTo(trip_to.getSelectedItem().toString());
         UserDTO loginCredentials = new UserDTO("", this.email.getText().toString(), this.password.getText().toString(), BusinessFacade.getInstance().getSelectedRole());
         ErrorType errorType = BusinessFacade.getInstance().loginIsValid(loginCredentials);
         switch (errorType) {
@@ -102,9 +105,6 @@ public class LoginTeamMemberFragment extends BaseFragment {
                 ShowPopupBox("Please, choose the trip's destination!");
                 break;
             case NoError:
-                BusinessFacade.getInstance().setCurrentBoat(Long.parseLong(vessel_id.getSelectedItem().toString().split("\\.")[0]));
-                BusinessFacade.getInstance().setZoneFrom(trip_from.getSelectedItem().toString());
-                BusinessFacade.getInstance().setZoneTo(trip_to.getSelectedItem().toString());
 
                 SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
                 SharedPreferences.Editor editor = pref.edit();

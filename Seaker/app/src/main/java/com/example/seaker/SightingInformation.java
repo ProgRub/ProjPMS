@@ -2,6 +2,7 @@ package com.example.seaker;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -133,21 +134,17 @@ public class SightingInformation {
                 break;
         }
     }
-
-    public void fillBehaviourType(String behavior_types) {
-        if(behavior_types.contains("Traveling")) this.behavior_type.get(0).setChecked(true);
-        if(behavior_types.contains("Eating")) this.behavior_type.get(1).setChecked(true);
-        if(behavior_types.contains("Resting")) this.behavior_type.get(2).setChecked(true);
-        if(behavior_types.contains("Social Interaction")) this.behavior_type.get(3).setChecked(true);
-        String otherBehaviorString = behavior_types.replace("Traveling", "");
-        otherBehaviorString = otherBehaviorString.replace("Eating", "");
-        otherBehaviorString = otherBehaviorString.replace("Resting", "");
-        otherBehaviorString = otherBehaviorString.replace("Social Interaction", "");
-        otherBehaviorString = otherBehaviorString.replace(";", "");
-        otherBehaviorString = otherBehaviorString.replace(" ", "");
-        if(!otherBehaviorString.isEmpty()){
-            this.behavior_type.get(4).setChecked(true);
-            this.otherBehavior.setText(otherBehaviorString);
+    public void fillBehaviourType(Iterable<String> behaviours) {
+        for (String behaviourNotTrimmed:behaviours) {
+            String behaviour=behaviourNotTrimmed.trim();
+            if(behaviour.equals("Traveling")) this.behavior_type.get(0).setChecked(true);
+            else if(behaviour.equals("Eating")) this.behavior_type.get(1).setChecked(true);
+            else if(behaviour.equals("Resting")) this.behavior_type.get(2).setChecked(true);
+            else if(behaviour.equals("Social Interaction")) this.behavior_type.get(3).setChecked(true);
+            else {
+                this.behavior_type.get(4).setChecked(true);
+                this.otherBehavior.setText(behaviour);
+            }
         }
     }
 
@@ -162,19 +159,16 @@ public class SightingInformation {
 
         return true;
     }
-
-    public void fillReactionToVessel(String reactions) {
-        if(reactions.contains("None")) this.reactions_to_vessel.get(0).setChecked(true);
-        if(reactions.contains("Approach")) this.reactions_to_vessel.get(1).setChecked(true);
-        if(reactions.contains("Avoidance")) this.reactions_to_vessel.get(2).setChecked(true);
-        String otherReactionString = reactions.replace("None", "");
-        otherReactionString = otherReactionString.replace("Approach", "");
-        otherReactionString = otherReactionString.replace("Avoidance", "");
-        otherReactionString = otherReactionString.replace(";", "");
-        otherReactionString = otherReactionString.replace(" ", "");
-        if(!otherReactionString.isEmpty()){
-            this.reactions_to_vessel.get(3).setChecked(true);
-            this.otherReaction.setText(otherReactionString);
+    public void fillReactionToVessel(Iterable<String> reactionsToBoat) {
+        for (String reactionNotTrimmed:reactionsToBoat) {
+            String reaction=reactionNotTrimmed.trim();
+            if(reaction.equals("None")) this.reactions_to_vessel.get(0).setChecked(true);
+            else if(reaction.equals("Approach")) this.reactions_to_vessel.get(1).setChecked(true);
+            else if(reaction.equals("Avoidance")) this.reactions_to_vessel.get(2).setChecked(true);
+            else{
+                this.reactions_to_vessel.get(3).setChecked(true);
+                this.otherReaction.setText(reaction);
+            }
         }
     }
 
@@ -312,4 +306,7 @@ public class SightingInformation {
     public void setOtherReaction(EditText otherReaction) {
         this.otherReaction = otherReaction;
     }
+
+
+
 }

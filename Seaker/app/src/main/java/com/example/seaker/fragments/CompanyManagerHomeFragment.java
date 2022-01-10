@@ -39,7 +39,6 @@ public class CompanyManagerHomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_company_manager_home, container, false);
         SetButtonOnClickNextFragment(R.id.buttonCreateReport,new CreateReportFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersCM,new AllMembersFragment(),view);
-        BusinessFacade.getInstance().loadPreferences();
 
 //        reportedSightingsBtn = (ImageButton) view.findViewById(R.id.buttonReportedSightingsCM);
 //        reportedSightingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +56,7 @@ public class CompanyManagerHomeFragment extends BaseFragment {
                 logout();
             }
         });
+        BusinessFacade.getInstance().setSelectedRole("CompanyManager");
         return view;
     }
 
@@ -69,7 +69,10 @@ public class CompanyManagerHomeFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BusinessFacade.getInstance().clearPreferences();
+                        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.clear();
+                        editor.commit();
                         MainActivity.switchFragment(new ChooseRoleFragment());
                     }
                 });

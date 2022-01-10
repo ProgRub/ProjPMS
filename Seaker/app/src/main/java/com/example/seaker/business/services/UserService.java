@@ -111,17 +111,6 @@ public class UserService {
             if(user.getEmail().equals(loginCredentials.getEmail()))
                 loggedInUser=user;
         }
-        SharedPreferences pref = BusinessFacade.getInstance().getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("isLogged", selectedRole);
-        if(loginCredentials.getType()=="TeamMember"){
-            editor.putString("userId", String.valueOf(loggedInUser.getId()));
-            editor.putString("userName", loggedInUser.getName());
-            editor.putString("vesselID", String.valueOf(SightingsService.getInstance().getCurrentBoat().getId()));
-            editor.putString("tripFrom", SightingsService.getInstance().getStartingZone().getName());
-            editor.putString("tripTo", SightingsService.getInstance().getEndingZone().getName());
-        }
-        editor.commit();
 //        Context cont = (Context) getActivity().getApplicationContext();
 //        saveArrayListToSD(cont, "person_boat_zones", loginCredentials);
         return ErrorType.NoError;

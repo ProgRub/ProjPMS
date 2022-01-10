@@ -21,9 +21,12 @@ import com.example.seaker.R;
  */
 public class BaseFragment extends Fragment {
     private FragmentManager fragmentManager;
-
+    private BaseFragment backFragment;
     public BaseFragment() {
         fragmentManager = getFragmentManager();
+    }
+    public BaseFragment(BaseFragment backFragment){
+        this.backFragment=backFragment;
     }
 
     @Override
@@ -52,4 +55,6 @@ public class BaseFragment extends Fragment {
     }
 
     public final void ShowPopupBox(String message){((MainActivity) getActivity()).onButtonShowPopupWindowClick(getView(), message);}
+
+    public final void GoToPreviousFragment(){MainActivity.switchFragment(backFragment);}
 }

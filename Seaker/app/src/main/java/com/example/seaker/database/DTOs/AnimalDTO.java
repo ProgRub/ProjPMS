@@ -1,5 +1,7 @@
 package com.example.seaker.database.DTOs;
 
+import android.util.Log;
+
 import java.util.Arrays;
 
 public class AnimalDTO {

@@ -62,7 +62,7 @@ public class SightingRepository extends Repository<SightingDTO> {
                 SightingDTO sightingDTO = new SightingDTO(Long.parseLong(sighting[0]), true, LocalDate.parse(sighting[1], DateTimeFormatter.ofPattern("dd/MM/uuuu")), LocalTime.parse(sighting[2]), Integer.parseInt(sighting[3]), Double.parseDouble(sighting[4]), Double.parseDouble(sighting[5]), sighting[6], Long.parseLong(sighting[7]), Long.parseLong(sighting[9]));
                 String[] animalsInfo=sighting[10].split("\\$");
                 for(int indexAnimal=0;indexAnimal<animalsInfo.length;indexAnimal++){
-                    String[] animalInfo=sighting[10].split("\\*");
+                    String[] animalInfo=animalsInfo[indexAnimal].split("\\*");
                     sightingDTO.addSightedAnimal(new AnimalDTO(animalInfo[0],animalInfo[1],animalInfo[2],animalInfo[4],animalInfo[5],animalInfo[3]));
                 }
                 sightings.add(sightingDTO);

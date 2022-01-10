@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
 import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.database.DTOs.AnimalDTO;
+import com.example.seaker.database.DTOs.SightingDTO;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,11 +63,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class EditSightingFragment extends BaseFragment implements OnMapReadyCallback{
 
-    private DataViewModel model;
     private TextView title;
 
     private EditText sightingDate;
@@ -75,7 +78,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private GoogleMap googleMap;
     private LinearLayout sightingInformationsLayout;
     private ImageView noSelectedSpecies;
-    private BusinessFacade businessFacade;
     private ImageButton takePhoto;
     private ImageButton uploadPhoto;
     private SeekBar beaufortSeekBar;
@@ -90,11 +92,19 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     private AutoCompleteTextView searchBar;
     private LinearLayout navSightingBoxBtns;
     private ArrayList<Button> sightingBoxesButtons;
+    private SightingDTO sightingToEdit;
 
     private static final DecimalFormat df = new DecimalFormat("0.00000");
+    private String selectedRole;
 
     public EditSightingFragment() {
         // Required empty public constructor
+    }
+
+    public EditSightingFragment(BaseFragment backFragment,SightingDTO sightingToEdit) {
+        super(backFragment);
+        this.sightingToEdit=sightingToEdit;
+        selectedRole=BusinessFacade.getInstance().getSelectedRole();
     }
 
 
@@ -108,14 +118,15 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_sightings, container, false);
 
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
-
-        if(model.getUserType() == "TeamMember") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
-        else if(model.getUserType() == "Administrator") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
-        else if(model.getUserType() == "CompanyManager") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
-
-        businessFacade = BusinessFacade.getInstance();
-
+        ImageButton backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoToPreviousFragment();
+            }
+        });
+//        if(BusinessFacade.getInstance().getSelectedRole() == "TeamMember") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
+//        else SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
         onStartView(view);
 
         return view;
@@ -123,19 +134,19 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        title.setText("Sighting #" + model.getReportedSighingId() + " - Editing");
-        sightingDate.setText(model.getDate());
-        sightingTime.setText(model.getTime());
+        title.setText("Sighting #" + sightingToEdit.getId() + " - Editing");
+        sightingDate.setText(sightingToEdit.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")));
+        sightingTime.setText(sightingToEdit.getTime().toString());
 
-        Double latitude = Double.parseDouble(model.getLatitude());
-        String latitudeString = df.format(latitude);
-        Double longitude = Double.parseDouble(model.getLongitude());
-        String longitudeString = df.format(longitude);
+//        Double latitude = Double.parseDouble(model.getLatitude());
+        String latitudeString = df.format(sightingToEdit.getLatitude());
+//        Double longitude = Double.parseDouble(model.getLongitude());
+        String longitudeString = df.format(sightingToEdit.getLongitude());
 
         sightingLatitude.setText("Latitude: " + latitudeString);
         sightingLongitude.setText("Longitude: " + longitudeString);
 
-        sightingComment.setText(model.getComment());
+        sightingComment.setText(sightingToEdit.getComments());
 
         searchBar = (AutoCompleteTextView) view.findViewById(R.id.search_bar);
 
@@ -164,17 +175,17 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingBoxesButtons = new ArrayList<Button>();
 
         int index = 0;
-        for(String specie : model.getSpecies()) {
-            try{clickSpecie(getView().findViewWithTag(specie), false);}catch (Exception e){}
+        for(AnimalDTO animal : sightingToEdit.getSightedAnimals()) {
+            try{clickSpecie(getView().findViewWithTag(animal.getSpeciesName()), false);}catch (Exception e){}
 
-            fillSpecieSightingInformation(specie, index);
+            fillSpecieSightingInformation(animal, index);
             index++;
         }
 
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View thumbView = vi.inflate(R.layout.layout_seekbar_thumb, null);
 
-        int beafortValue = model.getSea_state();
+        int beafortValue = sightingToEdit.getSeaStateBeaufort();
         ((TextView) thumbView.findViewById(R.id.tvProgress)).setText(""+beafortValue);
 
 
@@ -194,14 +205,14 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
     }
 
 
-    private void fillSpecieSightingInformation(String specie, int index){
-        SightingInformation sightingInformation = sightingInformations.get(getSightingInformationId(specie));
+    private void fillSpecieSightingInformation(AnimalDTO animal, int index){
+        SightingInformation sightingInformation = sightingInformations.get(getSightingInformationId(animal.getSpeciesName()));
 
-        sightingInformation.fillNrIndividuals(model.getN_individuals().get(index));
-        sightingInformation.fillNrOffspring(model.getN_offspring().get(index));
-        sightingInformation.fillBehaviourType(model.getBehaviors().get(index));
-        sightingInformation.fillReactionToVessel(model.getReactions().get(index));
-        sightingInformation.fillTrustLevel(model.getTrust_level().get(index));
+        sightingInformation.fillNrIndividuals(animal.getAmountOfAnimals());
+        sightingInformation.fillNrOffspring(animal.getAmountOfOffspring());
+        sightingInformation.fillBehaviourType(animal.getBehaviours());
+        sightingInformation.fillReactionToVessel(animal.getReactionsToBoat());
+        sightingInformation.fillTrustLevel(animal.getConfidenceLevel());
     }
 
     private int getSightingInformationId(String specie){
@@ -491,9 +502,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             }
         });
 
-        Double latitude = Double.parseDouble(model.getLatitude());
-        Double longitude = Double.parseDouble(model.getLongitude());
-        LatLng Funchal = new LatLng(latitude, longitude);
+        LatLng Funchal = new LatLng(sightingToEdit.getLatitude(), sightingToEdit.getLongitude());
 
         map.addMarker(new MarkerOptions().position(Funchal).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
         moveToCurrentLocation(Funchal);
@@ -764,7 +773,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
 
     //CONTEM INFORMAÇÃO SOBRE OS SIGHTINGS:
-    ArrayList<SightingInformation> sightingInformations = new ArrayList<SightingInformation>();
+    ArrayList<SightingInformation> sightingInformations = new ArrayList<>();
     ArrayList<ToggleButton> auxToggle;
 
     private void buttonListenersSightingInfo(View v){
@@ -1336,9 +1345,9 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                if(model.getUserType() == "TeamMember") MainActivity.switchFragment(new TeamMemberHomeFragment());
-                else if(model.getUserType() == "Administrator") MainActivity.switchFragment(new AdminHomeFragment());
-                else if(model.getUserType() == "CompanyManager") MainActivity.switchFragment(new CompanyManagerHomeFragment());
+                if(selectedRole.equals("TeamMember")) MainActivity.switchFragment(new TeamMemberHomeFragment());
+                else if(selectedRole.equals("Administrator")) MainActivity.switchFragment(new AdminHomeFragment());
+                else if(selectedRole.equals("CompanyManager")) MainActivity.switchFragment(new CompanyManagerHomeFragment());
             }
         }, 2000);
     }
@@ -1355,4 +1364,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
         return sighting_info.get(1).get(0);
     }
+
+
 }

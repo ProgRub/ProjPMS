@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class SightingDTO {
     private long id;
     private boolean submitted;
-    private LocalDate day;
+    private LocalDate date;
     private LocalTime time;
     private int seaStateBeaufort;
     private double longitude;
@@ -19,10 +19,10 @@ public class SightingDTO {
     private long boatId;
     private ArrayList<AnimalDTO> sightedAnimals;
 
-    public SightingDTO(long id, boolean submitted, LocalDate day, LocalTime time, int seaStateBeaufort, double longitude, double latitude, String comments, long teamMemberId,  long boatId) {
+    public SightingDTO(long id, boolean submitted, LocalDate date, LocalTime time, int seaStateBeaufort, double latitude, double longitude, String comments, long teamMemberId, long boatId) {
         this.id = id;
         this.submitted = submitted;
-        this.day = day;
+        this.date = date;
         this.time = time;
         this.seaStateBeaufort = seaStateBeaufort;
         this.longitude = longitude;
@@ -41,12 +41,12 @@ public class SightingDTO {
         this.id = id;
     }
 
-    public LocalDate getDay() {
-        return day;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDay(LocalDate day) {
-        this.day = day;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public LocalTime getTime() {

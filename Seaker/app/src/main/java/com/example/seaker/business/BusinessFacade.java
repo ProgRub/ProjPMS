@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class BusinessFacade {
     private static BusinessFacade instance = null;
-    private Context context;
 
     public void BusinessFacade() {
     }
@@ -67,7 +66,6 @@ public class BusinessFacade {
     }
 
     public String getSelectedRole() {
-        Log.d("ROLE",UserService.getInstance().getSelectedRole());
         return UserService.getInstance().getSelectedRole();
     }
 
@@ -124,35 +122,8 @@ public class BusinessFacade {
         return Repository.isInternetWorking();
     }
 
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void loadPreferences() {
-        SharedPreferences pref = context.getSharedPreferences("MyPref", 0); // 0 - for private mode
-
-        String userId = pref.getString("userId", "");
-        String userName = pref.getString("userName", "");
-        UserService.getInstance().setSelectedRole(pref.getString("loggedIn",""));
-
-        Log.d("ROLE",UserService.getInstance().getSelectedRole());
-        if(userId.equals("") || userName.equals("")){return;}
-
-        SightingsService.getInstance().setCurrentBoat(Long.parseLong(pref.getString("vesselID", "")));
-        SightingsService.getInstance().setStartingZone(pref.getString("tripFrom", ""));
-        SightingsService.getInstance().setEndingZone(pref.getString("tripTo", ""));
-        UserService.getInstance().setLoggedInUser(Long.parseLong(userId));
-    }
-
-    public void clearPreferences(){
-        SharedPreferences pref = context.getSharedPreferences("MyPref", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.clear();
-        editor.commit();
+    public void setSelectedRole(String selectedRole) {
+        UserService.getInstance().setSelectedRole(selectedRole);
     }
 }
 

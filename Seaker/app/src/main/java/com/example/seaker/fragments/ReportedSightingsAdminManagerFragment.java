@@ -1,10 +1,7 @@
 package com.example.seaker.fragments;
 
 import android.content.Context;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +9,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.database.DTOs.AnimalDTO;
 import com.example.seaker.database.DTOs.SightingDTO;
 
-import java.io.Console;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,14 +23,13 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
     private LinearLayout recentSightings;
     private ImageButton backBtn;
     private LinearLayout otherSightings;
-    private BaseFragment backFragment;
 
     public ReportedSightingsAdminManagerFragment() {
         // Required empty public constructor
     }
 
     public ReportedSightingsAdminManagerFragment(BaseFragment backFragment) {
-        this.backFragment=backFragment;
+        super(backFragment);
     }
 
 
@@ -58,7 +49,8 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {MainActivity.switchFragment(backFragment);
+            public void onClick(View view) {
+                GoToPreviousFragment();
             }
         });
 
@@ -131,7 +123,7 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
 //        species_ += species_name.get(species_name.size()-1);
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
-//        editSightingBtn.setOnClickListener(item -> {
+        editSightingBtn.setOnClickListener(item -> {
 //            model.setReportedSighingId(sighting_id);
 //            model.setDate(sighting_date);
 //            model.setTime(sighting_time);
@@ -145,11 +137,11 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
 //            model.setTrust_level(trust_level);
 //            model.setReactions(reactions);
 //            model.setBehaviors(behaviors);
-//            MainActivity.switchFragment(new EditSightingFragment());
-//        });
+            MainActivity.switchFragment(new EditSightingFragment(this,sighting));
+        });
 
         sightingNumber.setText("Sighting #" + sighting.getId());
-        String sightingDate = sighting.getDay().format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
+        String sightingDate = sighting.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
         String sightingTime = sighting.getTime().toString();
         date.setText(sightingDate);
         time.setText(sightingTime);

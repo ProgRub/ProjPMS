@@ -27,7 +27,6 @@ import java.util.ArrayList;
 
 public class TeamMemberHomeFragment extends BaseFragment {
 
-    private DataViewModel model;
     private ImageButton logoutBtn;
     private MQTTHelper mqtt;
 
@@ -48,7 +47,6 @@ public class TeamMemberHomeFragment extends BaseFragment {
         SetButtonOnClickNextFragment(R.id.buttonNewSightingReport,new ReportSightingFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsTeamMember,new ReportedSightingsTeamMemberFragment(),view);
 
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
         //MQTT:
         try {
@@ -57,7 +55,6 @@ public class TeamMemberHomeFragment extends BaseFragment {
         } catch (MqttException e) {
             e.printStackTrace();
         }
-        BusinessFacade.getInstance().loadPreferences();
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutTeamMember);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +63,20 @@ public class TeamMemberHomeFragment extends BaseFragment {
             }
         });
 
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+
+        String userId = pref.getString("userId", "");
+        String userName = pref.getString("userName", "");
+
+        if(!userId.equals("") && !userName.equals("")){
+            String vessel_id = pref.getString("vesselID", "");
+            String tripFrom = pref.getString("tripFrom", "");
+            String tripTo = pref.getString("tripTo", "");
+            BusinessFacade.getInstance().setSelectedRole("TeamMember");
+            BusinessFacade.getInstance().setCurrentBoat(Long.parseLong(vessel_id));
+            BusinessFacade.getInstance().setZoneFrom(tripFrom);
+            BusinessFacade.getInstance().setZoneTo(tripTo);
+        }
         publishNotPublishedSightings();
 
         return view;
@@ -80,7 +91,10 @@ public class TeamMemberHomeFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BusinessFacade.getInstance().clearPreferences();
+                        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.clear();
+                        editor.commit();
                         MainActivity.switchFragment(new ChooseRoleFragment());
                     }
                 });

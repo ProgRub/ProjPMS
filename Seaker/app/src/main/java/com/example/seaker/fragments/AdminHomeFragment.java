@@ -39,7 +39,7 @@ public class AdminHomeFragment extends BaseFragment {
         SetButtonOnClickNextFragment(R.id.buttonAddTeamMember,new AddMemberFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersAdmin,new AllMembersFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsAdmin,new ReportedSightingsAdminManagerFragment(this),view);
-        BusinessFacade.getInstance().loadPreferences();
+
 
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutAdmin);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +49,7 @@ public class AdminHomeFragment extends BaseFragment {
             }
         });
 
+        BusinessFacade.getInstance().setSelectedRole("Administrator");
 
         return view;
     }
@@ -62,7 +63,10 @@ public class AdminHomeFragment extends BaseFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BusinessFacade.getInstance().clearPreferences();
+                        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.clear();
+                        editor.commit();
                         MainActivity.switchFragment(new ChooseRoleFragment());
                     }
                 });

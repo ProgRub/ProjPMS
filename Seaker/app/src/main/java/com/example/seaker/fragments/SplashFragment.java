@@ -23,8 +23,6 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BusinessFacade.getInstance().setContext(getActivity().getApplicationContext());
-        BusinessFacade.getInstance().loadPreferences();
         Handler handler = new Handler();
         Runnable runnable = () -> {
             //Second fragment after 2 seconds appears
