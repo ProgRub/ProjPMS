@@ -31,16 +31,16 @@ while($row = mysqli_fetch_array($r)){
 		
 		$query_behaviors = "SELECT * FROM animal_behavior WHERE animal_id = " . $row1['id'];
 		$behaviors_result = mysqli_query($conn, $query_behaviors);	
-		$behaviors = "";
+		$behaviors = " ";
 		while($row3 = mysqli_fetch_array($behaviors_result)){
-			$behaviors = $behaviors . $row3['name'] . ";";
+			$behaviors = $behaviors . $row3['name'] . "; ";
 		}
 		
 		$query_reactions = "SELECT * FROM animal_reaction_to_vessel WHERE animal_id = " . $row1['id'];
 		$reactions_result = mysqli_query($conn, $query_reactions);	
-		$reactions = "";
+		$reactions = " ";
 		while($row4 = mysqli_fetch_array($reactions_result)){
-			$reactions = $reactions . $row4['name'] . ";";
+			$reactions = $reactions . $row4['name'] . "; ";
 		}
 		
 		$n_off = $row1['n_offspring'];
