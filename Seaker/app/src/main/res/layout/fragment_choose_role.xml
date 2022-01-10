@@ -14,7 +14,7 @@
             android:id="@+id/buttonTeamMember"
             android:layout_width="300dp"
             android:layout_height="80dp"
-            android:background="@drawable/team_member_btn"
+            android:background="@drawable/teammember_btn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
@@ -27,7 +27,7 @@
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/company_manager_btn"
+            android:background="@drawable/companymanager_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonTeamMember"></ImageButton>
@@ -37,7 +37,7 @@
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/administrator_btn"
+            android:background="@drawable/administratorbtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonCompanyManager"></ImageButton>

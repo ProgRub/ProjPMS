@@ -42,7 +42,8 @@
                 android:layout_marginLeft="290dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginBottom="94dp"
-                android:background="@drawable/edit_sighting_btn">
+                android:clickable="true"
+                android:background="@drawable/editsighting_btn">
 
             </ImageButton>
 

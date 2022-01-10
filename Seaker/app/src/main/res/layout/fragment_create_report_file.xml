@@ -191,7 +191,8 @@
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/create_summary_btn"
+                android:clickable="true"
+                android:background="@drawable/createsummary_btn"
                 ></ImageButton>
 
             <LinearLayout
@@ -401,7 +402,8 @@
                     android:layout_width="200dp"
                     android:layout_height="70dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/export_report_btn"
+                    android:clickable="true"
+                    android:background="@drawable/exportreport_btn"
                     ></ImageButton>
 
                 <ImageButton
@@ -409,7 +411,8 @@
                     android:layout_gravity="center"
                     android:layout_width="200dp"
                     android:layout_height="70dp"
-                    android:background="@drawable/share_via_email_btn"
+                    android:clickable="true"
+                    android:background="@drawable/shareviaemail_btn"
                     ></ImageButton>
 
             </LinearLayout>
