@@ -23,7 +23,7 @@ public class DataViewModel extends ViewModel {
     private String vesselID;
     private String tripFrom;
     private String tripTo;
-    private String userType;
+    private String userType = "Administrator";
 
     public void setReportedSighingId(String value) {
         reportedSightingId = value;

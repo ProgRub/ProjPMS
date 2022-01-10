@@ -19,6 +19,7 @@ import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
+import com.example.seaker.business.BusinessFacade;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -65,7 +66,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         Context cont = (Context) getActivity().getApplicationContext();
         ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont,"notSubmittedSightings");
 
-        if(ReportSightingFragment.isInternetWorking()){
+        if(BusinessFacade.getInstance().isInternetWorking()){
 
             if(!sightings.isEmpty()){
                 for(int i=0;i<sightings.size();i++){

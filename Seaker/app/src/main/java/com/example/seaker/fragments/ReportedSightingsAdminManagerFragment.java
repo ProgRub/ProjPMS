@@ -18,6 +18,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.seaker.DataViewModel;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.database.DTOs.AnimalDTO;
+import com.example.seaker.database.DTOs.SightingDTO;
 
 import java.io.Console;
 import java.time.LocalDateTime;
@@ -25,14 +28,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReportedSightingsAdminManagerFragment extends BaseFragment {
-
-    private DataViewModel model;
     private LinearLayout recentSightings;
     private ImageButton backBtn;
     private LinearLayout otherSightings;
+    private BaseFragment backFragment;
 
     public ReportedSightingsAdminManagerFragment() {
         // Required empty public constructor
+    }
+
+    public ReportedSightingsAdminManagerFragment(BaseFragment backFragment) {
+        this.backFragment=backFragment;
     }
 
 
@@ -41,45 +47,133 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reported_sightings_admin_manager, container, false);
+        recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
+        otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
+        backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {MainActivity.switchFragment(backFragment);
+            }
+        });
 
-        onStartView(view);
+        for (SightingDTO sighting:BusinessFacade.getInstance().getAllSightings()) {
+            addSightingToView(sighting);
+        }
+//        String allSightings = ReportSightingFragment.getAllSightingsInformations("NULL");
+//        String[] si = allSightings.split("&&&");
+//        for(int j=0;j<si.length;j++) {
+//            String[] sighting = si[j].split("###");
+//            addSightingToView(sighting[0], true, sighting[1], sighting[2], sighting[3], sighting[4], sighting[5], sighting[6], sighting[10], sighting[8]);
+//        }
+//        onStartView(view);
 
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void onStartView(View view){
-        recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
-        otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
-
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
-
-        backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(model.getUserType().equals("Administrator")) MainActivity.switchFragment(new AdminHomeFragment());
-                else if (model.getUserType().equals("CompanyManager")) MainActivity.switchFragment(new CompanyManagerHomeFragment());
-            }
-        });
-
-        String allSightings = ReportSightingFragment.getAllSightingsInformations("NULL");
-        String[] si = allSightings.split("&&&");
-        for(int j=0;j<si.length;j++) {
-            String[] sighting = si[j].split("###");
-            addSightingToView(sighting[0], true, sighting[1], sighting[2], sighting[3], sighting[4], sighting[5], sighting[6], sighting[10], sighting[8]);
-        }
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    private void onStartView(View view){
+//        recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
+//        otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
+//
+//        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
+//
+//        backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
+//        boolean isAdmin=BusinessFacade.getInstance().getSelectedRole().equals("Administrator");
+//        backBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(isAdmin) MainActivity.switchFragment(new AdminHomeFragment());
+//                else  MainActivity.switchFragment(new CompanyManagerHomeFragment());
+//            }
+//        });
+//
+//        String allSightings = ReportSightingFragment.getAllSightingsInformations("NULL");
+//        String[] si = allSightings.split("&&&");
+//        for(int j=0;j<si.length;j++) {
+//            String[] sighting = si[j].split("###");
+//            addSightingToView(sighting[0], true, sighting[1], sighting[2], sighting[3], sighting[4], sighting[5], sighting[6], sighting[10], sighting[8]);
+//        }
+//    }
 
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:
-    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void addSightingToView(SightingDTO sighting){
+        LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(R.layout.reported_sighting_box, null);
+
+        TextView sightingNumber = (TextView) v.findViewById(R.id.sighting_number);
+        TextView notSubmitted = (TextView) v.findViewById(R.id.not_submitted);
+        TextView date = (TextView) v.findViewById(R.id.date);
+        TextView time = (TextView) v.findViewById(R.id.time);
+        TextView sightingSpecies = (TextView) v.findViewById(R.id.sighting_species);
+        TextView reportedBy = (TextView) v.findViewById(R.id.reported_by);
+
+        ImageButton editSightingBtn = (ImageButton) v.findViewById(R.id.edit_sighting_btn);
+
+        String species_ = "";
+        ArrayList<AnimalDTO> sightedAnimals = (ArrayList<AnimalDTO>) sighting.getSightedAnimals();
+        for(int k=0;k<sightedAnimals.size()-1;k++){
+            species_ += sightedAnimals.get(k).getSpeciesName() + ", ";
+        }
+        species_ += sightedAnimals.get(sightedAnimals.size()-1).getSpeciesName();
+//        for (AnimalDTO animal: sightedAnimals) {
+//            species_+=animal.getSpeciesName()+", "
+//        }
+//        for(int k=0;k<sighting.getSightedAnimals()..size()-1;k++){
+//            species_ += species_name.get(k) + ", ";
+//        }
+//        species_ += species_name.get(species_name.size()-1);
+
+        //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
+//        editSightingBtn.setOnClickListener(item -> {
+//            model.setReportedSighingId(sighting_id);
+//            model.setDate(sighting_date);
+//            model.setTime(sighting_time);
+//            model.setSea_state(Integer.parseInt(sea_state));
+//            model.setLatitude(latitude);
+//            model.setLongitude((longitude));
+//            model.setComment(comment);
+//            model.setSpecies(species_name);
+//            model.setN_individuals(n_individuals);
+//            model.setN_offspring(n_offspring);
+//            model.setTrust_level(trust_level);
+//            model.setReactions(reactions);
+//            model.setBehaviors(behaviors);
+//            MainActivity.switchFragment(new EditSightingFragment());
+//        });
+
+        sightingNumber.setText("Sighting #" + sighting.getId());
+        String sightingDate = sighting.getDay().format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
+        String sightingTime = sighting.getTime().toString();
+        date.setText(sightingDate);
+        time.setText(sightingTime);
+        sightingSpecies.setText(species_);
+        reportedBy.setText(BusinessFacade.getInstance().getUserByID(sighting.getTeamMemberId()).getName());
+
+        if(sighting.isSubmitted()){
+            notSubmitted.setVisibility(View.GONE);
+        }
+
+        //Verificar se já passaram 24h:
+        String dateTimeString = sightingDate +" "+ sightingTime;
+        String format = getLocalDateTimeFormatterString(sightingDate, sightingTime);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
+        LocalDateTime after24h = dateTime.plusHours(24);
+
+        if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
+            recentSightings.addView(v);
+        }else{ //mais de 24h
+            otherSightings.addView(v);
+        }
+    }
     private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String species, String person_name ){
         LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.reported_sighting_box, null);
@@ -127,22 +221,22 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         species_ += species_name.get(species_name.size()-1);
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
-        editSightingBtn.setOnClickListener(item -> {
-            model.setReportedSighingId(sighting_id);
-            model.setDate(sighting_date);
-            model.setTime(sighting_time);
-            model.setSea_state(Integer.parseInt(sea_state));
-            model.setLatitude(latitude);
-            model.setLongitude((longitude));
-            model.setComment(comment);
-            model.setSpecies(species_name);
-            model.setN_individuals(n_individuals);
-            model.setN_offspring(n_offspring);
-            model.setTrust_level(trust_level);
-            model.setReactions(reactions);
-            model.setBehaviors(behaviors);
-            MainActivity.switchFragment(new EditSightingFragment());
-        });
+//        editSightingBtn.setOnClickListener(item -> {
+//            model.setReportedSighingId(sighting_id);
+//            model.setDate(sighting_date);
+//            model.setTime(sighting_time);
+//            model.setSea_state(Integer.parseInt(sea_state));
+//            model.setLatitude(latitude);
+//            model.setLongitude((longitude));
+//            model.setComment(comment);
+//            model.setSpecies(species_name);
+//            model.setN_individuals(n_individuals);
+//            model.setN_offspring(n_offspring);
+//            model.setTrust_level(trust_level);
+//            model.setReactions(reactions);
+//            model.setBehaviors(behaviors);
+//            MainActivity.switchFragment(new EditSightingFragment());
+//        });
 
         sightingNumber.setText("Sighting #" + sighting_id);
         date.setText(sighting_date);

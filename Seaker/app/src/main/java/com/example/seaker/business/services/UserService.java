@@ -1,7 +1,9 @@
 package com.example.seaker.business.services;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.business.ErrorType;
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.repositories.UserRepository;
@@ -109,6 +111,17 @@ public class UserService {
             if(user.getEmail().equals(loginCredentials.getEmail()))
                 loggedInUser=user;
         }
+        SharedPreferences pref = BusinessFacade.getInstance().getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("isLogged", selectedRole);
+        if(loginCredentials.getType()=="TeamMember"){
+            editor.putString("userId", String.valueOf(loggedInUser.getId()));
+            editor.putString("userName", loggedInUser.getName());
+            editor.putString("vesselID", String.valueOf(SightingsService.getInstance().getCurrentBoat().getId()));
+            editor.putString("tripFrom", SightingsService.getInstance().getStartingZone().getName());
+            editor.putString("tripTo", SightingsService.getInstance().getEndingZone().getName());
+        }
+        editor.commit();
 //        Context cont = (Context) getActivity().getApplicationContext();
 //        saveArrayListToSD(cont, "person_boat_zones", loginCredentials);
         return ErrorType.NoError;
@@ -124,6 +137,15 @@ public class UserService {
 
     public UserDTO getLoggedInUser() {
         return loggedInUser;
+    }
+
+    public void setLoggedInUser(long userId) {
+        for (UserDTO user:userRepository.getAll()) {
+            if(user.getId()==userId) {
+                loggedInUser=user;
+                return;
+            }
+        }
     }
 
 

@@ -1208,7 +1208,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
 
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
-            if(isInternetWorking()){
+            if(BusinessFacade.getInstance().isInternetWorking()){
                 insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
             } else {
                 insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getPersonName(), getVesselId(), animal, getTripFrom(), getTripTo());
@@ -1277,7 +1277,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
 
         //se ocorrer um erro na publicação da mensagem, é guardada localmente até ser possível envia-la:
-        if(!isInternetWorking() && !mqtt.isConnected()){
+        if(!BusinessFacade.getInstance().isInternetWorking() && !mqtt.isConnected()){
             insertSightingJsonStringIntoFile(jsonAsString);
         }else{
             mqtt.publish(getContext(), jsonAsString);
@@ -1559,22 +1559,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    public static boolean isInternetWorking() { //VERIFICA CONEXÃO COM A BD
-        try {
-            HttpURLConnection.setFollowRedirects(false);
-            URL url = new URL("http://" + ip + "/seaker/getallboats.php");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(1000);
-            connection.connect();
-            return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
-        } catch (java.net.SocketTimeoutException e) {
-            return false;
-        }
-        catch (IOException e) {
-            return false;
-        }
-    }
 
     private String getIdPerson(){
         Context cont = (Context) getActivity().getApplicationContext();

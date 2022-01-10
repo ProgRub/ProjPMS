@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
+import com.example.seaker.business.BusinessFacade;
 
 public class SplashFragment extends BaseFragment {
 
@@ -22,6 +23,8 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BusinessFacade.getInstance().setContext(getActivity().getApplicationContext());
+        BusinessFacade.getInstance().loadPreferences();
         Handler handler = new Handler();
         Runnable runnable = () -> {
             //Second fragment after 2 seconds appears

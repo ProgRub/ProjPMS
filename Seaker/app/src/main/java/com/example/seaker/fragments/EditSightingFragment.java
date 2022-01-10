@@ -1247,7 +1247,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         if (sighting_submitted){
             String sighting_id_number = sighting_id.substring(1);
 
-            if(ReportSightingFragment.isInternetWorking()){
+            if(BusinessFacade.getInstance().isInternetWorking()){
                 ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, animal);
                 showHandler(view, "Sighting successfully edited!");
             } else {
@@ -1259,7 +1259,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             int index = Integer.parseInt(index_sighting)-1;
             Context cont = (Context) getActivity().getApplicationContext();
 
-            if(ReportSightingFragment.isInternetWorking()){
+            if(BusinessFacade.getInstance().isInternetWorking()){
                 ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
                 showHandler(view, "Sighting submitted!");
                 deleteArrayList(index);
@@ -1303,7 +1303,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         if (sighting_submitted){
             String sighting_id_number = sighting_id.substring(1);
 
-            if(ReportSightingFragment.isInternetWorking()){
+            if(BusinessFacade.getInstance().isInternetWorking()){
                 ReportSightingFragment.deleteSightingInformation(sighting_id_number);
                 showHandler(view, "Sighting successfully deleted!");
             } else {
