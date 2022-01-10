@@ -94,7 +94,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private SeekBar beaufortSeekBar;
     private LinearLayout sightingInformationsLayout;
     private ImageView noSelectedSpecies;
-    private BusinessFacade businessFacade;
     private ImageButton takePhoto;
     private ImageButton uploadPhoto;
     private Button whalesBtn;
@@ -104,7 +103,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<ImageButton> dolphinSpeciesBtns;
     private ArrayList<ImageButton> porpoiseSpeciesBtns;
     private ImageButton reportSightingBtn;
-    private DataViewModel model;
     private JsonWriter jsonWriter;
     private AutoCompleteTextView searchBar;
     private LinearLayout navSightingBoxBtns;
@@ -134,7 +132,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
 
         jsonWriter = new JsonWriter();
-        businessFacade = BusinessFacade.getInstance();
 
         try {
             mqtt = MQTTHelper.getInstance(getActivity().getApplicationContext());
@@ -149,7 +146,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     }
 
     private void onStartView(View view){
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
         clickedCoordinatesOnce = false;
 
         sightingDate = (EditText) view.findViewById(R.id.pickDate);
@@ -376,9 +372,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         });
 
         LatLng coordenadas = new LatLng(0, 0);
-        if(model.getTripFrom().contains("Funchal")) coordenadas = new LatLng(32.645621, -16.909784);
-        else if(model.getTripFrom().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
-        else if(model.getTripFrom().contains("Câmara de Lobos")) coordenadas = new LatLng(32.647886, -16.974977);
+        if(BusinessFacade.getInstance().getStartingZone().getName().contains("Funchal")) coordenadas = new LatLng(32.645621, -16.909784);
+        else if(BusinessFacade.getInstance().getStartingZone().getName().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
+        else if(BusinessFacade.getInstance().getStartingZone().getName().contains("Câmara de Lobos")) coordenadas = new LatLng(32.647886, -16.974977);
 
         map.addMarker(new MarkerOptions().position(coordenadas).title("Departure"));
         moveToCurrentLocation(coordenadas);
