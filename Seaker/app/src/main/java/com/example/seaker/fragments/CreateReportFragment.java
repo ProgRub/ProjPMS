@@ -5,10 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -16,15 +13,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,9 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -44,34 +35,31 @@ import androidx.fragment.app.FragmentContainerView;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SpecieSummary;
+import com.example.seaker.jsonwriter.SummaryJson;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
 
-import org.apache.poi.sl.usermodel.Line;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.TextAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.json.JSONException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
+import com.example.seaker.jsonwriter.JsonWriter;
 
 public class CreateReportFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -93,7 +81,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private int pageHeight = 1120;
     private int pagewidth = 792;
     private File pdfFile;
-    private File docxFile;
     private ArrayList<SpecieSummary> speciesSummary;
     private ArrayList<LatLng> coordinatesFromSummary;
     private TextView totalWhalesAnimals;
@@ -103,7 +90,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private TextView whalesTitle;
     private TextView dolphinsTitle;
     private TextView porpoisesTitle;
-
+    private JsonWriter jsonWriter;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
     public CreateReportFragment() {
@@ -123,13 +110,13 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         View view = inflater.inflate(R.layout.fragment_create_report_file, container, false);
         SetButtonOnClickNextFragment(R.id.buttonBack,new CompanyManagerHomeFragment(),view);
 
+        jsonWriter = new JsonWriter();
         onStartView(view);
 
         return view;
     }
 
     private void onStartView(View view){
-
         speciesSummary = new ArrayList<SpecieSummary>();
         coordinatesFromSummary = new ArrayList<LatLng>();
 
@@ -208,7 +195,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                 }else if(docxFormat.isChecked()){
                     generateDocx(true);
                 }else if(jsonFormat.isChecked()){
-                    //generateJson(true);
+                    generateJson(true);
                 }else{
                     ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
                 }
@@ -225,8 +212,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                     generateDocx(false);
                     sendViaEmail("docx");
                 }else if(jsonFormat.isChecked()){
-                    //generateJson(true);
-                    //sendViaEmail("json");
+                    generateJson(true);
+                    sendViaEmail("json");
                 }else{
                     ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
                 }
@@ -239,7 +226,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             requestPermission();
         }
     }
-
 
     private void addSpecieSummary(String specie, String percent, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostTrustLvl, String mostSightedIn){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -408,7 +394,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         mapBox.setVisibility(View.VISIBLE); //ADICIONAR AS COORDENADAS ANTES DE TORNAR O MAPA VISIVEL !!!
 
         //Apenas para testar:
-        nrSightingsFound.setText("X" + " sightings found."); //ALTERAR COM VALOR CORRETO
+        nrSightingsFound.setText("X"+ " sightings found."); //ALTERAR COM VALOR CORRETO
         totalNrAnimals.setText("Total number of animals: " + "X"); //ALTERAR COM VALOR CORRETO
         totalWhalesAnimals.setText("- " + "X" + " Whales "+ "X%"); //ALTERAR COM VALOR CORRETO
         totalDolphinsAnimals.setText("- " + "X" + " Dolphins "+ "X%"); //ALTERAR COM VALOR CORRETO
@@ -419,7 +405,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         addSpecieSummary("Fin Whale", "10%", "22", "1", "Other",  "High", "Desertas Island");
         addSpecieSummary("Bottlenose Dolphin", "5%", "15", "2", "Other",  "Low", "Cabo Girão");
         addSpecieSummary("Harbour Porpoise", "2%", "7", "1", "Other",  "Middle", "Porto Santo");
-
     }
 
     //NOTAS -> MÉTODO CREATESUMMARY:
@@ -523,8 +508,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
         Canvas canvas = myPage.getCanvas();
 
-        //canvas.drawBitmap(scaledbmp, 56, 40, paint);
-
         title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         title.setTextSize(50);
         title.setColor(ContextCompat.getColor(getActivity(), R.color.dark_blue));
@@ -543,30 +526,55 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
         PdfDocument.PageInfo pageInfo;
         PdfDocument.Page speciePage;
+        Canvas specieCanvas;
+        pageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
+        speciePage = pdfDocument.startPage(pageInfo);
+        specieCanvas = speciePage.getCanvas();
+
+        Integer pageNumber = 1;
+        Integer paragraphY = 150;
         for(SpecieSummary specieSummary : speciesSummary){
-            pageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
 
-            speciePage = pdfDocument.startPage(pageInfo);
-            Canvas specieCanvas = speciePage.getCanvas();
-
-            title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-            title.setTextSize(34);
-            title.setColor(ContextCompat.getColor(getActivity(), R.color.dark_blue));
-            title.setTextAlign(Paint.Align.LEFT);
-            specieCanvas.drawText(specieSummary.getSpecie(), 50, 150, title);
+            if(pageNumber%2 != 0 && pageNumber != 1) {
+                paragraphY = 150;
+                pageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
+                speciePage = pdfDocument.startPage(pageInfo);
+                specieCanvas = speciePage.getCanvas();
+            }else if(pageNumber%2 == 0){
+                paragraphY += 150;
+            }
 
             title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             title.setTextSize(30);
+            title.setColor(ContextCompat.getColor(getActivity(), R.color.dark_blue));
+            title.setTextAlign(Paint.Align.LEFT);
+            specieCanvas.drawText(specieSummary.getSpecie(), 50, paragraphY, title);
+            paragraphY += 50;
+
+            title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+            title.setTextSize(26);
             title.setColor(ContextCompat.getColor(getActivity(), R.color.black));
             title.setTextAlign(Paint.Align.LEFT);
-            //specieCanvas.drawText("- Total number of animals: "+specieSummary.getTotalNrIndividuals(), 50, 200, title);
-            //            specieCanvas.drawText("- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting(), 50, 240, title);
-            //            specieCanvas.drawText("- Most common behavior type: "+specieSummary.getMostCommonBehavior(), 50, 280, title);
-            //            specieCanvas.drawText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction(), 50, 320, title);
-            //            specieCanvas.drawText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort(), 50, 360, title);
-            //            specieCanvas.drawText("- Average trust level: "+specieSummary.getAverageTrustLvl(), 50, 400, title);
-            //            specieCanvas.drawText("- Photos: "+specieSummary.getNrPhotos(), 50, 440, title);
+            specieCanvas.drawText("- Percentage of Animals: "+specieSummary.getPercent(), 50, paragraphY, title);
+            paragraphY += 40;
+            specieCanvas.drawText("- Total number of individuals: "+specieSummary.getTotalNrIndividuals(), 50, paragraphY, title);
+            paragraphY += 40;
+            specieCanvas.drawText("- Average number of individuals per sighting: "+specieSummary.getAverageNrIndividualsPerSighting(), 50, paragraphY, title);
+            paragraphY += 40;
+            specieCanvas.drawText("- Most common behavior type: "+specieSummary.getMostCommonBehavior(), 50, paragraphY, title);
+            paragraphY += 40;
+            specieCanvas.drawText("- Average trust level: "+specieSummary.getAverageTrustLvl(), 50, paragraphY, title);
+            paragraphY += 40;
+            specieCanvas.drawText("- Most Sighted In: "+specieSummary.getMostSightedIn(), 50, paragraphY, title);
+            paragraphY += 40;
 
+            if(pageNumber%2 == 0) {
+                pdfDocument.finishPage(speciePage);
+            }
+            pageNumber++;
+        }
+
+        if(pageNumber%2 == 0){
             pdfDocument.finishPage(speciePage);
         }
 
@@ -627,15 +635,20 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
             xwpfRun.addBreak(BreakType.PAGE);
 
-            int size = speciesSummary.size();
             int i = 1;
             for(SpecieSummary specieSummary : speciesSummary){
+
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
                 xwpfRun.setColor("0051AD");
                 xwpfRun.setText(specieSummary.getSpecie());
                 xwpfRun.setFontSize(18);
                 xwpfRun.setBold(true);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Percentage of Animals: "+specieSummary.getPercent());
+                xwpfRun.setFontSize(18);
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
@@ -654,25 +667,21 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
-                //xwpfRun.setText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction());
-                xwpfRun.setFontSize(18);
-
-                xwpfParagraph = xwpfDocument.createParagraph();
-                xwpfRun = xwpfParagraph.createRun();
-                //xwpfRun.setText("- Average Beaufort sea state: "+specieSummary.getAverageBeaufort());
-                xwpfRun.setFontSize(18);
-
-                xwpfParagraph = xwpfDocument.createParagraph();
-                xwpfRun = xwpfParagraph.createRun();
                 xwpfRun.setText("- Average trust level: "+specieSummary.getAverageTrustLvl());
                 xwpfRun.setFontSize(18);
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
-                //xwpfRun.setText("- Photos: "+specieSummary.getNrPhotos());
+                xwpfRun.setText("- Most Sighted In: "+specieSummary.getMostSightedIn());
                 xwpfRun.setFontSize(18);
 
-                if(size != i) xwpfRun.addBreak(BreakType.PAGE);
+                if(i%2 == 0 && i != speciesSummary.size()){
+                    xwpfRun.addBreak(BreakType.PAGE);
+                }else{
+                    for(int j = 0; j < 4; j++){
+                        xwpfParagraph = xwpfDocument.createParagraph(); xwpfRun = xwpfParagraph.createRun();
+                    }
+                }
                 i++;
             }
 
@@ -693,6 +702,20 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
+    private void generateJson(boolean export){
+        ArrayList<SummaryJson> summaryJsons = new ArrayList<>();
+        for(SpecieSummary specieSummary : speciesSummary){
+            summaryJsons.add(new SummaryJson(specieSummary.getSpecie(), specieSummary.getPercent(), specieSummary.getTotalNrIndividuals(), specieSummary.getAverageNrIndividualsPerSighting(), specieSummary.getMostCommonBehavior(), specieSummary.getAverageTrustLvl(), specieSummary.getMostSightedIn()));
+        }
+        try {
+            jsonWriter.createSpecieSummaryJson(summaryJsons, startDate.getText().toString(), endDate.getText().toString());
+            if(export) Toast.makeText(getActivity(), "JSON file generated successfully.", Toast.LENGTH_SHORT).show();
+        } catch (JSONException | IOException e) {
+            Toast.makeText(getActivity(), "Couldn't export the JSON file.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
     private void sendViaEmail(String format){
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("text/plain");
@@ -707,6 +730,9 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
         else if(format == "docx"){
             Uri uri = FileProvider.getUriForFile(getContext(),"com.example.seaker.provider", new File(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.docx"));
+            emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        }else if(format == "json"){
+            Uri uri = FileProvider.getUriForFile(getContext(),"com.example.seaker.provider", new File(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.json"));
             emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
         }
 

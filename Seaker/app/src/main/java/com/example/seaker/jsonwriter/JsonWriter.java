@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.seaker.MQTTHelper;
 import com.example.seaker.MainActivity;
@@ -12,9 +13,11 @@ import com.example.seaker.database.DTOs.AnimalDTO;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -65,5 +68,35 @@ public class JsonWriter {
             e.printStackTrace();
             return "null";
         }
+    }
+
+
+    public void createSpecieSummaryJson(ArrayList<SummaryJson> summaries, String startDate, String endDate) throws JSONException, IOException {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("StartDate", startDate);
+            jsonObject.put("EndDate", endDate);
+
+            JSONArray speciesArray = new JSONArray();
+            for(SummaryJson summary : summaries){
+                JSONObject summaryJsonObject = new JSONObject();
+                summaryJsonObject.put("Specie", summary.getSpecie());
+                summaryJsonObject.put("AnimalsPercentage", summary.getPercent());
+                summaryJsonObject.put("TotalNumberIndividuals", summary.getTotalNrIndividuals());
+                summaryJsonObject.put("AverageNumberIndividualsPerSighting", summary.getAverageNrIndividualsPerSighting());
+                summaryJsonObject.put("MostCommonBehavior", summary.getMostCommonBehavior());
+                summaryJsonObject.put("AverageTrustLevel", summary.getAverageTrustLvl());
+                summaryJsonObject.put("MostSightedIn", summary.getMostSightedIn());
+                speciesArray.put(summaryJsonObject);
+            }
+
+            jsonObject.put("SpeciesSummary", speciesArray);
+
+            Log.e("TESTING", jsonObject.toString());
+
+            FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.json");
+            fileWriter.write(jsonObject.toString());
+            fileWriter.close();
+
     }
 }
