@@ -215,7 +215,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                     generateDocx(false);
                     sendViaEmail("docx");
                 }else if(jsonFormat.isChecked()){
-                    generateJson(true);
+                    generateJson(false);
                     sendViaEmail("json");
                 }else{
                     ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "Choose a file format.");
@@ -230,7 +230,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
-    private void addSpecieSummary(String specie, String percent, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostTrustLvl, String mostSightedIn){
+    private void addSpecieSummary(String specie, String percent, String nrIndiv, String averageNrIndiv, String mostComBeh, String mostComReact, String mostTrustLvl, String mostSightedIn){
         LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.summary_specie_layout, null);
 
@@ -250,6 +250,9 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         TextView mostCommonBehavior = (TextView) v.findViewById(R.id.most_common_behavior);
         mostCommonBehavior.setText(mostComBeh);
 
+        TextView mostComReaction = (TextView) v.findViewById(R.id.most_common_reaction);
+        mostComReaction.setText(mostComReact);
+
         TextView mostCommonReaction = (TextView) v.findViewById(R.id.most_common_trust_lvl);
         mostCommonReaction.setText(mostTrustLvl);
 
@@ -262,7 +265,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         //
         //        addPhotosOfSummary(v, n);
 
-        speciesSummary.add( new SpecieSummary(v, specie, percent, nrIndiv, averageNrIndiv, mostComBeh, mostTrustLvl, mostSightedIn));
+        speciesSummary.add( new SpecieSummary(v, specie, percent, nrIndiv, averageNrIndiv, mostComBeh, mostComReact, mostTrustLvl, mostSightedIn));
 
         TextView cell1 = (TextView) v.findViewById(R.id.cell1);
         TextView cell2 = (TextView) v.findViewById(R.id.cell2);
@@ -270,6 +273,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         TextView cell4 = (TextView) v.findViewById(R.id.cell4);
         TextView cell5 = (TextView) v.findViewById(R.id.cell5);
         TextView cell6 = (TextView) v.findViewById(R.id.cell6);
+        TextView cell7 = (TextView) v.findViewById(R.id.cell7);
 
         int color;
         if(specie.contains("Whale")){
@@ -282,6 +286,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             cell4.setBackgroundColor(color);
             cell5.setBackgroundColor(color);
             cell6.setBackgroundColor(color);
+            cell7.setBackgroundColor(color);
             ((LinearLayout) summary.findViewById(R.id.whales_summary)).addView(v);
         }
         else if(specie.contains("Dolphin")){
@@ -293,6 +298,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             cell4.setBackgroundColor(color);
             cell5.setBackgroundColor(color);
             cell6.setBackgroundColor(color);
+            cell7.setBackgroundColor(color);
             ((LinearLayout) summary.findViewById(R.id.dolphins_summary)).addView(v);
         }
         else if(specie.contains("Porpoise")){
@@ -304,6 +310,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             cell4.setBackgroundColor(color);
             cell5.setBackgroundColor(color);
             cell6.setBackgroundColor(color);
+            cell7.setBackgroundColor(color);
             ((LinearLayout) summary.findViewById(R.id.porpoises_summary)).addView(v);
         }
     }
@@ -435,10 +442,10 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         totalPorpoiseAnimals.setText("- " + "X" + " Porpoises "+ "X%"); //ALTERAR COM VALOR CORRETO
 
         //Adicionar as espécies dos avistamentos encontrados:
-        addSpecieSummary("Blue Whale", "12%", "27", "3", "Social Interaction",  "High", "Cais do Sardinha");
-        addSpecieSummary("Fin Whale", "10%", "22", "1", "Other",  "High", "Desertas Island");
-        addSpecieSummary("Bottlenose Dolphin", "5%", "15", "2", "Other",  "Low", "Cabo Girão");
-        addSpecieSummary("Harbour Porpoise", "2%", "7", "1", "Other",  "Middle", "Porto Santo");
+        addSpecieSummary("Blue Whale", "12%", "27", "3", "Social Interaction",  "None","High", "Cais do Sardinha");
+        addSpecieSummary("Fin Whale", "10%", "22", "1", "Other",  "Approach","High", "Desertas Island");
+        addSpecieSummary("Bottlenose Dolphin", "5%", "15", "2", "Other",  "Approach","Low", "Cabo Girão");
+        addSpecieSummary("Harbour Porpoise", "2%", "7", "1", "Other",  "None","Middle", "Porto Santo");
     }
 
     //NOTAS -> MÉTODO CREATESUMMARY:
@@ -597,6 +604,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             paragraphY += 40;
             specieCanvas.drawText("- Most common behavior type: "+specieSummary.getMostCommonBehavior(), 50, paragraphY, title);
             paragraphY += 40;
+            specieCanvas.drawText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction(), 50, paragraphY, title);
+            paragraphY += 40;
             specieCanvas.drawText("- Average trust level: "+specieSummary.getAverageTrustLvl(), 50, paragraphY, title);
             paragraphY += 40;
             specieCanvas.drawText("- Most Sighted In: "+specieSummary.getMostSightedIn(), 50, paragraphY, title);
@@ -701,6 +710,11 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
                 xwpfParagraph = xwpfDocument.createParagraph();
                 xwpfRun = xwpfParagraph.createRun();
+                xwpfRun.setText("- Most common reaction to vessel: "+specieSummary.getMostCommonReaction());
+                xwpfRun.setFontSize(18);
+
+                xwpfParagraph = xwpfDocument.createParagraph();
+                xwpfRun = xwpfParagraph.createRun();
                 xwpfRun.setText("- Average trust level: "+specieSummary.getAverageTrustLvl());
                 xwpfRun.setFontSize(18);
 
@@ -739,7 +753,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private void generateJson(boolean export){
         ArrayList<SummaryJson> summaryJsons = new ArrayList<>();
         for(SpecieSummary specieSummary : speciesSummary){
-            summaryJsons.add(new SummaryJson(specieSummary.getSpecie(), specieSummary.getPercent(), specieSummary.getTotalNrIndividuals(), specieSummary.getAverageNrIndividualsPerSighting(), specieSummary.getMostCommonBehavior(), specieSummary.getAverageTrustLvl(), specieSummary.getMostSightedIn()));
+            summaryJsons.add(new SummaryJson(specieSummary.getSpecie(), specieSummary.getPercent(), specieSummary.getTotalNrIndividuals(), specieSummary.getAverageNrIndividualsPerSighting(), specieSummary.getMostCommonBehavior(), specieSummary.getMostCommonReaction(), specieSummary.getAverageTrustLvl(), specieSummary.getMostSightedIn()));
         }
         try {
             jsonWriter.createSpecieSummaryJson(summaryJsons, startDate.getText().toString(), endDate.getText().toString());

@@ -23,8 +23,8 @@
 
     <EditText
         android:id="@+id/email_input"
-        android:layout_width="366dp"
-        android:layout_height="100dp"
+        android:layout_width="340dp"
+        android:layout_height="80dp"
         android:background="@drawable/login_input"
         android:ems="10"
         android:inputType="textEmailAddress"
@@ -42,14 +42,14 @@
 
     <EditText
         android:id="@+id/password_input"
-        android:layout_width="366dp"
-        android:layout_height="100dp"
+        android:layout_width="340dp"
+        android:layout_height="80dp"
         android:background="@drawable/login_input"
         android:ems="10"
-        android:inputType="textPassword"
-        android:singleLine="true"
         android:gravity="center"
+        android:inputType="textPassword"
         android:maxLength="20"
+        android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,19 +57,20 @@
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_input"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.052" />
 
     <ImageButton
         android:id="@+id/login_btn"
-        android:layout_width="191dp"
-        android:layout_height="61dp"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
         android:layout_marginTop="42dp"
         android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
         android:clickable="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/loginbtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_input"
         app:layout_constraintVertical_bias="0.0" />

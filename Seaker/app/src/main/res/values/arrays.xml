@@ -1,26 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="vessels_array">
-        <item> </item>
-        <item>Miranda Semi-Rigid Vessel</item>
-        <item>Luna Semi-Rigid Vessel</item>
-        <item>Seaborn Catamaran</item>
-        <item>Sunset Catamaran</item>
-        <item>Prince Ali Yacht</item>
-    </string-array>
-
-    <string-array name="trip_from_array">
-        <item> </item>
-        <item>Funchal</item>
-        <item>Porto Santo</item>
-    </string-array>
-
-    <string-array name="trip_to_array">
-        <item> </item>
-        <item>Cabo Girão (Câmara de Lobos)</item>
-        <item>Cais do Sardinha (Caniçal)</item>
-        <item>Desertas</item>
-        <item>Selvagens</item>
-    </string-array>
 
 </resources>

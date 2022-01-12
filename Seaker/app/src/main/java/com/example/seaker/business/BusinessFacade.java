@@ -113,6 +113,10 @@ public class BusinessFacade {
         return UserService.getInstance().getLoggedInUser();
     }
 
+    public void setLoggedInUser(Long userID) {
+        UserService.getInstance().setLoggedInUser(userID);
+    }
+
     public Iterable<SightingDTO> getAllSightings(){return SightingsService.getInstance().getAllSightings();}
 
     //    public void saveArrayListToSD(Context mContext, String filename, ArrayList<ArrayList<String>> list){

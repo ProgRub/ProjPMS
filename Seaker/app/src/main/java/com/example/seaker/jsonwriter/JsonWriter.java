@@ -85,14 +85,13 @@ public class JsonWriter {
                 summaryJsonObject.put("TotalNumberIndividuals", summary.getTotalNrIndividuals());
                 summaryJsonObject.put("AverageNumberIndividualsPerSighting", summary.getAverageNrIndividualsPerSighting());
                 summaryJsonObject.put("MostCommonBehavior", summary.getMostCommonBehavior());
+                summaryJsonObject.put("MostCommonReaction", summary.getMostCommonReaction());
                 summaryJsonObject.put("AverageTrustLevel", summary.getAverageTrustLvl());
                 summaryJsonObject.put("MostSightedIn", summary.getMostSightedIn());
                 speciesArray.put(summaryJsonObject);
             }
 
             jsonObject.put("SpeciesSummary", speciesArray);
-
-            Log.e("TESTING", jsonObject.toString());
 
             FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.json");
             fileWriter.write(jsonObject.toString());

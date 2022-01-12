@@ -1203,11 +1203,17 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             animal += sighting.toString();
         }
 
+        String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat().getId());
+        String userID = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getId());
+        String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getName());
+        String tripFrom = String.valueOf(BusinessFacade.getInstance().getStartingZone().getName());
+        String tripTo = String.valueOf(BusinessFacade.getInstance().getEndingZone().getName());
+
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
             if(BusinessFacade.getInstance().isInternetWorking()){
-                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
+                insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, userID, boatID , animal, tripFrom, tripTo);
             } else {
-                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getPersonName(), getVesselId(), animal, getTripFrom(), getTripTo());
+                insertSightingInformationIntoFile(day, hour, sea_state, latitude_, longitude_, comment, userID, userName, boatID, animal, tripFrom, tripTo);
             }
 
             createJsonFile(); //CRIAR JSON FILE -> SISTEMA 2
@@ -1266,7 +1272,11 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
         String comment = editText3.getText().toString();
 
-        SightingJson sighting = new SightingJson(day, hour, latitude_, longitude_, animalJsons, sea_state, getVesselId(), comment, getPersonName());
+
+        String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat().getId());
+        String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getName());
+
+        SightingJson sighting = new SightingJson(day, hour, latitude_, longitude_, animalJsons, sea_state, boatID, comment, userName);
 
         String jsonAsString = jsonWriter.createSightingJson(sighting);
         jsonAsString = jsonAsString.replace("\\", "");
@@ -1540,7 +1550,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-
     public static ArrayList<ArrayList<String>> ReadArrayListFromSD(Context mContext,String filename){
         try {
             FileInputStream fis = mContext.openFileInput(filename + ".dat");
@@ -1555,35 +1564,4 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-
-    private String getIdPerson(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(0).get(0);
-    }
-
-    private String getPersonName(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(0).get(1);
-    }
-
-    private String getVesselId(){
-
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(0);
-    }
-
-    private String getTripFrom(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(1);
-    }
-
-    private String getTripTo(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(2);
-    }
 }

@@ -50,7 +50,7 @@
     <!-- Scroll Area Vertical -->
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="25dp"

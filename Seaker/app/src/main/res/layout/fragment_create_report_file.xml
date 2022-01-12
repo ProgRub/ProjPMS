@@ -49,7 +49,7 @@
     <!-- Scroll Area Vertical -->
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="380dp"
+        android:layout_width="340dp"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="25dp"
@@ -174,10 +174,11 @@
 
                 <EditText
                     android:id="@+id/photos_per_sighting"
-                    android:layout_width="130dp"
+                    android:layout_width="100dp"
                     android:layout_height="60dp"
                     android:background="@drawable/input_field"
                     android:ems="10"
+                    android:maxLength="2"
                     android:inputType="numberDecimal"
                     android:textColor="@color/black"
                     android:gravity="center"
@@ -188,8 +189,8 @@
             <ImageButton
                 android:id="@+id/create_summary_btn"
                 android:layout_gravity="center"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:background="@drawable/createsummary_btn"
@@ -224,7 +225,8 @@
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:layout_width="match_parent"
+                    android:layout_width="340dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:layout_height="300dp" />
 
@@ -399,8 +401,8 @@
                 <ImageButton
                     android:id="@+id/export_report_btn"
                     android:layout_gravity="center"
-                    android:layout_width="200dp"
-                    android:layout_height="70dp"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
                     android:layout_marginTop="20dp"
                     android:clickable="true"
                     android:background="@drawable/exportreport_btn"
@@ -409,8 +411,8 @@
                 <ImageButton
                     android:id="@+id/share_via_email_btn"
                     android:layout_gravity="center"
-                    android:layout_width="200dp"
-                    android:layout_height="70dp"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
                     android:clickable="true"
                     android:background="@drawable/shareviaemail_btn"
                     ></ImageButton>

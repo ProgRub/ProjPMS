@@ -10,17 +10,18 @@ public class SpecieSummary {
     private String totalNrIndividuals;
     private String averageNrIndividualsPerSighting;
     private String mostCommonBehavior;
+    private String mostCommonReaction;
     private String averageTrustLvl;
     private String mostSightedIn;
 
-
-    public SpecieSummary(View summary, String specie, String percent, String totalNrIndividuals, String averageNrIndividualsPerSighting, String mostCommonBehavior, String averageTrustLvl, String mostSightedIn) {
+    public SpecieSummary(View summary, String specie, String percent, String totalNrIndividuals, String averageNrIndividualsPerSighting, String mostCommonBehavior, String mostCommonReaction, String averageTrustLvl, String mostSightedIn) {
         this.summary = summary;
         this.specie = specie;
         this.percent = percent;
         this.totalNrIndividuals = totalNrIndividuals;
         this.averageNrIndividualsPerSighting = averageNrIndividualsPerSighting;
         this.mostCommonBehavior = mostCommonBehavior;
+        this.mostCommonReaction = mostCommonReaction;
         this.averageTrustLvl = averageTrustLvl;
         this.mostSightedIn = mostSightedIn;
     }
@@ -88,5 +89,13 @@ public class SpecieSummary {
 
     public void setMostSightedIn(String mostSightedIn) {
         this.mostSightedIn = mostSightedIn;
+    }
+
+    public String getMostCommonReaction() {
+        return mostCommonReaction;
+    }
+
+    public void setMostCommonReaction(String mostCommonReaction) {
+        this.mostCommonReaction = mostCommonReaction;
     }
 }

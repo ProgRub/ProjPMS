@@ -80,7 +80,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
             }
 
-            String allSightings = ReportSightingFragment.getAllSightingsInformations(getIdPerson());
+            String allSightings = ReportSightingFragment.getAllSightingsInformations(String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getId()));
             String[] si = allSightings.split("&&&");
             for(int j=0;j<si.length;j++){
                 String[] sighting = si[j].split("###");
