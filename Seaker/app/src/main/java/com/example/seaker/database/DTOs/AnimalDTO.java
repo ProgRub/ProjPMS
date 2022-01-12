@@ -86,4 +86,15 @@ public class AnimalDTO {
     public void setConfidenceLevel(String confidenceLevel) {
         this.confidenceLevel = confidenceLevel;
     }
+
+    @Override
+    public String toString() {
+        return speciesName + "*" +
+                amountOfAnimals + "*" +
+                amountOfOffspring + "*" +
+                confidenceLevel + "*" +
+                String.join(";",behaviours)+";" + "*" +
+                String.join(";",reactionsToBoat)+";"
+                ;
+    }
 }

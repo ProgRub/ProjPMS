@@ -31,7 +31,7 @@ public class SightingsService {
     }
 
     public void addNewSighting(SightingDTO sighting){
-
+        sightingRepository.add(sighting,startingZone,endingZone);
     }
 
     public ZoneDTO getEndingZone() {
@@ -90,4 +90,12 @@ public class SightingsService {
     }
 
     public Iterable<SightingDTO> getAllSightings(){return sightingRepository.getAll();}
+
+    public void editSighting(SightingDTO sightingToEdit) {
+        sightingRepository.editSighting(sightingToEdit);
+    }
+
+    public void deleteSighting(SightingDTO sightingToDelete){
+        sightingRepository.removeById(sightingToDelete.getId());
+    }
 }

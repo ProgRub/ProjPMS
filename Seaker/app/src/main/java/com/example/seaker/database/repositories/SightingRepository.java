@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.seaker.database.DTOs.AnimalDTO;
 import com.example.seaker.database.DTOs.SightingDTO;
+import com.example.seaker.database.DTOs.ZoneDTO;
 import com.example.seaker.database.specifications.ISpecification;
 
 import java.io.BufferedReader;
@@ -28,7 +29,48 @@ public class SightingRepository extends Repository<SightingDTO> {
     public void add(SightingDTO item) {
 
     }
+    public void add(SightingDTO item, ZoneDTO zoneFrom,ZoneDTO zoneTo){String insertSightingUrl = "http://" + ip + "/seaker/insertsighting.php";
+        try {
+            URL url = new URL(insertSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(item.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")), "UTF-8")+"&"
+                    + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getTime()), "UTF-8")+"&"
+                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getSeaStateBeaufort()), "UTF-8")+"&"
+                    + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getLatitude()), "UTF-8")+"&"
+                    + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getLongitude()), "UTF-8")+"&"
+                    + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(item.getComments(), "UTF-8")+"&"
+                    + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getTeamMemberId()), "UTF-8")+"&"
+                    + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getBoatId()), "UTF-8")+"&"
+                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(item.getSightedAnimalsToString(), "UTF-8")+"&"
+                    + URLEncoder.encode("trip_from", "UTF-8")+"="+URLEncoder.encode(zoneFrom.getName(), "UTF-8")+"&"
+                    + URLEncoder.encode("trip_to", "UTF-8")+"="+URLEncoder.encode(zoneTo.getName(), "UTF-8");
 
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public Iterable<SightingDTO> getAll() {
         String result = "";
@@ -100,6 +142,74 @@ public class SightingRepository extends Repository<SightingDTO> {
 
     @Override
     public void removeById(long itemId) {
+        String deleteSightingUrl = "http://" + ip + "/seaker/deletesightingbyid.php";
+        try {
+            URL url = new URL(deleteSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("id_sighting", "UTF-8")+"="+URLEncoder.encode(String.valueOf(itemId), "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void editSighting(SightingDTO sighting){
+        String updateSightingUrl = "http://" + ip + "/seaker/deleteandinsertsightingbyid.php";
+        try {
+            URL url = new URL(updateSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("id_sighting", "UTF-8")+"="+URLEncoder.encode(String.valueOf(sighting.getId()), "UTF-8")+"&"
+                    + URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(sighting.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")), "UTF-8")+"&"
+                    + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(String.valueOf(sighting.getTime()), "UTF-8")+"&"
+                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode(String.valueOf(sighting.getSeaStateBeaufort()), "UTF-8")+"&"
+                    + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(String.valueOf(sighting.getLatitude()), "UTF-8")+"&"
+                    + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(String.valueOf(sighting.getLongitude()), "UTF-8")+"&"
+                    + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(sighting.getComments(), "UTF-8")+"&"
+                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(sighting.getSightedAnimalsToString(), "UTF-8");
+
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String result = "";
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
