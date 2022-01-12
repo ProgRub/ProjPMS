@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,9 +56,19 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -418,27 +429,33 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         totalPorpoiseAnimals.setVisibility(View.VISIBLE);
         sightingSpecies.setVisibility(View.VISIBLE);
 
-        //Para testar inserção do pin nas coordenadas:
-        addCoordinatesFound(32.630313, -16.914312);
-        addCoordinatesFound(32.630579, -16.915613);
-        addCoordinatesFound(32.630859, -16.916211);
-        addCoordinatesFound(32.633579, -16.925613);
-        addCoordinatesFound(32.632859, -16.926211);
+        speciesSummary = new ArrayList<SpecieSummary>();
 
-        mapBox.setVisibility(View.VISIBLE); //ADICIONAR AS COORDENADAS ANTES DE TORNAR O MAPA VISIVEL !!!
+        String reportInfo = reportInformation(startDate.getText().toString(), endDate.getText().toString());
+        if (reportInfo != "No results"){
+            String[] info = reportInfo.split("###");
+            String[] allCoordinates = info[0].split("&&&");
 
-        //Apenas para testar:
-        nrSightingsFound.setText("X"+ " sightings found."); //ALTERAR COM VALOR CORRETO
-        totalNrAnimals.setText("Total number of animals: " + "X"); //ALTERAR COM VALOR CORRETO
-        totalWhalesAnimals.setText("- " + "X" + " Whales "+ "X%"); //ALTERAR COM VALOR CORRETO
-        totalDolphinsAnimals.setText("- " + "X" + " Dolphins "+ "X%"); //ALTERAR COM VALOR CORRETO
-        totalPorpoiseAnimals.setText("- " + "X" + " Porpoises "+ "X%"); //ALTERAR COM VALOR CORRETO
+            for(int j = 0; j < allCoordinates.length; j++) {
+                String[] coordinates = allCoordinates[j].split("\\*");
+                addCoordinatesFound(Double.parseDouble(coordinates[0]) , Double.parseDouble(coordinates[1]));
+            }
 
-        //Adicionar as espécies dos avistamentos encontrados:
-        addSpecieSummary("Blue Whale", "12%", "27", "3", "Social Interaction",  "High", "Cais do Sardinha");
-        addSpecieSummary("Fin Whale", "10%", "22", "1", "Other",  "High", "Desertas Island");
-        addSpecieSummary("Bottlenose Dolphin", "5%", "15", "2", "Other",  "Low", "Cabo Girão");
-        addSpecieSummary("Harbour Porpoise", "2%", "7", "1", "Other",  "Middle", "Porto Santo");
+            mapBox.setVisibility(View.VISIBLE); //ADICIONAR AS COORDENADAS ANTES DE TORNAR O MAPA VISIVEL !!!
+
+            String[] allAnimalsInfo = info[1].split("&&&");
+            nrSightingsFound.setText(allAnimalsInfo[0] + " sightings found.");
+            totalNrAnimals.setText("Total number of animals: " + allAnimalsInfo[1]);
+            totalWhalesAnimals.setText("- " + allAnimalsInfo[2] + " Whales "+ allAnimalsInfo[3] + "%");
+            totalDolphinsAnimals.setText("- " + allAnimalsInfo[4] + " Dolphins "+ allAnimalsInfo[5] + "%");
+            totalPorpoiseAnimals.setText("- " + allAnimalsInfo[6] + " Porpoises "+ allAnimalsInfo[7] + "%");
+
+            String[] allSpeciesInfo = info[2].split("&&&");
+            for(int j = 0; j < allSpeciesInfo.length; j++) {
+                String[] specieInfo = allSpeciesInfo[j].split("\\*\\*\\*");
+                addSpecieSummary(specieInfo[0], specieInfo[1], specieInfo[2], specieInfo[3], specieInfo[4],  specieInfo[6],  specieInfo[7]);
+            }
+        }
     }
 
     //NOTAS -> MÉTODO CREATESUMMARY:
@@ -771,6 +788,39 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
 
         startActivity(Intent.createChooser(emailIntent, "Pick an Email provider"));
+    }
+
+    private String reportInformation(String startDate, String endDate){
+        String result = "";
+        String updateSightingUrl = "http://" + ReportSightingFragment.ip + "/seaker/reportinformation.php";
+        try {
+            URL url = new URL(updateSightingUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("startDate", "UTF-8")+"="+URLEncoder.encode(startDate, "UTF-8")+"&"
+                    + URLEncoder.encode("endDate", "UTF-8")+"="+URLEncoder.encode(endDate, "UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String line = "";
+            while((line = bufferedReader.readLine())!=null){
+                result += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }
