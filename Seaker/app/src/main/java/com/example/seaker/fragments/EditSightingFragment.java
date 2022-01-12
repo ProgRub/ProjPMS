@@ -63,8 +63,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EditSightingFragment extends BaseFragment implements OnMapReadyCallback{
 
@@ -1229,35 +1232,48 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         String title = tv.getText().toString();
         EditText editText = (EditText) getView().findViewById(R.id.pickDate);
         String day = editText.getText().toString();
+        sightingToEdit.setDate(LocalDate.parse(day, DateTimeFormatter.ofPattern("dd/MM/uuuu")));
         EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
         String hour = editText1.getText().toString();
+        sightingToEdit.setTime(LocalTime.parse(hour));
         TextView textView = (TextView) getView().findViewById(R.id.latitude);
         String latitude = textView.getText().toString();
         String[] result = latitude.split(": ");
         String latitude_ = result[1];
+        sightingToEdit.setLatitude(Double.parseDouble(latitude_));
         TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
         String longitude = textView1.getText().toString();
         String[] result1 = longitude.split(": ");
         String longitude_ = result1[1];
+        sightingToEdit.setLongitude(Double.parseDouble(longitude_));
         SeekBar sb = (SeekBar) getView().findViewById(R.id.beaufort_slider);
         String sea_state = Integer.toString(sb.getProgress());
+        sightingToEdit.setSeaStateBeaufort(sb.getProgress());
         EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
         String comment = editText3.getText().toString();
+        sightingToEdit.setComments(comment);
         String animal = "";
-
-        for(SightingInformation sighting : sightingInformations){
-            animal += sighting.toString();
+        sightingToEdit.clearSightedAnimals();
+        for(int index=0;index<sightingInformations.size();index++){
+            SightingInformation sightingInformation=sightingInformations.get(index);
+            System.out.println(sightingInformation.getBehaviorTypesString());
+            System.out.println(sightingInformation.getReactionToVesselString());
+            sightingToEdit.addSightedAnimal(new AnimalDTO(sightingInformation.getSpecieName(),sightingInformation.getNumberOfIndividualsString(),sightingInformation.getNumberOfOffspringString(),sightingInformation.getBehaviorTypesString(),sightingInformation.getReactionToVesselString(),sightingInformation.getTrustLevelString()));
         }
+//        for(SightingInformation sighting : sightingInformations){
+//            animal += sighting.toString();
+//        }
 
         String aux[] = title.split(" ");
         String sighting_id = aux[1];
 
-        Boolean sighting_submitted = !sighting_id.contains("?");
-        if (sighting_submitted){
-            String sighting_id_number = sighting_id.substring(1);
+        if (sightingToEdit.isSubmitted()){
+//            String sighting_id_number = sighting_id.substring(1);
 
             if(BusinessFacade.getInstance().isInternetWorking()){
-                ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, animal);
+//                System.out.println(sightingToEdit.getSightedAnimalsToString());
+                BusinessFacade.getInstance().editSighting(sightingToEdit);
+//                ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, animal);
                 showHandler(view, "Sighting successfully edited!");
             } else {
                 showHandler(view, "No connectivity");
@@ -1269,7 +1285,8 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             Context cont = (Context) getActivity().getApplicationContext();
 
             if(BusinessFacade.getInstance().isInternetWorking()){
-                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
+                BusinessFacade.getInstance().addSighting(sightingToEdit);
+//                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
                 showHandler(view, "Sighting submitted!");
                 deleteArrayList(index);
             } else {
@@ -1290,17 +1307,17 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
-    private String getTripFrom(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(1);
-    }
-
-    private String getTripTo(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(2);
-    }
+//    private String getTripFrom(){
+//        Context cont = (Context) getActivity().getApplicationContext();
+//        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+//        return sighting_info.get(1).get(1);
+//    }
+//
+//    private String getTripTo(){
+//        Context cont = (Context) getActivity().getApplicationContext();
+//        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
+//        return sighting_info.get(1).get(2);
+//    }
 
 
     private void deleteSighting(View view){
@@ -1310,10 +1327,9 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         String sighting_id = aux[1];
         Boolean sighting_submitted = !sighting_id.contains("?");
         if (sighting_submitted){
-            String sighting_id_number = sighting_id.substring(1);
-
             if(BusinessFacade.getInstance().isInternetWorking()){
-                ReportSightingFragment.deleteSightingInformation(sighting_id_number);
+                BusinessFacade.getInstance().deleteSighting(sightingToEdit);
+//                ReportSightingFragment.deleteSightingInformation(sighting_id_number);
                 showHandler(view, "Sighting successfully deleted!");
             } else {
                 showHandler(view, "No connectivity");

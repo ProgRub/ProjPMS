@@ -129,5 +129,12 @@ public class BusinessFacade {
     public void setSelectedRole(String selectedRole) {
         UserService.getInstance().setSelectedRole(selectedRole);
     }
+
+    public void editSighting(SightingDTO sightingToEdit) {
+        SightingsService.getInstance().editSighting(sightingToEdit);
+    }
+    public void deleteSighting(SightingDTO sightingToDelete){
+        SightingsService.getInstance().deleteSighting(sightingToDelete);
+    }
 }
 

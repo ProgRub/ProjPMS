@@ -123,4 +123,13 @@ public class SightingDTO {
 
     public Iterable<AnimalDTO> getSightedAnimals(){return sightedAnimals;}
     public void addSightedAnimal(AnimalDTO animal){sightedAnimals.add(animal);}
+    public void clearSightedAnimals(){sightedAnimals.clear();}
+
+    public String getSightedAnimalsToString() {
+        String animals="";
+        for (AnimalDTO animal:sightedAnimals) {
+            animals+=animal.toString()+ "$";
+        }
+        return animals;
+    }
 }
