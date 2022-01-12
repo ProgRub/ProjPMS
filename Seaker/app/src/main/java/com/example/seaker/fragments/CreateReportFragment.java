@@ -460,7 +460,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             String[] allSpeciesInfo = info[2].split("&&&");
             for(int j = 0; j < allSpeciesInfo.length; j++) {
                 String[] specieInfo = allSpeciesInfo[j].split("\\*\\*\\*");
-                addSpecieSummary(specieInfo[0], specieInfo[1], specieInfo[2], specieInfo[3], specieInfo[4],  specieInfo[6],  specieInfo[7]);
+                addSpecieSummary(specieInfo[0], specieInfo[1], specieInfo[2], specieInfo[3], specieInfo[4], specieInfo[5],  specieInfo[6],  specieInfo[7]);
             }
         }
     }
