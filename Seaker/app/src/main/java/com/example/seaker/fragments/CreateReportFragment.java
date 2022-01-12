@@ -105,6 +105,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     private TextView dolphinsTitle;
     private TextView porpoisesTitle;
     private JsonWriter jsonWriter;
+    private boolean createdSummary;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
     public CreateReportFragment() {
@@ -131,6 +132,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
     }
 
     private void onStartView(View view){
+        createdSummary = false;
         speciesSummary = new ArrayList<SpecieSummary>();
         coordinatesFromSummary = new ArrayList<LatLng>();
 
@@ -195,7 +197,7 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 //se já tinha criado um sumário, atualiza
-                if(exportReportBtn.getVisibility() == View.VISIBLE) createDifferentSummary(view);
+                if(createdSummary) createDifferentSummary(view);
                 //caso contrário, cria um novo
                 else createSummary(view);
             }
@@ -439,7 +441,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         speciesSummary = new ArrayList<SpecieSummary>();
 
         String reportInfo = reportInformation(startDate.getText().toString(), endDate.getText().toString());
-        if (reportInfo != "No results"){
+        if (!reportInfo.equals("No results")){
+            createdSummary = true;
             String[] info = reportInfo.split("###");
             String[] allCoordinates = info[0].split("&&&");
 
@@ -462,6 +465,8 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
                 String[] specieInfo = allSpeciesInfo[j].split("\\*\\*\\*");
                 addSpecieSummary(specieInfo[0], specieInfo[1], specieInfo[2], specieInfo[3], specieInfo[4], specieInfo[5],  specieInfo[6],  specieInfo[7]);
             }
+        }else{
+            ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "No sightings were found.");
         }
     }
 
@@ -476,15 +481,19 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
 
         //apaga todos os sumários do ecrã:
         for(SpecieSummary specieSummary : speciesSummary){
-            summary.removeView(specieSummary.getSummary());
+            if(specieSummary.getSpecie().contains("Whale"))  ((LinearLayout) summary.findViewById(R.id.whales_summary)).removeView(specieSummary.getSummary());
+            else if(specieSummary.getSpecie().contains("Dolphin"))  ((LinearLayout) summary.findViewById(R.id.dolphins_summary)).removeView(specieSummary.getSummary());
+            else if(specieSummary.getSpecie().contains("Porpoise"))  ((LinearLayout) summary.findViewById(R.id.porpoises_summary)).removeView(specieSummary.getSummary());
         }
 
         whalesTitle.setVisibility(View.GONE);
         dolphinsTitle.setVisibility(View.GONE);
         porpoisesTitle.setVisibility(View.GONE);
 
+        speciesSummary = new ArrayList<SpecieSummary>();
+        coordinatesFromSummary = new ArrayList<LatLng>();
+
         speciesSummary.clear();
-        coordinatesFromSummary.clear();
 
         createSummary(view);
     }
