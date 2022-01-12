@@ -9,21 +9,20 @@
 
     <ImageButton
         android:id="@+id/buttonCreateReport"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="192dp"
         android:background="@drawable/createreport_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:clickable="true"
-        app:layout_constraintVertical_bias="0.367"></ImageButton>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageButton>
 
     <ImageButton
         android:id="@+id/buttonAllMembersCM"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/allteammembers_btn"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,8 +35,8 @@
 
     <ImageButton
         android:id="@+id/buttonReportedSightingsCM"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/reportedsightings_btn"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,8 +49,8 @@
 
     <ImageButton
         android:id="@+id/buttonLogoutCM"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/logoutbtn"
         app:layout_constraintBottom_toBottomOf="parent"

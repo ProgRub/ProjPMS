@@ -49,7 +49,7 @@
     <!-- Scroll Area Vertical -->
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="380dp"
+        android:layout_width="340dp"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="25dp"
@@ -220,8 +220,9 @@
 
 
             <androidx.fragment.app.FragmentContainerView
-                android:layout_width="match_parent"
+                android:layout_width="330dp"
                 android:layout_height="300dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"/>
@@ -277,7 +278,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/search_bar"
-                android:layout_width="250dp"
+                android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:textSize="16dp"
                 android:maxLines="1"

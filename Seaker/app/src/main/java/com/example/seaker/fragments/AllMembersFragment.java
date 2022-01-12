@@ -12,9 +12,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.seaker.DataViewModel;
 import com.example.seaker.R;
 import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.database.DTOs.UserDTO;
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 
 public class AllMembersFragment extends BaseFragment {
 
-    private DataViewModel model;
     private LinearLayout members;
     private ArrayList<UserDTO> users;
 
@@ -41,10 +37,9 @@ public class AllMembersFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_members, container, false);
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
-        if(model.getUserType().equals("CompanyManager")) SetButtonOnClickNextFragment(R.id.buttonBack,new CompanyManagerHomeFragment(),view);
-        else if(model.getUserType().equals("Administrator")) SetButtonOnClickNextFragment(R.id.buttonBack,new AdminHomeFragment(),view);
+        if(BusinessFacade.getInstance().getSelectedRole().equals("CompanyManager")) SetButtonOnClickNextFragment(R.id.buttonBack,new CompanyManagerHomeFragment(),view);
+        else if(BusinessFacade.getInstance().getSelectedRole().equals("Administrator")) SetButtonOnClickNextFragment(R.id.buttonBack,new AdminHomeFragment(),view);
 
         onStartView(view);
 
@@ -65,7 +60,7 @@ public class AllMembersFragment extends BaseFragment {
         View v = vi.inflate(R.layout.team_member_box_cm, null);
 
         //se for administrator, mudará para o layout team_member_box_admin
-        if(model.getUserType().equals("Administrator")){
+        if(BusinessFacade.getInstance().getSelectedRole().equals("Administrator")){
             v = vi.inflate(R.layout.team_member_box_admin, null);
 
             TextView userPassword = (TextView) v.findViewById(R.id.user_password);
