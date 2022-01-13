@@ -782,7 +782,18 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             summaryJsons.add(new SummaryJson(specieSummary.getSpecie(), specieSummary.getPercent(), specieSummary.getTotalNrIndividuals(), specieSummary.getAverageNrIndividualsPerSighting(), specieSummary.getMostCommonBehavior(), specieSummary.getMostCommonReaction(), specieSummary.getAverageTrustLvl(), specieSummary.getMostSightedIn()));
         }
         try {
-            jsonWriter.createSpecieSummaryJson(summaryJsons, startDate.getText().toString(), endDate.getText().toString());
+            String startDate = this.startDate.getText().toString();
+            String endDate = this.endDate.getText().toString();
+            String nrSightings = nrSightingsFound.getText().toString().split(" sightings found.")[0];
+            String nrAnimals = totalNrAnimals.getText().toString().split("Total number of animals: ")[1];
+            String nrWhales = totalWhalesAnimals.getText().toString().split("- ")[1];
+            nrWhales = nrWhales.split(" Whales ")[0];
+            String nrDolphins = totalDolphinsAnimals.getText().toString().split("- ")[1];
+            nrDolphins = nrDolphins.split(" Dolphins ")[0];
+            String nrPorpoises = totalPorpoiseAnimals.getText().toString().split("- ")[1];
+            nrPorpoises = nrPorpoises.split(" Porpoises ")[0];
+
+            jsonWriter.createSpecieSummaryJson(summaryJsons, startDate, endDate, nrSightings, nrAnimals, nrWhales, nrDolphins, nrPorpoises);
             if(export) Toast.makeText(getActivity(), "JSON file generated successfully.", Toast.LENGTH_SHORT).show();
         } catch (JSONException | IOException e) {
             Toast.makeText(getActivity(), "Couldn't export the JSON file.", Toast.LENGTH_SHORT).show();

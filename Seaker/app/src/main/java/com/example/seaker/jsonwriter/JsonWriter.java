@@ -71,11 +71,16 @@ public class JsonWriter {
     }
 
 
-    public void createSpecieSummaryJson(ArrayList<SummaryJson> summaries, String startDate, String endDate) throws JSONException, IOException {
+    public void createSpecieSummaryJson(ArrayList<SummaryJson> summaries, String startDate, String endDate, String totalNrSightings, String totalNrAnimals, String totalNrWhales, String totalNrDolphins, String totalNrPorpoises) throws JSONException, IOException {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("StartDate", startDate);
             jsonObject.put("EndDate", endDate);
+            jsonObject.put("TotalNrSightings", totalNrSightings);
+            jsonObject.put("TotalNrAnimals", totalNrAnimals);
+            jsonObject.put("TotalNrWhales", totalNrWhales);
+            jsonObject.put("TotalNrDolphins", totalNrDolphins);
+            jsonObject.put("TotalNrPorpoises", totalNrPorpoises);
 
             JSONArray speciesArray = new JSONArray();
             for(SummaryJson summary : summaries){
