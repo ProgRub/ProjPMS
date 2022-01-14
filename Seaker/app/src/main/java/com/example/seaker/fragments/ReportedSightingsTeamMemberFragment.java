@@ -84,7 +84,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", aux);
             }
 
-            String allSightings = ReportSightingFragment.getAllSightingsInformations(String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getId()));
+            String allSightings = ReportSightingFragment.getAllSightingsInformations(String.valueOf(BusinessFacade.getInstance().getLoggedInUserId()));
             String[] si = allSightings.split("&&&");
             for(int j=0;j<si.length;j++){
                 String[] sighting = si[j].split("###");
@@ -238,7 +238,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 //            model.setReactions(reactions);
 //            model.setBehaviors(behaviors);
             MainActivity.switchFragment(new EditSightingFragment(this,new SightingDTO(Long.parseLong(sighting_id),submitted, LocalDate.parse(sighting_date,DateTimeFormatter.ofPattern("dd/MM/uuuu")), LocalTime.parse(sighting_time),
-                    Integer.parseInt(sea_state),Double.parseDouble(latitude),Double.parseDouble(longitude),comment,BusinessFacade.getInstance().getLoggedInUser().getId(),1)));
+                    Integer.parseInt(sea_state),Double.parseDouble(latitude),Double.parseDouble(longitude),comment,BusinessFacade.getInstance().getLoggedInUserId(),1)));
         });
 
         sightingNumber.setText("Sighting #" + sighting_id);

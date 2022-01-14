@@ -15,8 +15,8 @@ public class SightingsService {
     private BoatRepository boatRepository;
     private ZoneRepository zoneRepository;
     private SightingRepository sightingRepository;
-    private BoatDTO currentBoat;
-    private ZoneDTO startingZone,endingZone;
+    private long currentBoatId;
+    private String startingZone,endingZone;
 
     public SightingsService() {
         boatRepository=new BoatRepository();
@@ -34,43 +34,29 @@ public class SightingsService {
         sightingRepository.add(sighting,startingZone,endingZone);
     }
 
-    public ZoneDTO getEndingZone() {
+    public String getEndingZone() {
         return endingZone;
     }
 
     public void setEndingZone(String endingZone) {
-        for (ZoneDTO zone:getZonesTo() ) {
-            if(zone.getName().equals(endingZone)) {
-                this.endingZone = zone;
-                return;
-            }
-        }
+                this.endingZone = endingZone;
+
     }
 
-    public ZoneDTO getStartingZone() {
+    public String getStartingZone() {
         return startingZone;
     }
 
     public void setStartingZone(String startingZone) {
-        for (ZoneDTO zone:getZonesFrom() ) {
-            if(zone.getName().equals(startingZone)) {
-                this.startingZone = zone;
-                return;
-            }
-        }
+                this.startingZone = startingZone;
     }
 
-    public BoatDTO getCurrentBoat() {
-        return currentBoat;
+    public long getCurrentBoatId() {
+        return currentBoatId;
     }
 
-    public void setCurrentBoat(long id) {
-        for (BoatDTO boat:getAllBoats()) {
-            if(boat.getId()==id){
-                this.currentBoat = boat;
-                return;
-            }
-        }
+        public void setCurrentBoat(long id) {
+                this.currentBoatId = id;
     }
 
     public Iterable<BoatDTO> getAllBoats(){return boatRepository.getAll();}

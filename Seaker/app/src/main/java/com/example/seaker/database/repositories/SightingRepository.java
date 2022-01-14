@@ -29,7 +29,7 @@ public class SightingRepository extends Repository<SightingDTO> {
     public void add(SightingDTO item) {
 
     }
-    public void add(SightingDTO item, ZoneDTO zoneFrom,ZoneDTO zoneTo){String insertSightingUrl = "http://" + ip + "/seaker/insertsighting.php";
+    public void add(SightingDTO item, String zoneFrom,String zoneTo){String insertSightingUrl = "http://" + ip + "/seaker/insertsighting.php";
         try {
             URL url = new URL(insertSightingUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -47,8 +47,8 @@ public class SightingRepository extends Repository<SightingDTO> {
                     + URLEncoder.encode("person_id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getTeamMemberId()), "UTF-8")+"&"
                     + URLEncoder.encode("boat_id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(item.getBoatId()), "UTF-8")+"&"
                     + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(item.getSightedAnimalsToString(), "UTF-8")+"&"
-                    + URLEncoder.encode("trip_from", "UTF-8")+"="+URLEncoder.encode(zoneFrom.getName(), "UTF-8")+"&"
-                    + URLEncoder.encode("trip_to", "UTF-8")+"="+URLEncoder.encode(zoneTo.getName(), "UTF-8");
+                    + URLEncoder.encode("trip_from", "UTF-8")+"="+URLEncoder.encode(zoneFrom, "UTF-8")+"&"
+                    + URLEncoder.encode("trip_to", "UTF-8")+"="+URLEncoder.encode(zoneTo, "UTF-8");
 
             bufferedWriter.write(post_data);
             bufferedWriter.flush();

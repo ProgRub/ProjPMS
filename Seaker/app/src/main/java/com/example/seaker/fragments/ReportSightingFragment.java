@@ -372,9 +372,9 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         });
 
         LatLng coordenadas = new LatLng(0, 0);
-        if(BusinessFacade.getInstance().getStartingZone().getName().contains("Funchal")) coordenadas = new LatLng(32.645621, -16.909784);
-        else if(BusinessFacade.getInstance().getStartingZone().getName().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
-        else if(BusinessFacade.getInstance().getStartingZone().getName().contains("Câmara de Lobos")) coordenadas = new LatLng(32.647886, -16.974977);
+        if(BusinessFacade.getInstance().getStartingZone().contains("Funchal")) coordenadas = new LatLng(32.645621, -16.909784);
+        else if(BusinessFacade.getInstance().getStartingZone().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
+        else if(BusinessFacade.getInstance().getStartingZone().contains("Câmara de Lobos")) coordenadas = new LatLng(32.647886, -16.974977);
 
         map.addMarker(new MarkerOptions().position(coordenadas).title("Departure"));
         moveToCurrentLocation(coordenadas);
@@ -1203,11 +1203,11 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             animal += sighting.toString();
         }
 
-        String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat().getId());
+        String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat());
         String userID = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getId());
         String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getName());
-        String tripFrom = String.valueOf(BusinessFacade.getInstance().getStartingZone().getName());
-        String tripTo = String.valueOf(BusinessFacade.getInstance().getEndingZone().getName());
+        String tripFrom = String.valueOf(BusinessFacade.getInstance().getStartingZone());
+        String tripTo = String.valueOf(BusinessFacade.getInstance().getEndingZone());
 
         if(validateSightingReport()){ //se todos os campos obrigatórios estão preenchidos
             if(BusinessFacade.getInstance().isInternetWorking()){
@@ -1273,7 +1273,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         String comment = editText3.getText().toString();
 
 
-        String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat().getId());
+        String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat());
         String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getName());
 
         SightingJson sighting = new SightingJson(day, hour, latitude_, longitude_, animalJsons, sea_state, boatID, comment, userName);

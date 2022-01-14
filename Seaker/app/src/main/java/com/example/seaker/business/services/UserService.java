@@ -18,7 +18,7 @@ public class UserService {
     private static UserService instance = null;
     private UserRepository userRepository;
     private String selectedRole;
-    private UserDTO loggedInUser;
+    private long loggedInUserId;
 
     public UserService() {
         userRepository = new UserRepository();
@@ -109,7 +109,7 @@ public class UserService {
         if(!userRepository.loginAdminCompanyManager(loginCredentials)) return ErrorType.WrongLoginData;
         for (UserDTO user:getUsers()) {
             if(user.getEmail().equals(loginCredentials.getEmail()))
-                loggedInUser=user;
+                loggedInUserId=user.getId();
         }
 //        Context cont = (Context) getActivity().getApplicationContext();
 //        saveArrayListToSD(cont, "person_boat_zones", loginCredentials);
@@ -124,17 +124,20 @@ public class UserService {
         this.selectedRole = selectedRole;
     }
 
-    public UserDTO getLoggedInUser() {
-        return loggedInUser;
+    public long getLoggedInUserId() {
+        return loggedInUserId;
     }
 
     public void setLoggedInUser(long userId) {
+                loggedInUserId=userId;
+    }
+
+    public UserDTO getLoggedInUser() {
         for (UserDTO user:userRepository.getAll()) {
-            if(user.getId()==userId) {
-                loggedInUser=user;
-                return;
-            }
+            if(user.getId()==loggedInUserId)
+                return user;
         }
+        return null;
     }
 
 

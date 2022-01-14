@@ -97,19 +97,22 @@ public class BusinessFacade {
         SightingsService.getInstance().setEndingZone(zoneTo);
     }
 
-    public BoatDTO getCurrentBoat() {
-        return SightingsService.getInstance().getCurrentBoat();
+    public long getCurrentBoat() {
+        return SightingsService.getInstance().getCurrentBoatId();
     }
 
-    public ZoneDTO getStartingZone() {
+    public String  getStartingZone() {
         return SightingsService.getInstance().getStartingZone();
     }
 
-    public ZoneDTO getEndingZone() {
+    public String getEndingZone() {
         return SightingsService.getInstance().getEndingZone();
     }
 
-    public UserDTO getLoggedInUser() {
+    public long getLoggedInUserId() {
+        return UserService.getInstance().getLoggedInUserId();
+    }
+    public UserDTO getLoggedInUser(){
         return UserService.getInstance().getLoggedInUser();
     }
 
