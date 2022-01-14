@@ -1232,7 +1232,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         String title = tv.getText().toString();
         EditText editText = (EditText) getView().findViewById(R.id.pickDate);
         String day = editText.getText().toString();
-        sightingToEdit.setDate(LocalDate.parse(day, DateTimeFormatter.ofPattern("dd/MM/uuuu")));
+        sightingToEdit.setDate(LocalDate.parse(day, DateTimeFormatter.ofPattern(getLocalDateTimeFormatterString(day))));
         EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
         String hour = editText1.getText().toString();
         sightingToEdit.setTime(LocalTime.parse(hour));
@@ -1256,13 +1256,12 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingToEdit.clearSightedAnimals();
         for(int index=0;index<sightingInformations.size();index++){
             SightingInformation sightingInformation=sightingInformations.get(index);
-            System.out.println(sightingInformation.getBehaviorTypesString());
-            System.out.println(sightingInformation.getReactionToVesselString());
             sightingToEdit.addSightedAnimal(new AnimalDTO(sightingInformation.getSpecieName(),sightingInformation.getNumberOfIndividualsString(),sightingInformation.getNumberOfOffspringString(),sightingInformation.getBehaviorTypesString(),sightingInformation.getReactionToVesselString(),sightingInformation.getTrustLevelString()));
         }
-//        for(SightingInformation sighting : sightingInformations){
-//            animal += sighting.toString();
-//        }
+
+        for(SightingInformation sighting : sightingInformations){
+            animal += sighting.toString();
+        }
 
         String aux[] = title.split(" ");
         String sighting_id = aux[1];
@@ -1271,15 +1270,13 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 //            String sighting_id_number = sighting_id.substring(1);
 
             if(BusinessFacade.getInstance().isInternetWorking()){
-//                System.out.println(sightingToEdit.getSightedAnimalsToString());
                 BusinessFacade.getInstance().editSighting(sightingToEdit);
-//                ReportSightingFragment.deleteAndInsertSightingInformationIntoBD(sighting_id_number, day, hour, sea_state, latitude_, longitude_, comment, animal);
                 showHandler(view, "Sighting successfully edited!");
             } else {
                 showHandler(view, "No connectivity");
             }
         } else {
-            String aux2[] = sighting_id.split("\\?");
+            String aux2[] = sighting_id.split("#");
             String index_sighting = aux2[1];
             int index = Integer.parseInt(index_sighting)-1;
             Context cont = (Context) getActivity().getApplicationContext();
@@ -1341,6 +1338,29 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             deleteArrayList(index);
             showHandler(view, "Sighting successfully deleted!");
         }
+    }
+
+    private String getLocalDateTimeFormatterString(String sighting_date) {
+        String[] date_parts = sighting_date.split("/");
+        String day = date_parts[0];
+        String month = date_parts[1];
+
+        String format = "";
+        if(day.length() == 1){
+            format +="d/";
+        }else if(day.length() ==2){
+            format +="dd/";
+        }
+
+        if(month.length() == 1){
+            format +="M/";
+        }else if(month.length() ==2){
+            format +="MM/";
+        }
+
+        format+="yyyy";
+
+        return format;
     }
 
     private void deleteArrayList(int index){

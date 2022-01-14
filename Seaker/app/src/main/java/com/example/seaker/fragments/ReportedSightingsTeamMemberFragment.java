@@ -196,8 +196,16 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         ArrayList<String> reactions = new ArrayList<>();
         String[] result1 = species.split("\\$");
 
-        SightingDTO sightingToEdit = new SightingDTO(Long.parseLong(sighting_id), submitted, LocalDate.parse(sighting_date, DateTimeFormatter.ofPattern("dd/MM/uuuu")), LocalTime.parse(sighting_time),
-                Integer.parseInt(sea_state), Double.parseDouble(latitude), Double.parseDouble(longitude), comment, BusinessFacade.getInstance().getLoggedInUserId(), BusinessFacade.getInstance().getCurrentBoat());
+        SightingDTO sightingToEdit;
+        if(submitted) {
+            sightingToEdit = new SightingDTO(Long.parseLong(sighting_id), submitted, LocalDate.parse(sighting_date, DateTimeFormatter.ofPattern(getLocalDateTimeFormatterString(sighting_date))), LocalTime.parse(sighting_time),
+                    Integer.parseInt(sea_state), Double.parseDouble(latitude), Double.parseDouble(longitude), comment, BusinessFacade.getInstance().getLoggedInUserId(), BusinessFacade.getInstance().getCurrentBoat());
+
+        }else{
+            sightingToEdit = new SightingDTO(Long.parseLong(sighting_id.split("\\?")[1]), submitted, LocalDate.parse(sighting_date, DateTimeFormatter.ofPattern(getLocalDateTimeFormatterString(sighting_date))), LocalTime.parse(sighting_time),
+                    Integer.parseInt(sea_state), Double.parseDouble(latitude), Double.parseDouble(longitude), comment, BusinessFacade.getInstance().getLoggedInUserId(), BusinessFacade.getInstance().getCurrentBoat());
+
+        }
         for(int j=0;j<result1.length;j++){
             String[] result2 = result1[j].split("\\*");
             species_name.add(result2[0]);
@@ -271,6 +279,29 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
             editSightingBtn.setVisibility(View.GONE);
             otherSightings.addView(v);
         }
+    }
+
+    private String getLocalDateTimeFormatterString(String sighting_date) {
+        String[] date_parts = sighting_date.split("/");
+        String day = date_parts[0];
+        String month = date_parts[1];
+
+        String format = "";
+        if(day.length() == 1){
+            format +="d/";
+        }else if(day.length() ==2){
+            format +="dd/";
+        }
+
+        if(month.length() == 1){
+            format +="M/";
+        }else if(month.length() ==2){
+            format +="MM/";
+        }
+
+        format+="yyyy";
+
+        return format;
     }
 
 

@@ -263,6 +263,8 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
     }
 
 
+
+
     private String getLocalDateTimeFormatterString(String sighting_date, String sighting_time) {
         String[] date_parts = sighting_date.split("/");
         String day = date_parts[0];
