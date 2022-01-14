@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
-    private DataViewModel model;
     private LinearLayout recentSightings;
     private LinearLayout otherSightings;
     private TextView noRecentSightings;
@@ -57,7 +56,6 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_reported_sightings_team_member, container, false);
         SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
 
-        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
         recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
         otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
@@ -198,30 +196,38 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         ArrayList<String> reactions = new ArrayList<>();
         String[] result1 = species.split("\\$");
 
+        SightingDTO sightingToEdit = new SightingDTO(Long.parseLong(sighting_id), submitted, LocalDate.parse(sighting_date, DateTimeFormatter.ofPattern("dd/MM/uuuu")), LocalTime.parse(sighting_time),
+                Integer.parseInt(sea_state), Double.parseDouble(latitude), Double.parseDouble(longitude), comment, BusinessFacade.getInstance().getLoggedInUserId(), BusinessFacade.getInstance().getCurrentBoat());
         for(int j=0;j<result1.length;j++){
             String[] result2 = result1[j].split("\\*");
             species_name.add(result2[0]);
             n_individuals.add(result2[1]);
             n_offspring.add(result2[2]);
             trust_level.add(result2[3]);
+            AnimalDTO animal;
             if(result2.length == 4){
                 behaviors.add(" ");
                 reactions.add(" ");
+                animal=new AnimalDTO(result2[0],result2[1],result2[2],"","",result2[3]);
             }
             if(result2.length == 5){
                 behaviors.add(result2[4]);
                 reactions.add(" ");
+                animal=new AnimalDTO(result2[0],result2[1],result2[2],result2[4],"",result2[3]);
             }
             if(result2.length == 6){
                 behaviors.add(result2[4]);
                 reactions.add(result2[5]);
+                animal=new AnimalDTO(result2[0],result2[1],result2[2],result2[4],result2[5],result2[3]);
             }
+            sightingToEdit.addSightedAnimal(animal);
         }
         String species_ = "";
         for(int k=0;k<species_name.size()-1;k++){
             species_ += species_name.get(k) + ", ";
         }
         species_ += species_name.get(species_name.size()-1);
+
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
         editSightingBtn.setOnClickListener(item -> {
 //            model.setReportedSighingId(sighting_id);
@@ -237,8 +243,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 //            model.setTrust_level(trust_level);
 //            model.setReactions(reactions);
 //            model.setBehaviors(behaviors);
-            MainActivity.switchFragment(new EditSightingFragment(this,new SightingDTO(Long.parseLong(sighting_id),submitted, LocalDate.parse(sighting_date,DateTimeFormatter.ofPattern("dd/MM/uuuu")), LocalTime.parse(sighting_time),
-                    Integer.parseInt(sea_state),Double.parseDouble(latitude),Double.parseDouble(longitude),comment,BusinessFacade.getInstance().getLoggedInUserId(),1)));
+            MainActivity.switchFragment(new EditSightingFragment(this, sightingToEdit));
         });
 
         sightingNumber.setText("Sighting #" + sighting_id);
