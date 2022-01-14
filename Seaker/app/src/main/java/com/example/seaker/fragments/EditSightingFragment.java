@@ -424,8 +424,15 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1)
-                        + "/" + String.valueOf(year);
+                monthOfYear++;
+                String monthOfYearString = String.valueOf(monthOfYear);
+                String dayOfMonthString = String.valueOf(dayOfMonth);
+                if(monthOfYear < 10)  monthOfYearString = "0" + monthOfYear;
+                if(dayOfMonth < 10)  dayOfMonthString = "0" + dayOfMonth;
+
+                String date = dayOfMonthString + "/" + monthOfYearString
+                        + "/" + year;
+
                 editText.setText(date);
             }
         }, yy, mm, dd);
@@ -446,7 +453,13 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                editText.setText( selectedHour + ":" + selectedMinute);
+                String selectedHourString = String.valueOf(selectedHour);
+                String selectedMinuteString= String.valueOf(selectedMinute);
+
+                if(selectedHour < 10 ) selectedHourString = "0" + selectedHour;
+                if(selectedMinute < 10) selectedMinuteString = "0" + selectedMinute;
+
+                editText.setText( selectedHourString + ":" + selectedMinuteString);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
