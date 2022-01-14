@@ -1,15 +1,9 @@
 package com.example.seaker.business.services;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.business.ErrorType;
 import com.example.seaker.database.DTOs.UserDTO;
 import com.example.seaker.database.repositories.UserRepository;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +13,7 @@ public class UserService {
     private UserRepository userRepository;
     private String selectedRole;
     private long loggedInUserId;
+    private String loggedInUsername;
 
     public UserService() {
         userRepository = new UserRepository();
@@ -110,6 +105,7 @@ public class UserService {
         for (UserDTO user:getUsers()) {
             if(user.getEmail().equals(loginCredentials.getEmail()))
                 loggedInUserId=user.getId();
+                loggedInUsername =user.getName();
         }
 //        Context cont = (Context) getActivity().getApplicationContext();
 //        saveArrayListToSD(cont, "person_boat_zones", loginCredentials);
@@ -138,6 +134,14 @@ public class UserService {
                 return user;
         }
         return null;
+    }
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUsername =userName;
+    }
+
+    public String getLoggedInUsername() {
+        return loggedInUsername;
     }
 
 

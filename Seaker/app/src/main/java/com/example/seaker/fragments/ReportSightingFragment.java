@@ -1204,8 +1204,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
 
         String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat());
-        String userID = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getId());
-        String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getName());
+        String userID = String.valueOf(BusinessFacade.getInstance().getLoggedInUserId());
+        String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUserName());
         String tripFrom = String.valueOf(BusinessFacade.getInstance().getStartingZone());
         String tripTo = String.valueOf(BusinessFacade.getInstance().getEndingZone());
 
@@ -1274,7 +1274,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
 
         String boatID = String.valueOf(BusinessFacade.getInstance().getCurrentBoat());
-        String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUser().getName());
+        String userName = String.valueOf(BusinessFacade.getInstance().getLoggedInUserName());
 
         SightingJson sighting = new SightingJson(day, hour, latitude_, longitude_, animalJsons, sea_state, boatID, comment, userName);
 

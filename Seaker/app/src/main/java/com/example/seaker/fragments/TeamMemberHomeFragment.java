@@ -77,6 +77,7 @@ public class TeamMemberHomeFragment extends BaseFragment {
             BusinessFacade.getInstance().setZoneFrom(tripFrom);
             BusinessFacade.getInstance().setZoneTo(tripTo);
             BusinessFacade.getInstance().setLoggedInUser(Long.parseLong(userId));
+            BusinessFacade.getInstance().setLoggedInUserName(userName);
         }
         publishNotPublishedSightings();
 

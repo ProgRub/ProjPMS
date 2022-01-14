@@ -1,21 +1,9 @@
 package com.example.seaker.business;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.example.seaker.database.DTOs.*;
-import com.example.seaker.business.services.ReportService;
 import com.example.seaker.business.services.SightingsService;
 import com.example.seaker.business.services.UserService;
 import com.example.seaker.database.repositories.Repository;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class BusinessFacade {
     private static BusinessFacade instance = null;
@@ -112,9 +100,6 @@ public class BusinessFacade {
     public long getLoggedInUserId() {
         return UserService.getInstance().getLoggedInUserId();
     }
-    public UserDTO getLoggedInUser(){
-        return UserService.getInstance().getLoggedInUser();
-    }
 
     public void setLoggedInUser(Long userID) {
         UserService.getInstance().setLoggedInUser(userID);
@@ -138,6 +123,13 @@ public class BusinessFacade {
     }
     public void deleteSighting(SightingDTO sightingToDelete){
         SightingsService.getInstance().deleteSighting(sightingToDelete);
+    }
+
+    public void setLoggedInUserName(String userName) {
+        UserService.getInstance().setLoggedInUserName(userName);
+    }
+    public String getLoggedInUserName(){
+        return UserService.getInstance().getLoggedInUsername();
     }
 }
 

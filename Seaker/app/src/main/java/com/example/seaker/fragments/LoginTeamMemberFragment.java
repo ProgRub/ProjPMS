@@ -108,10 +108,9 @@ public class LoginTeamMemberFragment extends BaseFragment {
 
                 SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
                 SharedPreferences.Editor editor = pref.edit();
-                UserDTO loggedInUser = BusinessFacade.getInstance().getLoggedInUser();
                 editor.putString("isLogged", BusinessFacade.getInstance().getSelectedRole());
-                editor.putString("userId", String.valueOf(loggedInUser.getId()));
-                editor.putString("userName", loggedInUser.getName());
+                editor.putString("userId", String.valueOf(BusinessFacade.getInstance().getLoggedInUserId()));
+                editor.putString("userName", BusinessFacade.getInstance().getLoggedInUserName());
                 editor.putString("vesselID", String.valueOf(BusinessFacade.getInstance().getCurrentBoat()));
                 editor.putString("tripFrom", BusinessFacade.getInstance().getStartingZone());
                 editor.putString("tripTo", BusinessFacade.getInstance().getEndingZone());
