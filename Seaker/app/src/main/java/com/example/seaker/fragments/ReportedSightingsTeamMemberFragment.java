@@ -20,10 +20,14 @@ import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SightingInformation;
 import com.example.seaker.business.BusinessFacade;
+import com.example.seaker.database.DTOs.AnimalDTO;
+import com.example.seaker.database.DTOs.SightingDTO;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -98,7 +102,79 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         return view;
     }
+    private void addSightingToView(SightingDTO sighting){
+        LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(R.layout.reported_sighting_box, null);
 
+        TextView sightingNumber = (TextView) v.findViewById(R.id.sighting_number);
+        TextView notSubmitted = (TextView) v.findViewById(R.id.not_submitted);
+        TextView date = (TextView) v.findViewById(R.id.date);
+        TextView time = (TextView) v.findViewById(R.id.time);
+        TextView sightingSpecies = (TextView) v.findViewById(R.id.sighting_species);
+        TextView reportedBy = (TextView) v.findViewById(R.id.reported_by);
+
+        ImageButton editSightingBtn = (ImageButton) v.findViewById(R.id.edit_sighting_btn);
+
+        String species_ = "";
+        ArrayList<AnimalDTO> sightedAnimals = (ArrayList<AnimalDTO>) sighting.getSightedAnimals();
+        for(int k=0;k<sightedAnimals.size()-1;k++){
+            species_ += sightedAnimals.get(k).getSpeciesName() + ", ";
+        }
+        species_ += sightedAnimals.get(sightedAnimals.size()-1).getSpeciesName();
+//        for (AnimalDTO animal: sightedAnimals) {
+//            species_+=animal.getSpeciesName()+", "
+//        }
+//        for(int k=0;k<sighting.getSightedAnimals()..size()-1;k++){
+//            species_ += species_name.get(k) + ", ";
+//        }
+//        species_ += species_name.get(species_name.size()-1);
+
+        //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
+        editSightingBtn.setOnClickListener(item -> {
+//            model.setReportedSighingId(sighting_id);
+//            model.setDate(sighting_date);
+//            model.setTime(sighting_time);
+//            model.setSea_state(Integer.parseInt(sea_state));
+//            model.setLatitude(latitude);
+//            model.setLongitude((longitude));
+//            model.setComment(comment);
+//            model.setSpecies(species_name);
+//            model.setN_individuals(n_individuals);
+//            model.setN_offspring(n_offspring);
+//            model.setTrust_level(trust_level);
+//            model.setReactions(reactions);
+//            model.setBehaviors(behaviors);
+            MainActivity.switchFragment(new EditSightingFragment(this,sighting));
+        });
+
+        sightingNumber.setText("Sighting #" + sighting.getId());
+        String sightingDate = sighting.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
+        String sightingTime = sighting.getTime().toString();
+        date.setText(sightingDate);
+        time.setText(sightingTime);
+        sightingSpecies.setText(species_);
+        reportedBy.setText(BusinessFacade.getInstance().getUserByID(sighting.getTeamMemberId()).getName());
+
+        if(sighting.isSubmitted()){
+            notSubmitted.setVisibility(View.GONE);
+        }
+
+        //Verificar se já passaram 24h:
+        String dateTimeString = sightingDate +" "+ sightingTime;
+        String format = getLocalDateTimeFormatterString(sightingDate, sightingTime);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
+        LocalDateTime after24h = dateTime.plusHours(24);
+
+        if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
+            noRecentSightings.setVisibility(View.GONE);
+            recentSightings.addView(v);
+        }else{ //mais de 24h
+            noOtherSightings.setVisibility(View.GONE);
+            otherSightings.addView(v);
+        }
+    }
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String species, String person_name){
@@ -148,20 +224,21 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         species_ += species_name.get(species_name.size()-1);
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
         editSightingBtn.setOnClickListener(item -> {
-            model.setReportedSighingId(sighting_id);
-            model.setDate(sighting_date);
-            model.setTime(sighting_time);
-            model.setSea_state(Integer.parseInt(sea_state));
-            model.setLatitude(latitude);
-            model.setLongitude((longitude));
-            model.setComment(comment);
-            model.setSpecies(species_name);
-            model.setN_individuals(n_individuals);
-            model.setN_offspring(n_offspring);
-            model.setTrust_level(trust_level);
-            model.setReactions(reactions);
-            model.setBehaviors(behaviors);
-            MainActivity.switchFragment(new EditSightingFragment());
+//            model.setReportedSighingId(sighting_id);
+//            model.setDate(sighting_date);
+//            model.setTime(sighting_time);
+//            model.setSea_state(Integer.parseInt(sea_state));
+//            model.setLatitude(latitude);
+//            model.setLongitude((longitude));
+//            model.setComment(comment);
+//            model.setSpecies(species_name);
+//            model.setN_individuals(n_individuals);
+//            model.setN_offspring(n_offspring);
+//            model.setTrust_level(trust_level);
+//            model.setReactions(reactions);
+//            model.setBehaviors(behaviors);
+            MainActivity.switchFragment(new EditSightingFragment(this,new SightingDTO(Long.parseLong(sighting_id),submitted, LocalDate.parse(sighting_date,DateTimeFormatter.ofPattern("dd/MM/uuuu")), LocalTime.parse(sighting_time),
+                    Integer.parseInt(sea_state),Double.parseDouble(latitude),Double.parseDouble(longitude),comment,BusinessFacade.getInstance().getLoggedInUser().getId(),1)));
         });
 
         sightingNumber.setText("Sighting #" + sighting_id);

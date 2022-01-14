@@ -109,7 +109,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private ArrayList<Button> sightingBoxesButtons;
     private MQTTHelper mqtt;
 
-    public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
+    public static final String ip = "192.168.1.100"; //erro propositadamente, para n se esquecerem de alterar :P
 
     private boolean clickedCoordinatesOnce;
 
