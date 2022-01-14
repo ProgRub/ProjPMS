@@ -204,11 +204,10 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
             n_individuals.add(result2[1]);
             n_offspring.add(result2[2]);
             trust_level.add(result2[3]);
-            AnimalDTO animal;
+            AnimalDTO animal=new AnimalDTO(result2[0],result2[1],result2[2],"","",result2[3]);
             if(result2.length == 4){
                 behaviors.add(" ");
                 reactions.add(" ");
-                animal=new AnimalDTO(result2[0],result2[1],result2[2],"","",result2[3]);
             }
             if(result2.length == 5){
                 behaviors.add(result2[4]);
