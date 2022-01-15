@@ -63,11 +63,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class EditSightingFragment extends BaseFragment implements OnMapReadyCallback{
 
@@ -424,6 +427,23 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String[] currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()).split("/");
+                int currentYear = Integer.parseInt(currentDate[2]);
+                int currentMonth = Integer.parseInt(currentDate[1])-1;
+                int currentDay = Integer.parseInt(currentDate[0]);
+
+                //se escolher a data atual:
+                if(currentYear == year && currentMonth == monthOfYear && currentDay == dayOfMonth){
+                    String[] selectedTime = sightingTime.getText().toString().split(":");
+                    String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                    String[] hoursMinutes = currentTime.split(":");
+
+                    //se o time que já está selecionado é superior ao time atual:
+                    if(Integer.parseInt(selectedTime[0]) > Integer.parseInt(hoursMinutes[0]) || (Integer.parseInt(selectedTime[0]) == Integer.parseInt(hoursMinutes[0]) && Integer.parseInt(selectedTime[1]) >= Integer.parseInt(hoursMinutes[1]))){
+                        sightingTime.setText(currentTime); //coloca o time atual
+                    }
+                }
+
                 monthOfYear++;
                 String monthOfYearString = String.valueOf(monthOfYear);
                 String dayOfMonthString = String.valueOf(dayOfMonth);
@@ -453,6 +473,25 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                String[] currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()).split("/");
+                String currentYear = currentDate[2];
+                String currentMonth = currentDate[1];
+                String currentDay = currentDate[0];
+
+                String[] selectedDate = sightingDate.getText().toString().split("/");
+
+                //se a data que já estava selecionada é a data atual:
+                if(currentDay.equals(selectedDate[0]) && currentMonth.equals(selectedDate[1]) && currentYear.equals(selectedDate[2])){
+                    String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                    String[] hourMinutes = currentTime.split(":");
+
+                    //verifica se o tempo escolhido é superior ao tempo atual:
+                    if(selectedHour > Integer.parseInt(hourMinutes[0]) || (selectedHour == Integer.parseInt(hourMinutes[0]) && selectedMinute >= Integer.parseInt(hourMinutes[1]))){
+                        editText.setText(currentTime); //coloca o tempo atual
+                        return;
+                    }
+                }
+
                 String selectedHourString = String.valueOf(selectedHour);
                 String selectedMinuteString= String.valueOf(selectedMinute);
 
