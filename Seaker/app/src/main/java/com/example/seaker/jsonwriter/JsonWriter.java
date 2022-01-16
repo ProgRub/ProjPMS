@@ -55,8 +55,6 @@ public class JsonWriter {
             jsonObject.put("Comments", sighting.getComment());
             jsonObject.put("ReporterName", sighting.getReporterName());
 
-            //Log.e("TESTING", jsonObject.toString());
-
             //FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory() + "/sighting.json");
             //fileWriter.write(jsonObject.toString());
             //fileWriter.close();
@@ -102,5 +100,16 @@ public class JsonWriter {
             fileWriter.write(jsonObject.toString());
             fileWriter.close();
 
+    }
+
+    public void createSpecieSummaryJson(String startDate, String endDate) throws JSONException, IOException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("StartDate", startDate);
+        jsonObject.put("EndDate", endDate);
+        jsonObject.put("TotalNrSightings", "0");
+
+        FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory() + "/SummaryOfSightings.json");
+        fileWriter.write(jsonObject.toString());
+        fileWriter.close();
     }
 }
