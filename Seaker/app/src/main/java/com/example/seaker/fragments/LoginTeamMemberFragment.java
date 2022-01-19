@@ -79,72 +79,69 @@ public class LoginTeamMemberFragment extends BaseFragment {
     }
 
     private void login() {
-        BusinessFacade.getInstance().setCurrentBoat(Long.parseLong(vessel_id.getSelectedItem().toString().split("\\.")[0]));
-        BusinessFacade.getInstance().setZoneFrom(trip_from.getSelectedItem().toString());
-        BusinessFacade.getInstance().setZoneTo(trip_to.getSelectedItem().toString());
-        UserDTO loginCredentials = new UserDTO("", this.email.getText().toString(), this.password.getText().toString(), BusinessFacade.getInstance().getSelectedRole());
-        ErrorType errorType = BusinessFacade.getInstance().loginIsValid(loginCredentials);
-        switch (errorType) {
-            case EmailMissing:
-            case PasswordMissing:
-                ShowPopupBox("Please, enter your credentials!");
-                break;
-            case EmailNotValid:
-                ShowPopupBox("Please, enter a valid email!");
-                break;
-            case WrongLoginData:
-                ShowPopupBox("Incorrect credentials!");
-                break;
-            case VesselMissing:
-                ShowPopupBox("Please, choose the vessel!");
-                break;
-            case ZoneFromMissing:
-                ShowPopupBox("Please, choose the trip's departure!");
-                break;
-            case ZoneToMissing:
-                ShowPopupBox("Please, choose the trip's destination!");
-                break;
-            case NoError:
+        if(BusinessFacade.getInstance().isInternetWorking()) {
+            BusinessFacade.getInstance().setCurrentBoat(Long.parseLong(vessel_id.getSelectedItem().toString().split("\\.")[0]));
+            BusinessFacade.getInstance().setZoneFrom(trip_from.getSelectedItem().toString());
+            BusinessFacade.getInstance().setZoneTo(trip_to.getSelectedItem().toString());
+            UserDTO loginCredentials = new UserDTO("", this.email.getText().toString(), this.password.getText().toString(), BusinessFacade.getInstance().getSelectedRole());
+            ErrorType errorType = BusinessFacade.getInstance().loginIsValid(loginCredentials);
+            switch (errorType) {
+                case EmailMissing:
+                case PasswordMissing:
+                    ShowPopupBox("Please, enter your credentials!");
+                    break;
+                case EmailNotValid:
+                    ShowPopupBox("Please, enter a valid email!");
+                    break;
+                case WrongLoginData:
+                    ShowPopupBox("Incorrect credentials!");
+                    break;
+                case VesselMissing:
+                    ShowPopupBox("Please, choose the vessel!");
+                    break;
+                case ZoneFromMissing:
+                    ShowPopupBox("Please, choose the trip's departure!");
+                    break;
+                case ZoneToMissing:
+                    ShowPopupBox("Please, choose the trip's destination!");
+                    break;
+                case NoError:
 
-                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("isLogged", BusinessFacade.getInstance().getSelectedRole());
-                editor.putString("userId", String.valueOf(BusinessFacade.getInstance().getLoggedInUserId()));
-                editor.putString("userName", BusinessFacade.getInstance().getLoggedInUserName());
-                editor.putString("vesselID", String.valueOf(BusinessFacade.getInstance().getCurrentBoat()));
-                editor.putString("tripFrom", BusinessFacade.getInstance().getStartingZone());
-                editor.putString("tripTo", BusinessFacade.getInstance().getEndingZone());
-                editor.commit();
-//                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-//                SharedPreferences.Editor editor = pref.edit();
-//                editor.putString("isLogged", model.getUserType());
-//                editor.putString("vesselID", vessel_id[0]);
-//                editor.putString("tripFrom", trip_from.getSelectedItem().toString());
-//                editor.putString("tripTo", trip_to.getSelectedItem().toString());
-//                editor.commit();
-                //Faz reset do ficheiro:
-                try {
-                    Context cont = (Context) getActivity().getApplicationContext();
-                    FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.writeObject(new ArrayList<String>());
-                    fos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("isLogged", BusinessFacade.getInstance().getSelectedRole());
+                    editor.putString("userId", String.valueOf(BusinessFacade.getInstance().getLoggedInUserId()));
+                    editor.putString("userName", BusinessFacade.getInstance().getLoggedInUserName());
+                    editor.putString("vesselID", String.valueOf(BusinessFacade.getInstance().getCurrentBoat()));
+                    editor.putString("tripFrom", BusinessFacade.getInstance().getStartingZone());
+                    editor.putString("tripTo", BusinessFacade.getInstance().getEndingZone());
+                    editor.commit();
+                    //Faz reset do ficheiro:
+                    try {
+                        Context cont = (Context) getActivity().getApplicationContext();
+                        FileOutputStream fos = cont.openFileOutput("notpublishedjsons.dat", cont.MODE_PRIVATE);
+                        ObjectOutputStream oos = new ObjectOutputStream(fos);
+                        oos.writeObject(new ArrayList<String>());
+                        fos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                try {
-                    Context cont = (Context) getActivity().getApplicationContext();
-                    FileOutputStream fos = cont.openFileOutput("notSubmittedSightings.dat", cont.MODE_PRIVATE);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.writeObject(new ArrayList<>());
-                    fos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        Context cont = (Context) getActivity().getApplicationContext();
+                        FileOutputStream fos = cont.openFileOutput("notSubmittedSightings.dat", cont.MODE_PRIVATE);
+                        ObjectOutputStream oos = new ObjectOutputStream(fos);
+                        oos.writeObject(new ArrayList<>());
+                        fos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                MainActivity.switchFragment(new TeamMemberHomeFragment());
-                break;
+                    MainActivity.switchFragment(new TeamMemberHomeFragment());
+                    break;
+            }
+        } else {
+            ShowPopupBox("No connection!");
         }
     }
 

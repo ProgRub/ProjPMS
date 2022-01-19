@@ -1591,7 +1591,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
-            Log.d("TODOS OS AVISTAMENTOS: ", result);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ConnectException e){

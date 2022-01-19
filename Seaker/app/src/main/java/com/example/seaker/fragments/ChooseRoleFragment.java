@@ -50,8 +50,13 @@ public class ChooseRoleFragment extends BaseFragment {
         teamMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BusinessFacade.getInstance().selectRole("TeamMember");
-                MainActivity.switchFragment(new LoginTeamMemberFragment());
+                if(BusinessFacade.getInstance().isInternetWorking()){
+                    BusinessFacade.getInstance().selectRole("TeamMember");
+                    MainActivity.switchFragment(new LoginTeamMemberFragment());
+                } else {
+                    ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "No connection!");
+                }
+
             }
         });
 

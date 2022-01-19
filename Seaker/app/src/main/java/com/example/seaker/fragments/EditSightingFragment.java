@@ -1319,8 +1319,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         String sighting_id = aux[1];
 
         if (sightingToEdit.isSubmitted()){
-//            String sighting_id_number = sighting_id.substring(1);
-
             if(BusinessFacade.getInstance().isInternetWorking()){
                 BusinessFacade.getInstance().editSighting(sightingToEdit);
                 showHandler(view, "Sighting successfully edited!");
@@ -1335,11 +1333,9 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
 
             if(BusinessFacade.getInstance().isInternetWorking()){
                 BusinessFacade.getInstance().addSighting(sightingToEdit);
-//                ReportSightingFragment.insertSightingInformationIntoBD(day, hour, sea_state, latitude_, longitude_, comment, getIdPerson(), getVesselId(), animal, getTripFrom(), getTripTo());
                 showHandler(view, "Sighting submitted!");
                 deleteArrayList(index);
             } else {
-
                 ArrayList<ArrayList<String>> sightings = ReportSightingFragment.ReadArrayListFromSD(cont, "notSubmittedSightings");
                 sightings.get(index).set(0, day);
                 sightings.get(index).set(1, hour);
@@ -1348,26 +1344,11 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 sightings.get(index).set(4, longitude_);
                 sightings.get(index).set(5, comment);
                 sightings.get(index).set(9, animal);
-
                 ReportSightingFragment.SaveArrayListToSD(cont, "notSubmittedSightings", sightings);
-
                 showHandler(view, "Sighting successfully changed!");
             }
         }
     }
-
-//    private String getTripFrom(){
-//        Context cont = (Context) getActivity().getApplicationContext();
-//        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-//        return sighting_info.get(1).get(1);
-//    }
-//
-//    private String getTripTo(){
-//        Context cont = (Context) getActivity().getApplicationContext();
-//        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-//        return sighting_info.get(1).get(2);
-//    }
-
 
     private void deleteSighting(View view){
         TextView tv = (TextView) getView().findViewById(R.id.fragmentTitle);
@@ -1378,7 +1359,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         if (sighting_submitted){
             if(BusinessFacade.getInstance().isInternetWorking()){
                 BusinessFacade.getInstance().deleteSighting(sightingToEdit);
-//                ReportSightingFragment.deleteSightingInformation(sighting_id_number);
                 showHandler(view, "Sighting successfully deleted!");
             } else {
                 showHandler(view, "No connectivity");
@@ -1439,19 +1419,4 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
             }
         }, 2000);
     }
-
-    private String getIdPerson(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(0).get(0);
-    }
-
-    private String getVesselId(){
-
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(1).get(0);
-    }
-
-
 }

@@ -50,39 +50,44 @@ public class LoginManagerAdminFragment extends BaseFragment {
     }
 
     private void login() {
-        UserDTO loginCredentials = new UserDTO("", this.email.getText().toString(), this.password.getText().toString(), BusinessFacade.getInstance().getSelectedRole());
-        ErrorType errorType = BusinessFacade.getInstance().loginIsValid(loginCredentials);
-        switch (errorType) {
-            case EmailMissing:
-            case PasswordMissing:
-                ShowPopupBox("Please, enter your credentials!");
-                break;
-            case EmailNotValid:
-                ShowPopupBox("Please, enter a valid email!");
-                break;
-            case WrongLoginData:
-                ShowPopupBox("Wrong login credentials.");
-                break;
-            case NoError:
-                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("isLogged", BusinessFacade.getInstance().getSelectedRole());
-                editor.commit();
-                if (BusinessFacade.getInstance().getSelectedRole() == "CompanyManager")
-                    MainActivity.switchFragment(new CompanyManagerHomeFragment());
-                else if (BusinessFacade.getInstance().getSelectedRole() == "Administrator")
-                    MainActivity.switchFragment(new AdminHomeFragment());
-                break;
+        if(BusinessFacade.getInstance().isInternetWorking()){
+            UserDTO loginCredentials = new UserDTO("", this.email.getText().toString(), this.password.getText().toString(), BusinessFacade.getInstance().getSelectedRole());
+            ErrorType errorType = BusinessFacade.getInstance().loginIsValid(loginCredentials);
+            switch (errorType) {
+                case EmailMissing:
+                case PasswordMissing:
+                    ShowPopupBox("Please, enter your credentials!");
+                    break;
+                case EmailNotValid:
+                    ShowPopupBox("Please, enter a valid email!");
+                    break;
+                case WrongLoginData:
+                    ShowPopupBox("Wrong login credentials.");
+                    break;
+                case NoError:
+                    SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("isLogged", BusinessFacade.getInstance().getSelectedRole());
+                    editor.commit();
+                    if (BusinessFacade.getInstance().getSelectedRole() == "CompanyManager")
+                        MainActivity.switchFragment(new CompanyManagerHomeFragment());
+                    else if (BusinessFacade.getInstance().getSelectedRole() == "Administrator")
+                        MainActivity.switchFragment(new AdminHomeFragment());
+                    break;
+            }
+            try {
+                Context cont = (Context) getActivity().getApplicationContext();
+                FileOutputStream fos = cont.openFileOutput("notSubmittedSightings.dat", cont.MODE_PRIVATE);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(new ArrayList<>());
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            ShowPopupBox("No connection!");
         }
-        try {
-            Context cont = (Context) getActivity().getApplicationContext();
-            FileOutputStream fos = cont.openFileOutput("notSubmittedSightings.dat", cont.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(new ArrayList<>());
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void onStartView(View view) {

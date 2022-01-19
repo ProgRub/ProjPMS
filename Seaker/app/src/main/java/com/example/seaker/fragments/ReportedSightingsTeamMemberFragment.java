@@ -119,29 +119,9 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
             species_ += sightedAnimals.get(k).getSpeciesName() + ", ";
         }
         species_ += sightedAnimals.get(sightedAnimals.size()-1).getSpeciesName();
-//        for (AnimalDTO animal: sightedAnimals) {
-//            species_+=animal.getSpeciesName()+", "
-//        }
-//        for(int k=0;k<sighting.getSightedAnimals()..size()-1;k++){
-//            species_ += species_name.get(k) + ", ";
-//        }
-//        species_ += species_name.get(species_name.size()-1);
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
         editSightingBtn.setOnClickListener(item -> {
-//            model.setReportedSighingId(sighting_id);
-//            model.setDate(sighting_date);
-//            model.setTime(sighting_time);
-//            model.setSea_state(Integer.parseInt(sea_state));
-//            model.setLatitude(latitude);
-//            model.setLongitude((longitude));
-//            model.setComment(comment);
-//            model.setSpecies(species_name);
-//            model.setN_individuals(n_individuals);
-//            model.setN_offspring(n_offspring);
-//            model.setTrust_level(trust_level);
-//            model.setReactions(reactions);
-//            model.setBehaviors(behaviors);
             MainActivity.switchFragment(new EditSightingFragment(this,sighting));
         });
 
@@ -237,19 +217,6 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
         editSightingBtn.setOnClickListener(item -> {
-//            model.setReportedSighingId(sighting_id);
-//            model.setDate(sighting_date);
-//            model.setTime(sighting_time);
-//            model.setSea_state(Integer.parseInt(sea_state));
-//            model.setLatitude(latitude);
-//            model.setLongitude((longitude));
-//            model.setComment(comment);
-//            model.setSpecies(species_name);
-//            model.setN_individuals(n_individuals);
-//            model.setN_offspring(n_offspring);
-//            model.setTrust_level(trust_level);
-//            model.setReactions(reactions);
-//            model.setBehaviors(behaviors);
             MainActivity.switchFragment(new EditSightingFragment(this, sightingToEdit));
         });
 
@@ -341,11 +308,5 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
         }
 
         return format;
-    }
-
-    private String getIdPerson(){
-        Context cont = (Context) getActivity().getApplicationContext();
-        ArrayList<ArrayList<String>> sighting_info = ReportSightingFragment.ReadArrayListFromSD(cont, "person_boat_zones");
-        return sighting_info.get(0).get(0);
     }
 }
