@@ -107,8 +107,7 @@ public class UserService {
                 loggedInUserId=user.getId();
                 loggedInUsername =user.getName();
         }
-//        Context cont = (Context) getActivity().getApplicationContext();
-//        saveArrayListToSD(cont, "person_boat_zones", loginCredentials);
+
         return ErrorType.NoError;
     }
 
@@ -144,14 +143,4 @@ public class UserService {
         return loggedInUsername;
     }
 
-
-//    public void saveArrayListToSD(Context mContext, String filename, UserDTO user) {try {
-//        FileOutputStream fos = mContext.openFileOutput(filename + ".dat", mContext.MODE_PRIVATE);
-//        ObjectOutputStream oos = new ObjectOutputStream(fos);
-//        oos.writeObject(user);
-//        fos.close();
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//    }
-//    }
 }

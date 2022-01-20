@@ -91,10 +91,13 @@ public class AddMemberFragment extends BaseFragment {
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addMember();
+                if(BusinessFacade.getInstance().isInternetWorking()){
+                    addMember();
+                } else {
+                    ShowPopupBox("No connection!");
+                }
             }
         });
-
     }
 
     private void addMember() {

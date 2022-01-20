@@ -100,59 +100,7 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         return view;
     }
-    private void addSightingToView(SightingDTO sighting){
-        LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = vi.inflate(R.layout.reported_sighting_box, null);
 
-        TextView sightingNumber = (TextView) v.findViewById(R.id.sighting_number);
-        TextView notSubmitted = (TextView) v.findViewById(R.id.not_submitted);
-        TextView date = (TextView) v.findViewById(R.id.date);
-        TextView time = (TextView) v.findViewById(R.id.time);
-        TextView sightingSpecies = (TextView) v.findViewById(R.id.sighting_species);
-        TextView reportedBy = (TextView) v.findViewById(R.id.reported_by);
-
-        ImageButton editSightingBtn = (ImageButton) v.findViewById(R.id.edit_sighting_btn);
-
-        String species_ = "";
-        ArrayList<AnimalDTO> sightedAnimals = (ArrayList<AnimalDTO>) sighting.getSightedAnimals();
-        for(int k=0;k<sightedAnimals.size()-1;k++){
-            species_ += sightedAnimals.get(k).getSpeciesName() + ", ";
-        }
-        species_ += sightedAnimals.get(sightedAnimals.size()-1).getSpeciesName();
-
-        //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
-        editSightingBtn.setOnClickListener(item -> {
-            MainActivity.switchFragment(new EditSightingFragment(this,sighting));
-        });
-
-        sightingNumber.setText("Sighting #" + sighting.getId());
-        String sightingDate = sighting.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
-        String sightingTime = sighting.getTime().toString();
-        date.setText(sightingDate);
-        time.setText(sightingTime);
-        sightingSpecies.setText(species_);
-        reportedBy.setText(BusinessFacade.getInstance().getUserByID(sighting.getTeamMemberId()).getName());
-
-        if(sighting.isSubmitted()){
-            notSubmitted.setVisibility(View.GONE);
-        }
-
-        //Verificar se já passaram 24h:
-        String dateTimeString = sightingDate +" "+ sightingTime;
-        String format = getLocalDateTimeFormatterString(sightingDate, sightingTime);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
-        LocalDateTime after24h = dateTime.plusHours(24);
-
-        if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
-            noRecentSightings.setVisibility(View.GONE);
-            recentSightings.addView(v);
-        }else{ //mais de 24h
-            noOtherSightings.setVisibility(View.GONE);
-            otherSightings.addView(v);
-        }
-    }
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String species, String person_name){
@@ -270,7 +218,6 @@ public class ReportedSightingsTeamMemberFragment extends BaseFragment {
 
         return format;
     }
-
 
     private String getLocalDateTimeFormatterString(String sighting_date, String sighting_time) {
         String[] date_parts = sighting_date.split("/");
