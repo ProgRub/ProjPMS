@@ -131,8 +131,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 GoToPreviousFragment();
             }
         });
-//        if(BusinessFacade.getInstance().getSelectedRole() == "TeamMember") SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsTeamMemberFragment(),view);
-//        else SetButtonOnClickNextFragment(R.id.buttonBack,new ReportedSightingsAdminManagerFragment(),view);
+
         onStartView(view);
 
         return view;
@@ -928,7 +927,6 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingInformations.add(sighting);
 
     }
-
 
     public void unselectSpecie(View view) {
 

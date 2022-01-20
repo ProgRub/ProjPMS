@@ -39,14 +39,6 @@ public class CompanyManagerHomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_company_manager_home, container, false);
         SetButtonOnClickNextFragment(R.id.buttonCreateReport,new CreateReportFragment(),view);
         SetButtonOnClickNextFragment(R.id.buttonAllMembersCM,new AllMembersFragment(),view);
-
-//        reportedSightingsBtn = (ImageButton) view.findViewById(R.id.buttonReportedSightingsCM);
-//        reportedSightingsBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MainActivity.switchFragment(new ReportedSightingsAdminManagerFragment(this));
-//            }
-//        });
         SetButtonOnClickNextFragment(R.id.buttonReportedSightingsCM,new ReportedSightingsAdminManagerFragment(this),view);
 
         logoutBtn = (ImageButton) view.findViewById(R.id.buttonLogoutCM);

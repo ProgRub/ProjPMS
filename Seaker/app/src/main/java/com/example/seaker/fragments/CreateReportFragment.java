@@ -38,6 +38,7 @@ import androidx.fragment.app.FragmentContainerView;
 import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.SpecieSummary;
+import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.jsonwriter.SummaryJson;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -196,10 +197,14 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                //se já tinha criado um sumário, atualiza
-                if(createdSummary) createDifferentSummary(view);
-                //caso contrário, cria um novo
-                else createSummary(view);
+                if(BusinessFacade.getInstance().isInternetWorking()){
+                    //se já tinha criado um sumário, atualiza
+                    if(createdSummary) createDifferentSummary(view);
+                    //caso contrário, cria um novo
+                    else createSummary(view);
+                } else {
+                    ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "No connection!");
+                }
             }
         });
 
@@ -469,7 +474,6 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }else{
             createdSummary = true;
             nrSightingsFound.setText("No sightings found.");
-            //((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "No sightings were found.");
         }
     }
 
@@ -893,5 +897,4 @@ public class CreateReportFragment extends BaseFragment implements OnMapReadyCall
         }
         return result;
     }
-
 }

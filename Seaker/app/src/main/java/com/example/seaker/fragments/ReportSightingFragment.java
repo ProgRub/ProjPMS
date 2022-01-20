@@ -860,7 +860,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     }
 
-
     public void unselectSpecie(View view) {
 
         view.setTag(String.valueOf(view.getTag()).replace("Selected ", ""));
@@ -1208,42 +1207,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-
-    public void createSightingDTO(){
-        EditText editText = (EditText) getView().findViewById(R.id.pickDate);
-        String day = editText.getText().toString();
-        EditText editText1 = (EditText) getView().findViewById(R.id.pickTime);
-        String hour = editText1.getText().toString();
-        TextView textView = (TextView) getView().findViewById(R.id.latitude);
-        String latitude = textView.getText().toString();
-        TextView textView1 = (TextView) getView().findViewById(R.id.longitude);
-        String longitude = textView1.getText().toString();
-        EditText editText3 = (EditText) getView().findViewById(R.id.sighting_comment);
-        String comment = editText3.getText().toString();
-
-        ArrayList<String> speciesNames = new ArrayList<>();
-
-        for(SightingInformation sighting : sightingInformations){
-            speciesNames.add(sighting.getSpecieName());
-        }
-
-        String[] partsLatitude = latitude.split(": ");
-        String[] partsLongitude = longitude.split(": ");
-
-        double latitudeValue = Double.parseDouble(partsLatitude[1]);
-        double longitudeValue = Double.parseDouble(partsLongitude[1]);
-
-        //Data e Tempo não dá para fazer parse para localdate e localtime, dá erro (não sei pq)
-        //O confidence level é para cada espécie (não para o avistamento)
-        //Falta conseguir aceder ao nome do team member, nome do barco e nome das zonas
-        //Como se sabe a relação entre os sightingDTO o animalDTOs?
-        //O beaufort sea state, pela forma q está feito, deve ser para cada especie avistada
-        //Que ID vamos dar?
-
-        //SightingDTO sightingDTO = new SightingDTO(1, day, hour, 4, longitudeValue, latitudeValue, "LOW",  comment, "TEAM_MEMBER_NAME", "PHOTOS", "BOAT_NAME", "ZONE_NAMES", speciesNames);
-        //businessFacade.addSighting(sightingDTO);
-    }
-
     public void insertSighting(View view){
 
         EditText editText = (EditText) getView().findViewById(R.id.pickDate);
@@ -1456,80 +1419,6 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         }
     }
 
-    public static void deleteAndInsertSightingInformationIntoBD(String id_sighting, String day, String hour, String sea_state, String latitude, String longitude, String comment, String animal){
-
-        String updateSightingUrl = "http://" + ip + "/seaker/deleteandinsertsightingbyid.php";
-        try {
-            URL url = new URL(updateSightingUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("id_sighting", "UTF-8")+"="+URLEncoder.encode(id_sighting, "UTF-8")+"&"
-                    + URLEncoder.encode("day", "UTF-8")+"="+URLEncoder.encode(day, "UTF-8")+"&"
-                    + URLEncoder.encode("hour", "UTF-8")+"="+URLEncoder.encode(hour, "UTF-8")+"&"
-                    + URLEncoder.encode("sea_state", "UTF-8")+"="+URLEncoder.encode(sea_state, "UTF-8")+"&"
-                    + URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
-                    + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
-                    + URLEncoder.encode("comment", "UTF-8")+"="+URLEncoder.encode(comment, "UTF-8")+"&"
-                    + URLEncoder.encode("animal", "UTF-8")+"="+URLEncoder.encode(animal, "UTF-8");
-
-            bufferedWriter.write(post_data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String result = "";
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void deleteSightingInformation(String id_sighting){
-
-        String deleteSightingUrl = "http://" + ip + "/seaker/deletesightingbyid.php";
-        try {
-            URL url = new URL(deleteSightingUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("id_sighting", "UTF-8")+"="+URLEncoder.encode(id_sighting, "UTF-8");
-            bufferedWriter.write(post_data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String result = "";
-            String line = "";
-            while((line = bufferedReader.readLine())!=null){
-                result += line;
-            }
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private boolean validateSightingReport(){ //true se os campos obrigatórios estão preenchidos
         ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView2);
         HorizontalScrollView horizontalScrollView = (HorizontalScrollView) getView().findViewById(R.id.horizontalSightings);
@@ -1627,5 +1516,4 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             return new ArrayList<>();
         }
     }
-
 }

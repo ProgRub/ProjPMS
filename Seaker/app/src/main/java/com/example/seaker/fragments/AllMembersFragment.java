@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.seaker.MainActivity;
 import com.example.seaker.R;
 import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.database.DTOs.UserDTO;
@@ -47,10 +48,12 @@ public class AllMembersFragment extends BaseFragment {
     }
 
     private void onStartView(View view){
-        members = (LinearLayout) view.findViewById(R.id.all_members);
-        users = (ArrayList<UserDTO>) BusinessFacade.getInstance().getAllUsers();
-        for (UserDTO user: users) {
-            addMember(user.getId(), user.getName(),user.getEmail(),user.getPassword(),user.getType());
+        if(BusinessFacade.getInstance().isInternetWorking()){
+            members = (LinearLayout) view.findViewById(R.id.all_members);
+            users = (ArrayList<UserDTO>) BusinessFacade.getInstance().getAllUsers();
+            for (UserDTO user: users) {
+                addMember(user.getId(), user.getName(),user.getEmail(),user.getPassword(),user.getType());
+            }
         }
     }
 
@@ -74,7 +77,11 @@ public class AllMembersFragment extends BaseFragment {
             removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onDeleteClick(finalV);
+                    if(BusinessFacade.getInstance().isInternetWorking()){
+                        onDeleteClick(finalV);
+                    } else {
+                        ((MainActivity)getActivity()).onButtonShowPopupWindowClick(view, "No connection!");
+                    }
                 }
             });
         }

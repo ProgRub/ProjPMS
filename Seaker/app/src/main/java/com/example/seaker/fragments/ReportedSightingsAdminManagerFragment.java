@@ -41,7 +41,6 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,47 +58,16 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
             }
         });
 
-        for (SightingDTO sighting:BusinessFacade.getInstance().getAllSightings()) {
-            addSightingToView(sighting);
+        if(BusinessFacade.getInstance().isInternetWorking()){
+            for (SightingDTO sighting:BusinessFacade.getInstance().getAllSightings()) {
+                addSightingToView(sighting);
+            }
         }
-//        String allSightings = ReportSightingFragment.getAllSightingsInformations("NULL");
-//        String[] si = allSightings.split("&&&");
-//        for(int j=0;j<si.length;j++) {
-//            String[] sighting = si[j].split("###");
-//            addSightingToView(sighting[0], true, sighting[1], sighting[2], sighting[3], sighting[4], sighting[5], sighting[6], sighting[10], sighting[8]);
-//        }
-//        onStartView(view);
 
         return view;
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    private void onStartView(View view){
-//        recentSightings = (LinearLayout) view.findViewById(R.id.recent_sightings);
-//        otherSightings = (LinearLayout) view.findViewById(R.id.other_sightings);
-//
-//        model = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
-//
-//        backBtn = (ImageButton) view.findViewById(R.id.buttonBack);
-//        boolean isAdmin=BusinessFacade.getInstance().getSelectedRole().equals("Administrator");
-//        backBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(isAdmin) MainActivity.switchFragment(new AdminHomeFragment());
-//                else  MainActivity.switchFragment(new CompanyManagerHomeFragment());
-//            }
-//        });
-//
-//        String allSightings = ReportSightingFragment.getAllSightingsInformations("NULL");
-//        String[] si = allSightings.split("&&&");
-//        for(int j=0;j<si.length;j++) {
-//            String[] sighting = si[j].split("###");
-//            addSightingToView(sighting[0], true, sighting[1], sighting[2], sighting[3], sighting[4], sighting[5], sighting[6], sighting[10], sighting[8]);
-//        }
-//    }
-
     //Função para adicionar um reported_sighting_box ao ecrã - recebe como parâmetros os dados do sighting:
-//    @RequiresApi(api = Build.VERSION_CODES.O)
     private void addSightingToView(SightingDTO sighting){
         LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.reported_sighting_box, null);
@@ -119,29 +87,9 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
             species_ += sightedAnimals.get(k).getSpeciesName() + ", ";
         }
         species_ += sightedAnimals.get(sightedAnimals.size()-1).getSpeciesName();
-//        for (AnimalDTO animal: sightedAnimals) {
-//            species_+=animal.getSpeciesName()+", "
-//        }
-//        for(int k=0;k<sighting.getSightedAnimals()..size()-1;k++){
-//            species_ += species_name.get(k) + ", ";
-//        }
-//        species_ += species_name.get(species_name.size()-1);
 
         //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
         editSightingBtn.setOnClickListener(item -> {
-//            model.setReportedSighingId(sighting_id);
-//            model.setDate(sighting_date);
-//            model.setTime(sighting_time);
-//            model.setSea_state(Integer.parseInt(sea_state));
-//            model.setLatitude(latitude);
-//            model.setLongitude((longitude));
-//            model.setComment(comment);
-//            model.setSpecies(species_name);
-//            model.setN_individuals(n_individuals);
-//            model.setN_offspring(n_offspring);
-//            model.setTrust_level(trust_level);
-//            model.setReactions(reactions);
-//            model.setBehaviors(behaviors);
             MainActivity.switchFragment(new EditSightingFragment(this,sighting));
         });
 
@@ -173,97 +121,6 @@ public class ReportedSightingsAdminManagerFragment extends BaseFragment {
             otherSightings.addView(v);
         }
     }
-    private void addSightingToView(String sighting_id, boolean submitted, String sighting_date, String sighting_time, String sea_state, String latitude, String longitude, String comment, String species, String person_name ){
-        LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = vi.inflate(R.layout.reported_sighting_box, null);
-
-        TextView sightingNumber = (TextView) v.findViewById(R.id.sighting_number);
-        TextView notSubmitted = (TextView) v.findViewById(R.id.not_submitted);
-        TextView date = (TextView) v.findViewById(R.id.date);
-        TextView time = (TextView) v.findViewById(R.id.time);
-        TextView sightingSpecies = (TextView) v.findViewById(R.id.sighting_species);
-        TextView reportedBy = (TextView) v.findViewById(R.id.reported_by);
-
-        ImageButton editSightingBtn = (ImageButton) v.findViewById(R.id.edit_sighting_btn);
-
-        ArrayList<String> species_name = new ArrayList<>();
-        ArrayList<String> n_individuals = new ArrayList<>();
-        ArrayList<String> n_offspring = new ArrayList<>();
-        ArrayList<String> trust_level = new ArrayList<>();
-        ArrayList<String> behaviors = new ArrayList<>();
-        ArrayList<String> reactions = new ArrayList<>();
-        String[] result1 = species.split("\\$");
-
-        for(int j=0;j<result1.length;j++){
-            String[] result2 = result1[j].split("\\*");
-            species_name.add(result2[0]);
-            n_individuals.add(result2[1]);
-            n_offspring.add(result2[2]);
-            trust_level.add(result2[3]);
-            if(result2.length == 4){
-                behaviors.add(" ");
-                reactions.add(" ");
-            }
-            if(result2.length == 5){
-                behaviors.add(result2[4]);
-                reactions.add(" ");
-            }
-            if(result2.length == 6){
-                behaviors.add(result2[4]);
-                reactions.add(result2[5]);
-            }
-        }
-        String species_ = "";
-        for(int k=0;k<species_name.size()-1;k++){
-            species_ += species_name.get(k) + ", ";
-        }
-        species_ += species_name.get(species_name.size()-1);
-
-        //MUDAR PARA FRAGMENTO DE EDITAR AVISTAMENTO:
-//        editSightingBtn.setOnClickListener(item -> {
-//            model.setReportedSighingId(sighting_id);
-//            model.setDate(sighting_date);
-//            model.setTime(sighting_time);
-//            model.setSea_state(Integer.parseInt(sea_state));
-//            model.setLatitude(latitude);
-//            model.setLongitude((longitude));
-//            model.setComment(comment);
-//            model.setSpecies(species_name);
-//            model.setN_individuals(n_individuals);
-//            model.setN_offspring(n_offspring);
-//            model.setTrust_level(trust_level);
-//            model.setReactions(reactions);
-//            model.setBehaviors(behaviors);
-//            MainActivity.switchFragment(new EditSightingFragment());
-//        });
-
-        sightingNumber.setText("Sighting #" + sighting_id);
-        date.setText(sighting_date);
-        time.setText(sighting_time);
-        sightingSpecies.setText(species_);
-        reportedBy.setText(person_name);
-
-        if(submitted){
-            notSubmitted.setVisibility(View.GONE);
-        }
-
-        //Verificar se já passaram 24h:
-        String dateTimeString = sighting_date +" "+sighting_time;
-        String format = getLocalDateTimeFormatterString(sighting_date, sighting_time);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
-        LocalDateTime after24h = dateTime.plusHours(24);
-
-        if(after24h.isAfter(LocalDateTime.now())){ //menos de 24h
-            recentSightings.addView(v);
-        }else{ //mais de 24h
-            otherSightings.addView(v);
-        }
-    }
-
-
-
 
     private String getLocalDateTimeFormatterString(String sighting_date, String sighting_time) {
         String[] date_parts = sighting_date.split("/");
