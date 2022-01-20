@@ -394,8 +394,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         map.addMarker(new MarkerOptions().position(coordenadas).title("Departure"));
         moveToCurrentLocation(coordenadas);
 
-        sightingLatitude.setText("Latitude: "+ df.format(coordenadas.latitude));
-        sightingLongitude.setText("Longitude: "+ df.format(coordenadas.longitude));
+        sightingLatitude.setText("Latitude: "+ df.format(coordenadas.latitude).replace(",", "."));
+        sightingLongitude.setText("Longitude: "+ df.format(coordenadas.longitude).replace(",", "."));
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -404,8 +404,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                 map.clear();
                 map.addMarker(new MarkerOptions().position(point).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
                 moveToCurrentLocation(point);
-                sightingLatitude.setText("Latitude: "+ df.format(point.latitude));
-                sightingLongitude.setText("Longitude: "+ df.format(point.longitude));
+                sightingLatitude.setText("Latitude: "+ df.format(point.latitude).replace(",", "."));
+                sightingLongitude.setText("Longitude: "+ df.format(point.longitude).replace(",", "."));
             }
         });
     }

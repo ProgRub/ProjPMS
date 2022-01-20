@@ -93,10 +93,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
-            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
-            ImageView image = (ImageView) v.findViewById(R.id.photo);
-            image.setImageBitmap(Bitmap.createScaledBitmap(captureImage, 240, 240, false));
-            uploadedPhotosLayout.addView(v);
+            try {
+                Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+                ImageView image = (ImageView) v.findViewById(R.id.photo);
+                image.setImageBitmap(Bitmap.createScaledBitmap(captureImage, 240, 240, false));
+                uploadedPhotosLayout.addView(v);
+            }catch(NullPointerException e){
+                // TODO Auto-generated catch block
+            }
         }else if(resultCode == Activity.RESULT_OK && requestCode == 200){
             Uri selectedImage = data.getData();
             try {
@@ -109,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+            }catch(NullPointerException e){
+                // TODO Auto-generated catch block
             }
         }
     }

@@ -144,9 +144,7 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
         sightingDate.setText(sightingToEdit.getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")));
         sightingTime.setText(sightingToEdit.getTime().toString());
 
-//        Double latitude = Double.parseDouble(model.getLatitude());
         String latitudeString = df.format(sightingToEdit.getLatitude());
-//        Double longitude = Double.parseDouble(model.getLongitude());
         String longitudeString = df.format(sightingToEdit.getLongitude());
 
         sightingLatitude.setText("Latitude: " + latitudeString);
@@ -568,8 +566,8 @@ public class EditSightingFragment extends BaseFragment implements OnMapReadyCall
                 map.clear();
                 map.addMarker(new MarkerOptions().position(point).title("Sighting").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
                 moveToCurrentLocation(point);
-                sightingLatitude.setText("Latitude: "+ df.format(point.latitude));
-                sightingLongitude.setText("Longitude: "+ df.format(point.longitude));
+                sightingLatitude.setText("Latitude: "+ df.format(point.latitude).replace(",", "."));
+                sightingLongitude.setText("Longitude: "+ df.format(point.longitude).replace(",", "."));
             }
         });
     }
