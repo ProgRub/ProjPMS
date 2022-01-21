@@ -42,10 +42,18 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private MQTTHelper mqtt;
+    String[] permissions= new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION};
+
 
     private static FragmentManager supportFragmentManager;
     @Override
@@ -57,16 +65,7 @@ public class MainActivity extends AppCompatActivity {
         supportFragmentManager = getSupportFragmentManager();
         switchFragment(new SplashFragment());
 
-        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{
-                            Manifest.permission.CAMERA
-                    },
-                    100);}
-
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
-        }
+        checkPermissions();
 
         try {
             mqtt = MQTTHelper.getInstance(getApplicationContext()); //apenas para iniciar conexão ao MQTT
@@ -75,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -152,5 +150,41 @@ public class MainActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             }
         }, 2600);
+    }
+
+    private  boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p:permissions) {
+            result = ContextCompat.checkSelfPermission(this,p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),10 );
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissionsList[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissionsList, grantResults);
+        switch (requestCode) {
+            case 10: {
+                if (grantResults.length > 0) {
+                    String permissionsDenied = "";
+                    for (String per : permissionsList) {
+                        if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                            permissionsDenied += "\n" + per;
+
+                        }
+
+                    }
+                }
+                return;
+            }
+        }
     }
 }

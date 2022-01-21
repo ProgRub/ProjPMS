@@ -1,9 +1,12 @@
 package com.example.seaker.fragments;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +14,9 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +48,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -54,6 +62,8 @@ import com.example.seaker.business.BusinessFacade;
 import com.example.seaker.jsonwriter.AnimalJson;
 import com.example.seaker.jsonwriter.JsonWriter;
 import com.example.seaker.jsonwriter.SightingJson;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -61,6 +71,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -86,6 +97,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 public class ReportSightingFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -111,6 +123,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
     private LinearLayout navSightingBoxBtns;
     private ArrayList<Button> sightingBoxesButtons;
     private MQTTHelper mqtt;
+    protected LocationManager locationManager;
 
     public static final String ip = ; //erro propositadamente, para n se esquecerem de alterar :P
 
@@ -122,6 +135,14 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         // Required empty public constructor
     }
 
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            sightingLatitude.setText("Latitude: " + df.format(location.getLatitude()).replace(",", "."));
+            sightingLongitude.setText("Longitude: " + df.format(location.getLongitude()).replace(",", "."));
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,13 +153,17 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report_sighting, container, false);
-        SetButtonOnClickNextFragment(R.id.buttonBack,new TeamMemberHomeFragment(),view);
+        SetButtonOnClickNextFragment(R.id.buttonBack, new TeamMemberHomeFragment(), view);
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
 
         jsonWriter = new JsonWriter();
 
         try {
             mqtt = MQTTHelper.getInstance(getActivity().getApplicationContext());
-            if(!mqtt.isConnected()) mqtt.tryConnect(getActivity().getApplicationContext());
+            if (!mqtt.isConnected()) mqtt.tryConnect(getActivity().getApplicationContext());
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -148,7 +173,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         return view;
     }
 
-    private void onStartView(View view){
+    private void onStartView(View view) {
         clickedCoordinatesOnce = false;
 
         sightingDate = (EditText) view.findViewById(R.id.pickDate);
@@ -192,39 +217,39 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             }
         });
 
-        navSightingBoxBtns= (LinearLayout) view.findViewById(R.id.navSightingBoxes);
+        navSightingBoxBtns = (LinearLayout) view.findViewById(R.id.navSightingBoxes);
         navSightingBoxBtns.setVisibility((View.GONE));
         sightingBoxesButtons = new ArrayList<Button>();
 
-        takePhoto.setOnClickListener(new View.OnClickListener(){
+        takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 100);
             }
         });
 
-        uploadPhoto.setOnClickListener(new View.OnClickListener(){
+        uploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 200);
             }
         });
 
-        sightingDate.setOnClickListener(new View.OnClickListener(){
+        sightingDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 datePicking(view);
             }
         });
 
-        sightingTime.setOnClickListener(new View.OnClickListener(){
+        sightingTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 timePicking(view);
             }
         });
 
-        View.OnClickListener onClickListener = new View.OnClickListener(){
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scrollToSpecie(view);
@@ -235,7 +260,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         dolphinsBtn.setOnClickListener(onClickListener);
         porpoisesBtn.setOnClickListener(onClickListener);
 
-        onClickListener = new View.OnClickListener(){
+        onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickSpecie(view, false);
@@ -268,7 +293,7 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         whalesSpeciesBtns.add(view.findViewById(R.id.pigmy_whale_btn));
         whalesSpeciesBtns.add(view.findViewById(R.id.not_specified_whale_btn));
 
-        for(ImageButton whaleSpecie : whalesSpeciesBtns){
+        for (ImageButton whaleSpecie : whalesSpeciesBtns) {
             whaleSpecie.setOnClickListener(onClickListener);
         }
 
@@ -281,20 +306,20 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         dolphinSpeciesBtns.add(view.findViewById(R.id.frasers_dolphin_btn));
         dolphinSpeciesBtns.add(view.findViewById(R.id.not_specified_dolphin_btn));
 
-        for(ImageButton dolphinSpecie : dolphinSpeciesBtns){
+        for (ImageButton dolphinSpecie : dolphinSpeciesBtns) {
             dolphinSpecie.setOnClickListener(onClickListener);
         }
 
         porpoiseSpeciesBtns.add(view.findViewById(R.id.harbour_porpoise_btn));
         porpoiseSpeciesBtns.add(view.findViewById(R.id.not_specified_porpoise_btn));
 
-        for(ImageButton porpoiseSpecie : porpoiseSpeciesBtns){
+        for (ImageButton porpoiseSpecie : porpoiseSpeciesBtns) {
             porpoiseSpecie.setOnClickListener(onClickListener);
         }
 
         reportSightingBtn = (ImageButton) view.findViewById(R.id.reportSightingBtn);
 
-        reportSightingBtn.setOnClickListener(new View.OnClickListener(){
+        reportSightingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 insertSighting(view);
@@ -311,10 +336,14 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBar.setThumb(getThumb(progress, thumbView));
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
         beaufortSeekBar.setThumb(getThumb(6, thumbView));
@@ -327,8 +356,8 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         int dd = calendar.get(Calendar.DAY_OF_MONTH);
         String monthOfYearString = String.valueOf(mm);
         String dayOfMonthString = String.valueOf(dd);
-        if(mm < 10)  monthOfYearString = "0" + mm;
-        if(dd < 10)  dayOfMonthString = "0" + dd;
+        if (mm < 10) monthOfYearString = "0" + mm;
+        if (dd < 10) dayOfMonthString = "0" + dd;
         String date = dayOfMonthString + "/" + monthOfYearString + "/" + yy;
 
         sightingDate.setText(date);
@@ -337,10 +366,10 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
         int minute = calendar.get(Calendar.MINUTE);
 
         String hourString = String.valueOf(hour);
-        String minuteString= String.valueOf(minute);
+        String minuteString = String.valueOf(minute);
 
-        if(hour < 10 ) hourString = "0" + hour;
-        if(minute < 10) minuteString = "0" + minute;
+        if (hour < 10) hourString = "0" + hour;
+        if (minute < 10) minuteString = "0" + minute;
 
         sightingTime.setText(hourString + ":" + minuteString);
 
@@ -350,19 +379,17 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
 
     private void findAndSelect() {
         String insertedText = searchBar.getText().toString();
-        try{
-            clickSpecie(getView().findViewWithTag(insertedText),true);
+        try {
+            clickSpecie(getView().findViewWithTag(insertedText), true);
             searchBar.setText("");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             createToast(insertedText + " is already selected.");
         }
 
-        try{
+        try {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-        }
-        catch(NullPointerException e ){
+        } catch (NullPointerException e) {
 
         }
     }
@@ -386,16 +413,13 @@ public class ReportSightingFragment extends BaseFragment implements OnMapReadyCa
             }
         });
 
-        LatLng coordenadas = new LatLng(0, 0);
-        if(BusinessFacade.getInstance().getStartingZone().contains("Funchal")) coordenadas = new LatLng(32.645621, -16.909784);
-        else if(BusinessFacade.getInstance().getStartingZone().contains("Porto Santo")) coordenadas = new LatLng(33.062203, -16.316115);
-        else if(BusinessFacade.getInstance().getStartingZone().contains("Câmara de Lobos")) coordenadas = new LatLng(32.647886, -16.974977);
 
-        map.addMarker(new MarkerOptions().position(coordenadas).title("Departure"));
-        moveToCurrentLocation(coordenadas);
+        Double latitude = Double.parseDouble(sightingLatitude.getText().toString().split("Latitude: ")[1]);
+        Double longitude = Double.parseDouble(sightingLongitude.getText().toString().split("Longitude: ")[1]);
 
-        sightingLatitude.setText("Latitude: "+ df.format(coordenadas.latitude).replace(",", "."));
-        sightingLongitude.setText("Longitude: "+ df.format(coordenadas.longitude).replace(",", "."));
+        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Current Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.sighting_pin)));
+        moveToCurrentLocation(new LatLng(latitude, longitude));
+
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
